@@ -12,7 +12,7 @@ class ApiVendorController extends Controller
 {
    
 
-
+// asdasd
     private function getApiDetails($methodName, $branchId)
     {
         return DB::table('apimethods')
