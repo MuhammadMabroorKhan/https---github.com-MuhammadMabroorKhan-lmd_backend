@@ -33,9 +33,14 @@ class AdminController extends Controller {
         $user = DB::table('lmd_users')
             ->where('email', $validated['email'])
             ->first();
-    
+        \Log::info('Fetched user:', ['user_id' => $user->id ?? 'Not Found', 'email' => $user->email ?? 'Not Found']);
+
         // Check if user exists and verify the password
         if ($user && $validated['password'] === $user->password) {
+
+            \Log::info('Login successful for user:', ['user_id' => $user->id]);
+            \Log::info('Login successful for user:', ['pass' => $user->password]);
+            \Log::info('Login successful for user:', ['$validated' => $validated['password']]);
             // Return response with user details and role
             return response()->json([
                 'message' => 'Login successful',
@@ -48,12 +53,18 @@ class AdminController extends Controller {
             ], 200);
         }
     
+
+        \Log::info('Login successful for user:', ['user_id' => $user->id]);
+        \Log::info('Login successful for user:', ['pass' => $user->password]);
+        \Log::info('Login successful for user:', ['$validated' => $validated['password']]);
+
         // If credentials are invalid
         return response()->json([
             'message' => 'Invalid credentials',
         ], 401);
     }
-    
+
+
 
     public function getAllCustomers() {
         $customers = DB::table( 'lmd_users' )->where( 'lmd_user_role', 'customer' )->get();

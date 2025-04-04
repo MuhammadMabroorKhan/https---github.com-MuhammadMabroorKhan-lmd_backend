@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\APIVendorController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OrganizationController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -222,4 +223,16 @@ Route::post('/admin/addcourieritem', [AdminController::class, 'addCourierItem'])
 
 
 
+
+
+
+
+
+
+
+
+
+
+Route::post('/organization/signup', [OrganizationController::class, 'signup']);
+Route::post('/organization/connect-vendor', [OrganizationController::class, 'connectVendorToOrganization']);
 
