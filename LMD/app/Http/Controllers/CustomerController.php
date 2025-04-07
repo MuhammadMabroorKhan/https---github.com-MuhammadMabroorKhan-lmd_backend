@@ -1191,91 +1191,226 @@ private function createOrUpdateSuborder($groupData, $orderId)
 
    
 
-        public function getCustomerOrders( $customerId ) {
-            $orders = DB::table( 'orders' )
-            ->where( 'customers_ID', $customerId )
-            ->get();
+        // public function getCustomerOrders( $customerId ) {
+        //     $orders = DB::table( 'orders' )
+        //     ->where( 'customers_ID', $customerId )
+        //     ->get();
 
-            if ( $orders->isEmpty() ) {
-                return response()->json( [ 'message' => 'No orders found for this customer' ], 404 );
+        //     if ( $orders->isEmpty() ) {
+        //         return response()->json( [ 'message' => 'No orders found for this customer' ], 404 );
+        //     }
+
+        //     return response()->json(  $orders , 200 );
+        // }
+        public function getCustomerOrders($customerId)
+        {
+            $orders = DB::table('orders')
+                ->where('customers_ID', $customerId)
+                ->get();
+        
+            if ($orders->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No orders found for this customer',
+                    'data' => []
+                ], 404);
             }
-
-            return response()->json( [ 'orders' => $orders ], 200 );
+        
+            return response()->json([
+                'success' => true,
+                'message' => 'Orders retrieved successfully',
+                'data' => $orders
+            ], 200);
         }
-
-        public function getOrderDetails( $orderId ) {
-            $orderDetails = DB::table( 'orders' )
-            ->join( 'suborders', 'orders.id', '=', 'suborders.orders_ID' )
-            ->join( 'orderdetails', 'suborders.id', '=', 'orderdetails.suborders_ID' )
-            ->join( 'itemdetails', 'orderdetails.itemdetails_ID', '=', 'itemdetails.id' )
-            ->join( 'items', 'itemdetails.item_ID', '=', 'items.id' )
-            ->select(
-                'orders.id as order_id',
-                'orders.order_date',
-                'orders.order_status',
-                'orders.total_amount as order_total_amount',
-                'suborders.id as suborder_id',
-                'suborders.status as suborder_status',
-                'suborders.total_amount as suborder_total_amount',
-                'itemdetails.id as item_detail_id',
-                'items.name as item_name',
-                'itemdetails.price as item_price',
-                'orderdetails.quantity as item_quantity',
-                'orderdetails.total as item_total'
-            )
-            ->where( 'orders.id', $orderId )
-            ->get();
-
-            if ( $orderDetails->isEmpty() ) {
-                return response()->json( [ 'message' => 'Order not found or no details available' ], 404 );
+        
+        public function getOrderDetails($orderId)
+        {
+            $orderDetails = DB::table('orders')
+                ->join('suborders', 'orders.id', '=', 'suborders.orders_ID')
+                ->join('orderdetails', 'suborders.id', '=', 'orderdetails.suborders_ID')
+                ->join('itemdetails', 'orderdetails.itemdetails_ID', '=', 'itemdetails.id')
+                ->join('items', 'itemdetails.item_ID', '=', 'items.id')
+                ->select(
+                    'orders.id as order_id',
+                    'orders.order_date',
+                    'orders.order_status',
+                    'orders.total_amount as order_total_amount',
+                    'suborders.id as suborder_id',
+                    'suborders.status as suborder_status',
+                    'suborders.payment_status as suborder_payment_status',
+                    'suborders.total_amount as suborder_total_amount',
+                    'suborders.vendor_type',
+                    'suborders.vendor_order_id',
+                    'suborders.estimated_delivery_time',
+                    'suborders.delivery_time',
+                    'suborders.deliveryboys_ID',
+                    'suborders.vendor_ID',
+                    'suborders.shop_ID',
+                    'suborders.branch_ID',
+                    'suborders.created_at as suborder_created_at',
+                    'suborders.updated_at as suborder_updated_at',
+                    'itemdetails.id as item_detail_id',
+                    'items.name as item_name',
+                    'itemdetails.price as item_price',
+                    'orderdetails.quantity as item_quantity',
+                    'orderdetails.total as item_total'
+                )
+                ->where('orders.id', $orderId)
+                ->get();
+        
+            if ($orderDetails->isEmpty()) {
+                return response()->json(['message' => 'Order not found or no details available'], 404);
             }
-
-            // Group by suborder
+        
             $groupedOrderDetails = [];
-            foreach ( $orderDetails as $detail ) {
-                $groupedOrderDetails[ $detail->suborder_id ][ 'suborder_status' ] = $detail->suborder_status;
-                $groupedOrderDetails[ $detail->suborder_id ][ 'suborder_total_amount' ] = $detail->suborder_total_amount;
-                $groupedOrderDetails[ $detail->suborder_id ][ 'items' ][] = [
-                    'item_detail_id' => $detail->item_detail_id,
-                    'item_name' => $detail->item_name,
-                    'item_price' => $detail->item_price,
+        
+            foreach ($orderDetails as $detail) {
+                $suborderId = $detail->suborder_id;
+        
+                if (!isset($groupedOrderDetails[$suborderId])) {
+                    $groupedOrderDetails[$suborderId] = [
+                        'suborder_id' =>$detail->suborder_id,
+                        'suborder_status' => $detail->suborder_status,
+                        'suborder_payment_status' => $detail->suborder_payment_status,
+                        'suborder_total_amount' => $detail->suborder_total_amount,
+                        'vendor_type' => $detail->vendor_type,
+                        'vendor_order_id' => $detail->vendor_order_id,
+                        'estimated_delivery_time' => $detail->estimated_delivery_time,
+                        'delivery_time' => $detail->delivery_time,
+                        'deliveryboys_ID' => $detail->deliveryboys_ID,
+                        'vendor_ID' => $detail->vendor_ID,
+                        'shop_ID' => $detail->shop_ID,
+                        'branch_ID' => $detail->branch_ID,
+                        'suborder_created_at' => $detail->suborder_created_at,
+                        'suborder_updated_at' => $detail->suborder_updated_at,
+                        'items' => [],
+                    ];
+        
+                    // Call the menu function
+                    $menuResponse = $this->getVendorShopBranchMenu(
+                        $detail->vendor_ID,
+                        $detail->shop_ID,
+                        $detail->branch_ID
+                    );
+        
+
+                    Log::info("IDs - Vendor: {$detail->vendor_ID}, Shop: {$detail->shop_ID}, Branch: {$detail->branch_ID}");
+
+                    Log::info("Raw menu response: " . json_encode($menuResponse));
+        
+                    if ($menuResponse instanceof \Illuminate\Http\JsonResponse) {
+                        $menuData = $menuResponse->getData(true);
+                        Log::info("Extracted from JsonResponse: " . json_encode($menuData));
+                     // this makes it usable
+                        
+
+                    } else {
+                        $menuData = json_decode($menuResponse, true);
+                        Log::info("Decoded JSON: " . json_encode($menuData));
+                    }
+        
+                    Log::info("Final processed menu data: " . json_encode($menuData));
+        
+                    $groupedOrderDetails[$suborderId]['menu_info'] = collect($menuData);
+                }
+        
+                $menuCollection = $groupedOrderDetails[$suborderId]['menu_info'];
+                $menuItem = $menuCollection->firstWhere('itemdetail_id', (int)$detail->item_detail_id);
+                Log::info("Looking for itemdetail_id: {$detail->item_detail_id} in menu IDs: " . collect($menuData)->pluck('itemdetail_id')->join(', '));
+
+                $groupedOrderDetails[$suborderId]['items'][] = [
+                    'item_detail_id' => $menuItem['itemdetail_id'] ?? $detail->item_detail_id,
+                    'item_name' => $menuItem['item_name'] ?? $detail->item_name,
                     'item_quantity' => $detail->item_quantity,
                     'item_total' => $detail->item_total,
+                    'item_description' => $menuItem['item_description'] ?? null,
+                    'timesensitive' => $menuItem['timesensitive'] ?? null,
+                    'preparation_time' => $menuItem['preparation_time'] ?? null,
+                    'itemPicture' => $menuItem['itemPicture'] ?? null,
+                    'variation_name' => $menuItem['variation_name'] ?? null,
+                    'price' => $menuItem['price'] ?? $detail->item_price,
+                    'additional_info' => $menuItem['additional_info'] ?? null,
+                    'item_category_id' => $menuItem['item_category_id'] ?? null,
+                    'item_category_name' => $menuItem['item_category_name'] ?? null,
+                    'attributes' => $menuItem['attributes'] ?? [],
+                    'error_message' => $menuItem ? null : "Item details not found for itemdetail_id: " . $detail->item_detail_id,
                 ];
             }
-
-            return response()->json( [
+        
+            // Cleanup before response
+            foreach ($groupedOrderDetails as &$suborder) {
+                unset($suborder['menu_info']);
+            }
+        
+            return response()->json([
                 'order_id' => $orderId,
                 'order_date' => $orderDetails->first()->order_date,
                 'order_status' => $orderDetails->first()->order_status,
                 'order_total_amount' => $orderDetails->first()->order_total_amount,
-                'suborders' => $groupedOrderDetails,
-            ], 200 );
+                'suborders' => array_values($groupedOrderDetails),
+            ], 200);
         }
 
 
-        // public function addItemRating(Request $request)
-        // {
-        //     $request->validate([
-        //         'suborders_ID' => 'required|exists:suborders,id',
-        //         'itemdetails_ID' => 'required|exists:itemdetails,id',
-        //         'rating_stars' => 'required|integer|min:1|max:5',
-        //         'comments' => 'nullable|string|max:255',
-        //     ]);
+
+
+
+
+        public function getStatuses()
+        {
+            // Possible order statuses
+            $orderStatuses = [
+                'pending' => 'pending',
+                'confirmed' => 'confirmed',
+                'completed' => 'completed',
+                'cancelled' => 'cancelled'
+            ];
         
-        //     DB::table('itemrating')->insert([
-        //         'suborders_ID' => $request->input('suborders_ID'),
-        //         'itemdetails_ID' => $request->input('itemdetails_ID'),
-        //         'rating_stars' => $request->input('rating_stars'),
-        //         'comments' => $request->input('comments'),
-        //         'rating_date' => now(),
-        //         'created_at' => now(),
-        //         'updated_at' => now()
-        //     ]);
+            // Possible suborder statuses
+            $suborderStatuses = [
+                'pending' => 'pending',
+                'in_progress' => 'in_progress',
+                'ready' => 'ready',
+                'assigned' => 'assigned',
+                'picked_up' => 'picked_up',
+                'handover_confirmed' => 'handover_confirmed',
+                'in_transit' => 'in_transit',
+                'delivered' => 'delivered',
+                'cancelled' => 'cancelled'
+            ];
         
-        //     return response()->json(['message' => 'Rating added successfully'], 201);
-        // }
+            // Possible order payment statuses
+            $orderPaymentStatuses = [
+                'pending' => 'pending',
+                'completed' => 'completed',
+                'failed' => 'failed'
+            ];
         
+            // Possible suborder payment statuses
+            $suborderPaymentStatuses = [
+                'pending' => 'pending',
+                'confirmed_by_customer' => 'confirmed_by_customer',
+                'confirmed_by_deliveryboy' => 'confirmed_by_deliveryboy',
+                'confirmed_by_vendor' => 'confirmed_by_vendor'
+            ];
+        
+            return response()->json([
+                'orderStatuses' => $orderStatuses,
+                'suborderStatuses' => $suborderStatuses,
+                'orderPaymentStatuses' => $orderPaymentStatuses,
+                'suborderPaymentStatuses' => $suborderPaymentStatuses
+            ]);
+        }
+        
+
+
+
+
+
+
+
+
+ 
         public function addItemRating(Request $request)
         {
             $request->validate([

@@ -1019,6 +1019,92 @@ public function getCategories($vendorId, $shopId, $branchId)
     return response()->json($categories);
 }
 
+////////////////////////////////
+public function getSubOrdersByVendor($vendorId)
+{
+    $data = DB::table('suborders')
+        ->join('orders', 'suborders.orders_ID', '=', 'orders.id')
+        ->join('customers', 'orders.customers_ID', '=', 'customers.id')
+        ->join('lmd_users', 'customers.lmd_users_ID', '=', 'lmd_users.id')
+        ->leftJoin('addresses', function ($join) {
+            $join->on('lmd_users.id', '=', 'addresses.lmd_users_ID')
+                 ->where('addresses.address_type', '=', 'home'); // you can change this to default or most recent if needed
+        })
+        ->select(
+            'orders.id as order_id',
+            'orders.order_date',
+            'orders.order_status',
+            'orders.payment_status as order_payment_status',
+            'orders.payment_method',
+            'orders.total_amount as order_total',
+
+            'suborders.id as suborder_id',
+            'suborders.status as suborder_status',
+            'suborders.payment_status as suborder_payment_status',
+            'suborders.total_amount as suborder_total',
+            'suborders.vendor_type',
+            'suborders.shop_ID',
+            'suborders.branch_ID',
+
+            // Customer Info
+            'lmd_users.name as customer_name',
+            'lmd_users.email as customer_email',
+            'lmd_users.phone_no as customer_phone',
+
+            // Address Info
+            'addresses.address_type',
+            'addresses.street',
+            'addresses.latitude',
+            'addresses.longitude'
+        )
+        ->where('suborders.vendor_ID', $vendorId)
+        ->orderBy('orders.id')
+        ->get();
+
+    if ($data->isEmpty()) {
+        return response()->json(['message' => 'No orders found for this vendor'], 404);
+    }
+
+    $groupedOrders = $data->groupBy('order_id')->map(function ($orderGroup) {
+        $first = $orderGroup->first();
+        return [
+            'order_id' => $first->order_id,
+            'order_date' => $first->order_date,
+            'order_status' => $first->order_status,
+            'payment_status' => $first->order_payment_status,
+            'payment_method' => $first->payment_method,
+            'total_amount' => $first->order_total,
+
+            'customer' => [
+                'name' => $first->customer_name,
+                'email' => $first->customer_email,
+                'phone_no' => $first->customer_phone,
+                'address' => [
+                    'type' => $first->address_type,
+                    'street' => $first->street,
+                    'latitude' => $first->latitude,
+                    'longitude' => $first->longitude,
+                ]
+            ],
+
+            'suborders' => $orderGroup->groupBy('suborder_id')->map(function ($suborderGroup) {
+                $s = $suborderGroup->first();
+                return [
+                    'suborder_id' => $s->suborder_id,
+                    'status' => $s->suborder_status,
+                    'payment_status' => $s->suborder_payment_status,
+                    'total' => $s->suborder_total,
+                    'vendor_type' => $s->vendor_type,
+                    'shop_id' => $s->shop_ID,
+                    'branch_id' => $s->branch_ID,
+                ];
+            })->values(),
+        ];
+    });
+
+    return response()->json(['orders' => $groupedOrders->values()], 200);
+}
+
 
 /////////////////////////////////////Get suborders.....
 public function getSubOrders($vendorId, $shopId, $branchId)

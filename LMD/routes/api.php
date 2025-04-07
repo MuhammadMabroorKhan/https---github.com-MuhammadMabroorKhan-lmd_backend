@@ -61,7 +61,7 @@ Route::post('/cart/remove-item', [CustomerController::class, 'removeItemFromCart
 Route::post('/cart/clear', [CustomerController::class, 'clearCart']);
 Route::get('/cart/details', [CustomerController::class, 'getCartDetails']);
 
-
+Route::get('/statuses', [CustomerController::class, 'getStatuses']);
 
 
 
@@ -231,6 +231,7 @@ Route::post('/admin/addcourieritem', [AdminController::class, 'addCourierItem'])
 
 
 
+Route::get('/vendor/{vendorId}/suborders', [VendorController::class, 'getSubOrdersByVendor']);
 
 
 Route::post('/organization/signup', [OrganizationController::class, 'signup']);
