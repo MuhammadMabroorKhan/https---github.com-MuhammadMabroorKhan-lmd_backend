@@ -62,7 +62,7 @@ Route::post('/cart/clear', [CustomerController::class, 'clearCart']);
 Route::get('/cart/details', [CustomerController::class, 'getCartDetails']);
 
 Route::get('/statuses', [CustomerController::class, 'getStatuses']);
-
+Route::get('/suborders/{id}/route-info', [CustomerController::class, 'getDeliveryRouteInfo']);
 
 
 
@@ -120,7 +120,11 @@ Route::get('/shop/{shopId}/branches', [VendorController::class, 'getBranchesBySh
 Route::put('/Vendor/branches/{id}/togglestatus', [VendorController::class, 'toggleBranchStatus']);
 //vendor order and statuses...
 Route::get('/vendors/{vendorId}/shops/{shopId}/branches/{branchId}/suborders', [VendorController::class, 'getSubOrders']);
-Route::get('/suborders/{suborderId}/details', [VendorController::class, 'getOrderedItemInformation']);
+// Route::get('/suborders/{suborderId}/details', [VendorController::class, 'getOrderedItemInformation']);
+
+
+Route::get('/vendor/ordered-items/{vendorId}/{shopId}/{branchId}/{suborderId}', [VendorController::class, 'getOrderedItemInformation']);
+
 //Route::put('/suborders/status', [VendorController::class, 'updateSuborderStatus']);
 Route::patch('/vendor/order/{suborderId}/in-progress', [VendorController::class, 'markInProgress']);
 Route::patch('/vendor/order/{suborderId}/ready', [VendorController::class, 'markReady']);

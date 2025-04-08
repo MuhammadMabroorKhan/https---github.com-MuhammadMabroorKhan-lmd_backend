@@ -1005,6 +1005,7 @@ public function getItemsWithDetails($vendorId, $shopId, $branchId)
 //
 public function getCategories($vendorId, $shopId, $branchId)
 {
+   
     $categories = DB::table('itemcategories')
         ->join('items', 'itemcategories.id', '=', 'items.category_ID')
         ->join('branches', 'items.branches_ID', '=', 'branches.id')
@@ -1021,7 +1022,8 @@ public function getCategories($vendorId, $shopId, $branchId)
 
 ////////////////////////////////
 public function getSubOrdersByVendor($vendorId)
-{
+{ 
+    $baseUrl = url('/'); 
     $data = DB::table('suborders')
         ->join('orders', 'suborders.orders_ID', '=', 'orders.id')
         ->join('customers', 'orders.customers_ID', '=', 'customers.id')
@@ -1039,6 +1041,7 @@ public function getSubOrdersByVendor($vendorId)
             'orders.total_amount as order_total',
 
             'suborders.id as suborder_id',
+            'suborders.vendor_order_id as vendor_order_id',
             'suborders.status as suborder_status',
             'suborders.payment_status as suborder_payment_status',
             'suborders.total_amount as suborder_total',
@@ -1050,6 +1053,11 @@ public function getSubOrdersByVendor($vendorId)
             'lmd_users.name as customer_name',
             'lmd_users.email as customer_email',
             'lmd_users.phone_no as customer_phone',
+            DB::raw("CASE 
+            WHEN lmd_users.profile_picture IS NULL OR lmd_users.profile_picture = '' 
+            THEN NULL 
+            ELSE CONCAT('$baseUrl/storage/', lmd_users.profile_picture) 
+          END as customer_picture"),
 
             // Address Info
             'addresses.address_type',
@@ -1079,6 +1087,7 @@ public function getSubOrdersByVendor($vendorId)
                 'name' => $first->customer_name,
                 'email' => $first->customer_email,
                 'phone_no' => $first->customer_phone,
+                'picture' => $first->customer_picture,
                 'address' => [
                     'type' => $first->address_type,
                     'street' => $first->street,
@@ -1091,6 +1100,7 @@ public function getSubOrdersByVendor($vendorId)
                 $s = $suborderGroup->first();
                 return [
                     'suborder_id' => $s->suborder_id,
+                    'vendor_order_id'=> $s->vendor_order_id,
                     'status' => $s->suborder_status,
                     'payment_status' => $s->suborder_payment_status,
                     'total' => $s->suborder_total,
@@ -1159,13 +1169,25 @@ public function getSubOrders($vendorId, $shopId, $branchId)
 
 
 
-
-// public function getOrderedItemInformation($suborderId)
+// public function getOrderedItemInformation($vendorId, $shopId, $branchId, $suborderId)
 // {
-//     // Fetch suborder details with related item and variation details
-//     $suborderDetails = DB::table('orderdetails')
+//     // Call the function from CustomerController to get menu
+//     $customerController = new \App\Http\Controllers\CustomerController();
+//     $menuResponse = $customerController->getVendorShopBranchMenu($vendorId, $shopId, $branchId);
+
+//     // Convert the menu response to usable data
+//     $menuData = $menuResponse instanceof \Illuminate\Http\JsonResponse
+//         ? $menuResponse->getData(true)
+//         : json_decode($menuResponse, true);
+
+//     $menuCollection = collect($menuData);
+
+//     // Get all item details with suborder info
+//     $orderDetails = DB::table('orderdetails')
 //         ->join('itemdetails', 'orderdetails.itemdetails_ID', '=', 'itemdetails.id')
 //         ->join('items', 'itemdetails.item_ID', '=', 'items.id')
+//         ->join('suborders', 'orderdetails.suborders_ID', '=', 'suborders.id')
+//         ->where('orderdetails.suborders_ID', $suborderId)
 //         ->select(
 //             'orderdetails.id as order_detail_id',
 //             'orderdetails.quantity',
@@ -1178,20 +1200,44 @@ public function getSubOrders($vendorId, $shopId, $branchId)
 //             'itemdetails.picture as item_picture',
 //             'items.id as item_id',
 //             'items.name as item_name',
-//             'items.description as item_description'
+//             'items.description as item_description',
+//             // Suborder info
+//             'suborders.status as suborder_status',
+//             'suborders.payment_status',
+//             'suborders.total_amount',
+//             'suborders.estimated_delivery_time',
+//             'suborders.delivery_time',
+//             'suborders.deliveryboys_ID',
+//             'suborders.vendor_type',
+//             'suborders.vendor_order_id'
 //         )
-//         ->where('orderdetails.suborders_ID', $suborderId)
 //         ->get();
 
-//     // Check if no details were found
-//     if ($suborderDetails->isEmpty()) {
-//         return response()->json(['message' => 'No details found for this suborder'], 404);
+//     if ($orderDetails->isEmpty()) {
+//         return response()->json(['message' => 'No order details found for this suborder'], 404);
 //     }
+
+//     // Extract suborder info from the first row (same for all rows)
+//     $first = $orderDetails->first();
+
+//     $suborderInfo = [
+//         'suborder_id' => $suborderId,
+//         'status' => $first->suborder_status,
+//         'payment_status' => $first->payment_status,
+//         'total_amount' => $first->total_amount,
+//         'estimated_delivery_time' => $first->estimated_delivery_time,
+//         'delivery_time' => $first->delivery_time,
+//         'deliveryboy_id' => $first->deliveryboys_ID,
+//         'vendor_type' => $first->vendor_type,
+//         'vendor_order_id' => $first->vendor_order_id,
+//     ];
 
 //     // Format the response
 //     $response = [
-//         'suborder_id' => $suborderId,
-//         'order_details' => $suborderDetails->map(function ($detail) {
+//         'suborder_info' => $suborderInfo,
+//         'items' => $orderDetails->map(function ($detail) use ($menuCollection) {
+//             $menuItem = $menuCollection->firstWhere('itemdetail_id', (int)$detail->item_detail_id);
+
 //             return [
 //                 'order_detail_id' => $detail->order_detail_id,
 //                 'quantity' => $detail->quantity,
@@ -1199,28 +1245,48 @@ public function getSubOrders($vendorId, $shopId, $branchId)
 //                 'order_detail_total' => $detail->order_detail_total,
 //                 'item' => [
 //                     'item_id' => $detail->item_id,
-//                     'item_name' => $detail->item_name,
-//                     'item_description' => $detail->item_description,
+//                     'item_name' => $menuItem['item_name'] ?? $detail->item_name,
+//                     'item_description' => $menuItem['item_description'] ?? $detail->item_description,
 //                     'item_detail_id' => $detail->item_detail_id,
-//                     'variation_name' => $detail->variation_name,
-//                     'item_detail_price' => $detail->item_detail_price,
-//                     'additional_info' => $detail->additional_info,
-//                     'item_picture' => $detail->item_picture,
-//                 ],
+//                     'variation_name' => $menuItem['variation_name'] ?? $detail->variation_name,
+//                     'item_detail_price' => $menuItem['price'] ?? $detail->item_detail_price,
+//                     'additional_info' => $menuItem['additional_info'] ?? $detail->additional_info,
+//                     'item_picture' => $menuItem['itemPicture'] ?? $detail->item_picture,
+//                     'attributes' => $menuItem['attributes'] ?? [],
+//                     'timesensitive' => $menuItem['timesensitive'] ?? null,
+//                     'preparation_time' => $menuItem['preparation_time'] ?? null,
+//                     'item_category_id' => $menuItem['item_category_id'] ?? null,
+//                     'item_category_name' => $menuItem['item_category_name'] ?? null,
+//                     'error_message' => $menuItem ? null : "Item details not found in menu for itemdetail_id: " . $detail->item_detail_id,
+//                 ]
 //             ];
 //         }),
 //     ];
 
 //     return response()->json($response, 200);
 // }
-
-public function getOrderedItemInformation($suborderId)
+public function getOrderedItemInformation($vendorId, $shopId, $branchId, $suborderId)
 {
-    // Fetch suborder details with related item, variation, and attributes details
-    $suborderDetails = DB::table('orderdetails')
+    // Call the function from CustomerController to get menu
+    $customerController = new \App\Http\Controllers\CustomerController();
+    $menuResponse = $customerController->getVendorShopBranchMenu($vendorId, $shopId, $branchId);
+
+    // Convert the menu response to usable data
+    $menuData = $menuResponse instanceof \Illuminate\Http\JsonResponse
+        ? $menuResponse->getData(true)
+        : json_decode($menuResponse, true);
+
+    $menuCollection = collect($menuData);
+
+    // Get all item details with suborder info and verify vendor/shop/branch ownership
+    $orderDetails = DB::table('orderdetails')
         ->join('itemdetails', 'orderdetails.itemdetails_ID', '=', 'itemdetails.id')
         ->join('items', 'itemdetails.item_ID', '=', 'items.id')
-        ->leftJoin('itemattributes', 'itemdetails.id', '=', 'itemattributes.itemdetail_id') // Left join with itemattributes
+        ->join('suborders', 'orderdetails.suborders_ID', '=', 'suborders.id')
+        ->where('orderdetails.suborders_ID', $suborderId)
+        ->where('suborders.vendor_ID', $vendorId)
+        ->where('suborders.shop_ID', $shopId)
+        ->where('suborders.branch_ID', $branchId)
         ->select(
             'orderdetails.id as order_detail_id',
             'orderdetails.quantity',
@@ -1234,31 +1300,44 @@ public function getOrderedItemInformation($suborderId)
             'items.id as item_id',
             'items.name as item_name',
             'items.description as item_description',
-            'itemattributes.key as attribute_key', // Include attribute key
-            'itemattributes.value as attribute_value' // Include attribute value
+            // Suborder info
+            'suborders.status as suborder_status',
+            'suborders.payment_status',
+            'suborders.total_amount',
+            'suborders.estimated_delivery_time',
+            'suborders.delivery_time',
+            'suborders.deliveryboys_ID',
+            'suborders.vendor_type',
+            'suborders.vendor_order_id'
         )
-        ->where('orderdetails.suborders_ID', $suborderId)
         ->get();
 
-    // Check if no details were found
-    if ($suborderDetails->isEmpty()) {
-        return response()->json(['message' => 'No details found for this suborder'], 404);
+    // Handle if no matching data
+    if ($orderDetails->isEmpty()) {
+        return response()->json(['message' => 'Suborder not found or access denied.'], 404);
     }
 
-    // Filter items that have attributes (if any attribute is found)
-    $suborderDetails = $suborderDetails->filter(function ($detail) {
-        return !is_null($detail->attribute_key); // Only include items that have attributes
-    });
+    // Extract suborder info
+    $first = $orderDetails->first();
 
-    // Check if no items with attributes were found
-    if ($suborderDetails->isEmpty()) {
-        return response()->json(['message' => 'No items with attributes found for this suborder'], 404);
-    }
-
-    // Format the response
-    $response = [
+    $suborderInfo = [
         'suborder_id' => $suborderId,
-        'order_details' => $suborderDetails->map(function ($detail) {
+        'status' => $first->suborder_status,
+        'payment_status' => $first->payment_status,
+        'total_amount' => $first->total_amount,
+        'estimated_delivery_time' => $first->estimated_delivery_time,
+        'delivery_time' => $first->delivery_time,
+        'deliveryboy_id' => $first->deliveryboys_ID,
+        'vendor_type' => $first->vendor_type,
+        'vendor_order_id' => $first->vendor_order_id,
+    ];
+
+    // Format response
+    $response = [
+        'suborder_info' => $suborderInfo,
+        'order_detail_info' => $orderDetails->map(function ($detail) use ($menuCollection) {
+            $menuItem = $menuCollection->firstWhere('itemdetail_id', (int)$detail->item_detail_id);
+
             return [
                 'order_detail_id' => $detail->order_detail_id,
                 'quantity' => $detail->quantity,
@@ -1266,25 +1345,26 @@ public function getOrderedItemInformation($suborderId)
                 'order_detail_total' => $detail->order_detail_total,
                 'item' => [
                     'item_id' => $detail->item_id,
-                    'item_name' => $detail->item_name,
-                    'item_description' => $detail->item_description,
+                    'item_name' => $menuItem['item_name'] ?? $detail->item_name,
+                    'item_description' => $menuItem['item_description'] ?? $detail->item_description,
                     'item_detail_id' => $detail->item_detail_id,
-                    'variation_name' => $detail->variation_name,
-                    'item_detail_price' => $detail->item_detail_price,
-                    'additional_info' => $detail->additional_info,
-                    'item_picture' => $detail->item_picture,
-                    'attributes' => [
-                        'key' => $detail->attribute_key,
-                        'value' => $detail->attribute_value,
-                    ],
-                ],
+                    'variation_name' => $menuItem['variation_name'] ?? $detail->variation_name,
+                    'item_detail_price' => $menuItem['price'] ?? $detail->item_detail_price,
+                    'additional_info' => $menuItem['additional_info'] ?? $detail->additional_info,
+                    'item_picture' => $menuItem['itemPicture'] ?? $detail->item_picture,
+                    'attributes' => $menuItem['attributes'] ?? [],
+                    'timesensitive' => $menuItem['timesensitive'] ?? null,
+                    'preparation_time' => $menuItem['preparation_time'] ?? null,
+                    'item_category_id' => $menuItem['item_category_id'] ?? null,
+                    'item_category_name' => $menuItem['item_category_name'] ?? null,
+                    'error_message' => $menuItem ? null : "Item details not found in menu for itemdetail_id: " . $detail->item_detail_id,
+                ]
             ];
         }),
     ];
 
     return response()->json($response, 200);
 }
-
 
 
 

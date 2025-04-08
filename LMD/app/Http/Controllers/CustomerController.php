@@ -1692,6 +1692,51 @@ public function cancelOrder($orderId)
 }
 
 
+
+
+
+public function getDeliveryRouteInfo($suborderId)
+{
+    $suborder = \DB::table('suborders')
+        ->join('orders', 'suborders.orders_ID', '=', 'orders.id')
+        ->join('addresses', 'orders.addresses_ID', '=', 'addresses.id')
+        ->join('branches', 'suborders.branch_ID', '=', 'branches.id')
+        ->where('suborders.id', $suborderId)
+        ->select(
+            'branches.latitude as branch_latitude',
+            'branches.longitude as branch_longitude',
+            'addresses.latitude as address_latitude',
+            'addresses.longitude as address_longitude',
+            'orders.order_date',
+            'suborders.estimated_delivery_time',
+            'suborders.delivery_time'
+        )
+        ->first();
+
+    if (!$suborder) {
+        return response()->json(['error' => 'Suborder not found.'], 404);
+    }
+
+    return response()->json([
+        'message' => 'Delivery route information retrieved successfully.',
+        'data' => [
+            'pickup_location' => [
+                'latitude' => $suborder->branch_latitude,
+                'longitude' => $suborder->branch_longitude,
+            ],
+            'drop_location' => [
+                'latitude' => $suborder->address_latitude,
+                'longitude' => $suborder->address_longitude,
+            ],
+            'order_date' => $suborder->order_date,
+            'estimated_delivery_time' => $suborder->estimated_delivery_time,
+            'delivery_time' => $suborder->delivery_time,
+        ],
+    ]);
+}
+
+
+
 public function getLiveTracking($suborderId)
 {
     // Retrieve the latest location tracking entry for the given suborder ID
