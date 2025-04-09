@@ -1382,6 +1382,7 @@ public function markInProgress($suborderId)
     return response()->json(['message' => 'Order marked as in progress.']);
 }
 
+
 public function markReady($suborderId)
 {
     $suborder = Suborder::findOrFail($suborderId);
