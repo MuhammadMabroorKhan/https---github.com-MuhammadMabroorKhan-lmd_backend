@@ -242,6 +242,7 @@ Route::post('/organization/signup', [OrganizationController::class, 'signup']);
 Route::post('/organization/connect-vendor', [OrganizationController::class, 'connectVendorToOrganization']);
 
 Route::get('/organizations/{id}', [OrganizationController::class, 'getOrganizationData']);
+Route::get('/organizations/{organization_id}/deliveryboys', [OrganizationController::class, 'getDeliveryBoysByOrganization']);
 
 
 
