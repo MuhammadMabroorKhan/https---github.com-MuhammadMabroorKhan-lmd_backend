@@ -25,19 +25,20 @@ class DeliveryBoyController extends Controller {
 
     public function signup(Request $request)
     {
+        \Log::info('Request data:', $request->all());
         try {
             // Validate the request data
             $validated = $request->validate([
                 'name' => 'required|string|max:100',
                 'email' => 'required|email|unique:lmd_users,email',
                 'phone_no' => 'required|string|max:15|unique:lmd_users,phone_no',
-                'password' => 'required|string|min:6', 
+                'password' => 'required|string|min:1', 
                 'cnic' => 'required|string|max:15|unique:lmd_users,cnic',
-                'profile_picture' => 'required|file|mimes:jpeg,png,jpg|max:2048',
+                'profile_picture' => 'required|file|mimes:jpeg,png,jpg|',
                 'license_no' => 'required|string|max:20|unique:deliveryboys,license_no',
                 'license_expiration_date' => 'nullable|date',
-                'license_front' => 'required|file|mimes:jpeg,png,jpg|max:2048',
-                'license_back' => 'required|file|mimes:jpeg,png,jpg|max:2048',
+                'license_front' => 'required|file|mimes:jpeg,png,jpg|',
+                'license_back' => 'required|file|mimes:jpeg,png,jpg|',
                 'address_type' => 'required|string|max:50',
                 'street' => 'required|string|max:255',
                 'city' => 'required|string|max:100',
@@ -45,6 +46,7 @@ class DeliveryBoyController extends Controller {
                 'country' => 'nullable|string|max:100',
                 'latitude' => 'nullable|numeric',
                 'longitude' => 'nullable|numeric',
+                'organization_id' => 'nullable|integer'
             ]);
     
             DB::beginTransaction();
@@ -70,6 +72,7 @@ class DeliveryBoyController extends Controller {
                 'license_front' => $request->file('license_front')->store('deliveryboyImages', 'public'),
                 'license_back' => $request->file('license_back')->store('deliveryboyImages', 'public'),
                 'lmd_users_ID' => $userId,
+                'organization_id' => $validated['organization_id'],
             ]);
     
             $addressId = DB::table('addresses')->insertGetId([

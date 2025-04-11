@@ -1066,7 +1066,8 @@ public function getSubOrdersByVendor($vendorId)
             'addresses.longitude'
         )
         ->where('suborders.vendor_ID', $vendorId)
-        ->orderBy('orders.id')
+        // ->orderBy('orders.id')
+        ->orderByDesc('orders.order_date')
         ->get();
 
     if ($data->isEmpty()) {
@@ -1431,6 +1432,107 @@ public function confirmPaymentByVendor($suborderId)
 
 
 
+// use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Validator;
+
+public function updateSuborderStatus(Request $request, $suborderId)
+{
+    // Step 1: Validate input
+    $validator = Validator::make($request->all(), [
+        'role' => 'required|in:customer,vendor,deliveryboy',
+        'status' => 'required|string',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Validation failed.',
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    $role = $request->input('role');
+    $newStatus = $request->input('status');
+
+    // Step 2: Fetch suborder
+    $suborder = Suborder::find($suborderId);
+    if (!$suborder) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Suborder not found.',
+        ], 404);
+    }
+
+    $currentStatus = $suborder->status;
+
+    // Step 3: Define allowed transitions based on current status and role
+    $validTransitions = [
+        'pending' => [
+            'in_progress' => 'vendor',
+            'cancelled' => 'customer',
+        ],
+        'in_progress' => [
+            'ready' => 'vendor',
+        ],
+        'ready' => [
+            'assigned' => 'deliveryboy',
+        ],
+        'assigned' => [
+            'picked_up' => 'deliveryboy',
+        ],
+        'picked_up' => [
+            'handover_confirmed' => 'vendor',
+        ],
+        'handover_confirmed' => [
+            'in_transit' => 'system', // system-handled or automatic
+        ],
+        'in_transit' => [
+            'delivered' => 'deliveryboy',
+        ],
+    ];
+
+    // Step 4: Validate transition
+    if (!isset($validTransitions[$currentStatus]) || !isset($validTransitions[$currentStatus][$newStatus])) {
+        return response()->json([
+            'success' => false,
+            'message' => "Invalid status transition from '$currentStatus' to '$newStatus'.",
+        ], 400);
+    }
+
+    $allowedRole = $validTransitions[$currentStatus][$newStatus];
+    if ($allowedRole !== $role && $allowedRole !== 'system') {
+        return response()->json([
+            'success' => false,
+            'message' => "Unauthorized action. Only '$allowedRole' can change status from '$currentStatus' to '$newStatus'.",
+        ], 403);
+    }
+
+    // Step 5: Handle special auto transition from handover_confirmed → in_transit
+    if ($newStatus === 'handover_confirmed') {
+        $suborder->status = 'handover_confirmed';
+        $suborder->save();
+
+        // Automatically mark as in_transit
+        $suborder->status = 'in_transit';
+        $suborder->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => "Suborder marked as 'handover_confirmed' and moved to 'in_transit'.",
+            'data' => ['status' => 'in_transit']
+        ]);
+    }
+
+    // Step 6: Update status
+    $suborder->status = $newStatus;
+    $suborder->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => "Suborder status updated to '$newStatus'.",
+        'data' => ['status' => $newStatus]
+    ]);
+}
 
 
 

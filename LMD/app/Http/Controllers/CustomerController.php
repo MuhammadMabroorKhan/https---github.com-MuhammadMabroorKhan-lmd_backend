@@ -1131,7 +1131,8 @@ private function forwardOrderToVendorAPI($vendorId, $groupData, $suborderId)
         $vendorOrderId = $vendorResponse[$vendorOrderIdKey] ?? null;
 
         if ($vendorOrderId) {
-            DB::table('suborders')->where('id', $suborderId)->update(['vendor_order_id' => $vendorOrderId ,'status' => 'in_progress']);
+            // DB::table('suborders')->where('id', $suborderId)->update(['vendor_order_id' => $vendorOrderId ,'status' => 'in_progress']);
+            DB::table('suborders')->where('id', $suborderId)->update(['vendor_order_id' => $vendorOrderId]);
         }
 
         return response()->json([

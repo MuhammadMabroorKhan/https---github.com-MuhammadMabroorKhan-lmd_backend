@@ -241,3 +241,10 @@ Route::get('/vendor/{vendorId}/suborders', [VendorController::class, 'getSubOrde
 Route::post('/organization/signup', [OrganizationController::class, 'signup']);
 Route::post('/organization/connect-vendor', [OrganizationController::class, 'connectVendorToOrganization']);
 
+Route::get('/organizations/{id}', [OrganizationController::class, 'getOrganizationData']);
+
+
+
+
+
+Route::post('/suborders/{suborderId}/status', [VendorController::class, 'updateSuborderStatus']);

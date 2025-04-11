@@ -147,4 +147,37 @@ class OrganizationController extends Controller {
     }
     
     
+    public function getOrganizationData($id)
+    {
+        $baseUrl = url('/'); // Base URL like http://your-domain.com
+    
+        // Join organizations with lmd_users where lmd_user_role is 'organization'
+        $organizationData = DB::table('organizations')
+            ->join('lmd_users', 'organizations.lmd_users_ID', '=', 'lmd_users.id')
+            ->select(
+                'organizations.id as organization_id',  // organization table ID
+                'lmd_users.name',
+                'lmd_users.email',
+                'lmd_users.phone_no',
+                'lmd_users.cnic',
+                'lmd_users.password',                  // Only include if necessary
+                'lmd_users.lmd_user_role',
+                DB::raw("CASE 
+                            WHEN lmd_users.profile_picture IS NULL OR lmd_users.profile_picture = '' 
+                            THEN NULL 
+                            ELSE CONCAT('$baseUrl/storage/', lmd_users.profile_picture) 
+                        END as profile_picture")
+            )
+            ->where('lmd_users.id', $id)
+            ->where('lmd_users.lmd_user_role', 'organization')
+            ->first();
+    
+        if ($organizationData) {
+            return response()->json($organizationData, 200);
+        }
+    
+        return response()->json(['error' => 'Organization not found'], 404);
+    }
+    
+
 }
