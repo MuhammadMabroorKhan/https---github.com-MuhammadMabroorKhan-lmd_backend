@@ -245,6 +245,7 @@ Route::get('/organizations/{id}', [OrganizationController::class, 'getOrganizati
 Route::get('/organizations/{organization_id}/deliveryboys', [OrganizationController::class, 'getDeliveryBoysByOrganization']);
 
 
+Route::get('deliveryboy/{id}', [DeliveryBoyController::class, 'getDeliveryBoyData']);
 
 
 

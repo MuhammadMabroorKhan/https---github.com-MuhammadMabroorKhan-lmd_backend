@@ -108,7 +108,58 @@ class DeliveryBoyController extends Controller {
     
 
     
-
+    public function getDeliveryBoyData($id)
+    {
+        $baseUrl = url('/'); // e.g., http://yourdomain.com
+    
+        $deliveryBoy = DB::table('deliveryboys')
+            ->join('lmd_users', 'deliveryboys.lmd_users_ID', '=', 'lmd_users.id')
+            ->leftJoin('addresses', 'addresses.lmd_users_ID', '=', 'lmd_users.id')
+            ->where('lmd_users.id', $id)
+            ->where('lmd_users.lmd_user_role', 'deliveryboy')
+            ->select(
+                'deliveryboys.id as delivery_boy_id',
+                'lmd_users.name',
+                'lmd_users.email',
+                'lmd_users.phone_no',
+                'lmd_users.cnic',
+                'lmd_users.lmd_user_role',
+                DB::raw("CASE 
+                            WHEN lmd_users.profile_picture IS NULL OR lmd_users.profile_picture = '' 
+                            THEN NULL 
+                            ELSE CONCAT('$baseUrl/storage/', lmd_users.profile_picture) 
+                         END as profile_picture"),
+                'deliveryboys.license_no',
+                'deliveryboys.license_expiration_date',
+                DB::raw("CASE 
+                            WHEN deliveryboys.license_front IS NULL OR deliveryboys.license_front = '' 
+                            THEN NULL 
+                            ELSE CONCAT('$baseUrl/storage/', deliveryboys.license_front) 
+                         END as license_front"),
+                DB::raw("CASE 
+                            WHEN deliveryboys.license_back IS NULL OR deliveryboys.license_back = '' 
+                            THEN NULL 
+                            ELSE CONCAT('$baseUrl/storage/', deliveryboys.license_back) 
+                         END as license_back"),
+                'deliveryboys.status',
+                'deliveryboys.approval_status',
+                'addresses.address_type',
+                'addresses.street',
+                'addresses.city',
+                'addresses.zip_code',
+                'addresses.country',
+                'addresses.latitude',
+                'addresses.longitude'
+            )
+            ->first();
+    
+        if ($deliveryBoy) {
+            return response()->json($deliveryBoy, 200);
+        }
+    
+        return response()->json(['error' => 'Delivery boy not found'], 404);
+    }
+    
     
     public function updateDeliveryBoy(Request $request, $id)
     {
