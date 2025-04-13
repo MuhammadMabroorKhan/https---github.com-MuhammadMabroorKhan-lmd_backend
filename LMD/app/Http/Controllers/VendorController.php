@@ -1538,6 +1538,67 @@ public function updateSuborderStatus(Request $request, $suborderId)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public function getAvailableOrganizationsForVendor($vendorId)
+{
+    $baseUrl = url('/');
+
+    // Subquery: get all organization IDs that this vendor has already sent requests to
+    $alreadyRequestedOrgIds = DB::table('vendororganization')
+        ->where('vendor_ID', $vendorId)
+        ->pluck('organization_ID');
+
+    // Main query: get organizations that are NOT already requested or connected
+    $organizations = DB::table('organizations')
+        ->join('lmd_users', 'organizations.lmd_users_ID', '=', 'lmd_users.id')
+        ->where('lmd_users.lmd_user_role', 'organization')
+        ->whereNotIn('organizations.id', $alreadyRequestedOrgIds)
+        ->select(
+            'organizations.id as organization_id',
+            'lmd_users.name',
+            'lmd_users.email',
+            'lmd_users.phone_no',
+            'lmd_users.cnic',
+            'lmd_users.lmd_user_role',
+            DB::raw("CASE 
+                        WHEN lmd_users.profile_picture IS NULL OR lmd_users.profile_picture = '' 
+                        THEN NULL 
+                        ELSE CONCAT('$baseUrl/storage/', lmd_users.profile_picture) 
+                    END as profile_picture")
+        )
+        ->get();
+
+    return response()->json(['available_organizations' => $organizations], 200);
+}
+
+
 }
 
 

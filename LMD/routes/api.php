@@ -235,18 +235,22 @@ Route::post('/admin/addcourieritem', [AdminController::class, 'addCourierItem'])
 
 
 
-Route::get('/vendor/{vendorId}/suborders', [VendorController::class, 'getSubOrdersByVendor']);
+
 
 
 Route::post('/organization/signup', [OrganizationController::class, 'signup']);
 Route::post('/organization/connect-vendor', [OrganizationController::class, 'connectVendorToOrganization']);
-
 Route::get('/organizations/{id}', [OrganizationController::class, 'getOrganizationData']);
 Route::get('/organizations/{organization_id}/deliveryboys', [OrganizationController::class, 'getDeliveryBoysByOrganization']);
-
+Route::get('/pending-vendor-requests/{organizationId}', [OrganizationController::class, 'getPendingVendorRequests']);
+Route::post('/accept-vendor-request/{requestId}', [OrganizationController::class, 'acceptVendorRequest']);
+Route::post('/reject-vendor-request/{requestId}', [OrganizationController::class, 'rejectVendorRequest']);
+Route::get('/rejection-reasons/{organizationId}', [OrganizationController::class, 'getRejectionReasons']);
+Route::post('/correct-rejection-reason/{reasonId}', [OrganizationController::class, 'correctRejectionReason']);
 
 Route::get('deliveryboy/{id}', [DeliveryBoyController::class, 'getDeliveryBoyData']);
 
-
-
+Route::get('/vendor/{vendorId}/suborders', [VendorController::class, 'getSubOrdersByVendor']);
 Route::post('/suborders/{suborderId}/status', [VendorController::class, 'updateSuborderStatus']);
+Route::get('/vendor/{vendorId}/available-organizations', [VendorController::class, 'getAvailableOrganizationsForVendor']);
+

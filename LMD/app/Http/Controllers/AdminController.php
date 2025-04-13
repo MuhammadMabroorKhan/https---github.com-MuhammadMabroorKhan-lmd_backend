@@ -764,20 +764,6 @@ public function getRejectionReasonsForVendor($vendorId) {
     }
 
     
-
-
-
-//  public function getPendingBranches() {
-//     $branches = DB::table('branches')
-//         ->join('shops', 'branches.shops_id', '=', 'shops.id')
-//         ->join('area', 'branches.area_id', '=', 'area.id')
-//         ->join('city', 'area.city_id', '=', 'city.id')
-//         ->where('branches.approval_status', 'pending')
-//         ->select('branches.*', 'shops.name as shop_name', 'area.name as area_name', 'city.name as city_name')
-//         ->get();
-
-//     return response()->json(['pending_branches' => $branches], 200);
-// }
 public function getPendingBranches() {
     $baseUrl = url('/'); // Base URL for images
 
@@ -813,29 +799,6 @@ public function getPendingBranches() {
     return response()->json(['pending_branches' => $branches], 200);
 }
 
-// public function getRejectionReasons(Request $request, $branch_Id) {
-//     try {
-//         // Ensure branch_id is provided in the route (no need to check request for branch_id)
-//         if (!$branch_Id) {
-//             return response()->json(['message' => 'Branch ID is required.'], 400);
-//         }
-
-//         // Fetch rejection reasons for the given branch ID
-//         $reasons = DB::table('branchesrejectionreasons')
-//             ->where('branches_ID', $branch_Id) // Use $branch_Id from route parameter
-//             ->select('id', 'reason', 'status')
-//             ->get();
-
-//         // If no rejection reasons are found
-//         if ($reasons->isEmpty()) {
-//             return response()->json(['message' => 'No rejection reasons found for this branch.'], 404);
-//         }
-
-//         return response()->json(['rejection_reasons' => $reasons], 200);
-//     } catch (\Exception $e) {
-//         return response()->json(['message' => 'Failed to fetch rejection reasons.', 'error' => $e->getMessage()], 500);
-//     }
-// }
 // Get Branch Rejection Reasons
 public function getRejectionReasons($branchId) {
     $branch = DB::table('branches')->where('id', $branchId)->first();
