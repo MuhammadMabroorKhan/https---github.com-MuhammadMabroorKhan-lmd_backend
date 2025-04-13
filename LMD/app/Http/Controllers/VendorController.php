@@ -1596,20 +1596,51 @@ public function connectVendorToOrganization(Request $request) {
     }
 }
 
+// public function getAvailableOrganizationsForVendor($vendorId)
+// {
+//     $baseUrl = url('/');
+
+//     // Subquery: get all organization IDs that this vendor has already sent requests to
+//     $alreadyRequestedOrgIds = DB::table('vendororganization')
+//         ->where('vendor_ID', $vendorId)
+//         ->pluck('organization_ID');
+
+//     // Main query: get organizations that are NOT already requested or connected
+//     $organizations = DB::table('organizations')
+//         ->join('lmd_users', 'organizations.lmd_users_ID', '=', 'lmd_users.id')
+//         ->where('lmd_users.lmd_user_role', 'organization')
+//         ->whereNotIn('organizations.id', $alreadyRequestedOrgIds)
+//         ->select(
+//             'organizations.id as organization_id',
+//             'lmd_users.name',
+//             'lmd_users.email',
+//             'lmd_users.phone_no',
+//             'lmd_users.cnic',
+//             'lmd_users.lmd_user_role',
+//             DB::raw("CASE 
+//                         WHEN lmd_users.profile_picture IS NULL OR lmd_users.profile_picture = '' 
+//                         THEN NULL 
+//                         ELSE CONCAT('$baseUrl/storage/', lmd_users.profile_picture) 
+//                     END as profile_picture")
+//         )
+//         ->get();
+
+//     return response()->json(['available_organizations' => $organizations], 200);
+// }
 public function getAvailableOrganizationsForVendor($vendorId)
 {
     $baseUrl = url('/');
 
-    // Subquery: get all organization IDs that this vendor has already sent requests to
-    $alreadyRequestedOrgIds = DB::table('vendororganization')
+    // Get all organization IDs that this vendor has already sent requests to
+    $requestedOrConnectedOrgIds = DB::table('vendororganization')
         ->where('vendor_ID', $vendorId)
         ->pluck('organization_ID');
 
-    // Main query: get organizations that are NOT already requested or connected
-    $organizations = DB::table('organizations')
+    // Organizations NOT yet requested (available to send request)
+    $availableOrganizations = DB::table('organizations')
         ->join('lmd_users', 'organizations.lmd_users_ID', '=', 'lmd_users.id')
         ->where('lmd_users.lmd_user_role', 'organization')
-        ->whereNotIn('organizations.id', $alreadyRequestedOrgIds)
+        ->whereNotIn('organizations.id', $requestedOrConnectedOrgIds)
         ->select(
             'organizations.id as organization_id',
             'lmd_users.name',
@@ -1625,7 +1656,31 @@ public function getAvailableOrganizationsForVendor($vendorId)
         )
         ->get();
 
-    return response()->json(['available_organizations' => $organizations], 200);
+    // Organizations already requested or connected
+    $requestedOrConnectedOrganizations = DB::table('organizations')
+        ->join('lmd_users', 'organizations.lmd_users_ID', '=', 'lmd_users.id')
+        ->join('vendororganization', 'organizations.id', '=', 'vendororganization.organization_ID')
+        ->where('vendororganization.vendor_ID', $vendorId)
+        ->select(
+            'organizations.id as organization_id',
+            'lmd_users.name',
+            'lmd_users.email',
+            'lmd_users.phone_no',
+            'lmd_users.cnic',
+            'lmd_users.lmd_user_role',
+            'vendororganization.approval_status',
+            DB::raw("CASE 
+                        WHEN lmd_users.profile_picture IS NULL OR lmd_users.profile_picture = '' 
+                        THEN NULL 
+                        ELSE CONCAT('$baseUrl/storage/', lmd_users.profile_picture) 
+                    END as profile_picture")
+        )
+        ->get();
+
+    return response()->json([
+        'available_organizations' => $availableOrganizations,
+        'requested_or_connected_organizations' => $requestedOrConnectedOrganizations
+    ], 200);
 }
 
 
