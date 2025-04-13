@@ -1564,7 +1564,37 @@ public function updateSuborderStatus(Request $request, $suborderId)
 
 
 
+public function connectVendorToOrganization(Request $request) {
+    $validator = Validator::make($request->all(), [
+        'vendor_ID' => 'required|exists:vendors,id',
+        'organization_ID' => 'required|exists:organizations,id',
+    ]);
 
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+    try {
+        // Insert with status always set to 'active'
+        DB::table('vendororganization')->insert([
+            'vendor_ID' => $request->vendor_ID,
+            'organization_ID' => $request->organization_ID,
+            'status' => 'active',  // Always active
+        ]);
+
+        return response()->json([
+            'message' => 'Vendor connected to organization successfully',
+        ], 201);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Failed to connect vendor to organization',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
 
 public function getAvailableOrganizationsForVendor($vendorId)
 {

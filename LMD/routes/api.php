@@ -239,9 +239,10 @@ Route::post('/admin/addcourieritem', [AdminController::class, 'addCourierItem'])
 
 
 Route::post('/organization/signup', [OrganizationController::class, 'signup']);
-Route::post('/organization/connect-vendor', [OrganizationController::class, 'connectVendorToOrganization']);
 Route::get('/organizations/{id}', [OrganizationController::class, 'getOrganizationData']);
 Route::get('/organizations/{organization_id}/deliveryboys', [OrganizationController::class, 'getDeliveryBoysByOrganization']);
+
+Route::post('/organization/connect-vendor', [VendorController::class, 'connectVendorToOrganization']);
 Route::get('/pending-vendor-requests/{organizationId}', [OrganizationController::class, 'getPendingVendorRequests']);
 Route::post('/accept-vendor-request/{requestId}', [OrganizationController::class, 'acceptVendorRequest']);
 Route::post('/reject-vendor-request/{requestId}', [OrganizationController::class, 'rejectVendorRequest']);
