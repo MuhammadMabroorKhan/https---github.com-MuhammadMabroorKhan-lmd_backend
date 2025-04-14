@@ -92,7 +92,9 @@ Route::post('/courier-order/{courierOrderId}/mark-picked/{deliveryBoyId}', [Deli
 Route::post('/courier-order/{courierOrderId}/mark-delivered/{deliveryBoyId}', [DeliveryBoyController::class, 'markOrderAsDelivered']);
 Route::post('/deliveryboy/update-live-tracking', [DeliveryBoyController::class, 'updateLiveTracking']);
 //Order
-Route::get('/deliveryboy/ready-suborders', [DeliveryBoyController::class, 'getReadySubordersForDeliveryBoy']);
+// Route::get('/deliveryboy/ready-suborders', [DeliveryBoyController::class, 'getReadySubordersForDeliveryBoy']);
+Route::get('/deliveryboy/ready-suborders/{id}', [DeliveryBoyController::class, 'getReadySubordersForDeliveryBoy']);
+
 //Route::post('/suborders/update-status', [DeliveryBoyController::class, 'updateSuborderStatus']);
 Route::post('/deliveryboy/{deliveryBoyId}/accept-order/{suborderId}', [DeliveryBoyController::class, 'acceptOrder']);
 Route::patch('/deliveryboy/order/{suborderId}/pickup', [DeliveryBoyController::class, 'confirmPickup']);

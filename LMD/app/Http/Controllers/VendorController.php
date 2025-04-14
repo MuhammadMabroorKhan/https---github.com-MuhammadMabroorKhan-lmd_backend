@@ -1268,6 +1268,9 @@ public function getSubOrders($vendorId, $shopId, $branchId)
 // }
 public function getOrderedItemInformation($vendorId, $shopId, $branchId, $suborderId)
 {
+
+    $baseUrl = url('/');
+
     // Call the function from CustomerController to get menu
     $customerController = new \App\Http\Controllers\CustomerController();
     $menuResponse = $customerController->getVendorShopBranchMenu($vendorId, $shopId, $branchId);
@@ -1297,7 +1300,21 @@ public function getOrderedItemInformation($vendorId, $shopId, $branchId, $subord
             'itemdetails.variation_name',
             'itemdetails.price as item_detail_price',
             'itemdetails.additional_info',
-            'itemdetails.picture as item_picture',
+            // 'itemdetails.picture as item_picture',
+
+
+
+
+
+
+
+            DB::raw("CASE 
+            WHEN itemdetails.picture IS NULL OR itemdetails.picture = '' 
+            THEN NULL 
+            ELSE CONCAT('$baseUrl/storage/', itemdetails.picture) 
+        END as item_picture"),
+
+
             'items.id as item_id',
             'items.name as item_name',
             'items.description as item_description',

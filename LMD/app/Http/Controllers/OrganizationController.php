@@ -162,35 +162,82 @@ class OrganizationController extends Controller {
     
 
    
-    
     public function getPendingVendorRequests($organizationId)
-{
-    $pending = DB::table('vendororganization')
-        ->join('vendors', 'vendororganization.vendor_ID', '=', 'vendors.id')
-        ->join('organizations', 'vendororganization.organization_ID', '=', 'organizations.id')
-        ->join('lmd_users as vendor_user', 'vendors.lmd_users_ID', '=', 'vendor_user.id')
-        ->join('lmd_users as org_user', 'organizations.lmd_users_ID', '=', 'org_user.id')
-        ->where('vendororganization.approval_status', 'pending')
-        ->where('vendororganization.organization_ID', $organizationId)
-        ->select(
-            'vendororganization.id as request_id',
-            'vendororganization.approval_status',
-            'vendororganization.status',
+    {
+        $baseUrl = url('/');
+    
+        $baseQuery = DB::table('vendororganization')
+            ->join('vendors', 'vendororganization.vendor_ID', '=', 'vendors.id')
+            ->join('organizations', 'vendororganization.organization_ID', '=', 'organizations.id')
+            ->join('lmd_users as vendor_user', 'vendors.lmd_users_ID', '=', 'vendor_user.id')
+            ->join('lmd_users as org_user', 'organizations.lmd_users_ID', '=', 'org_user.id')
+            ->where('vendororganization.organization_ID', $organizationId)
+            ->select(
+                'vendororganization.id as request_id',
+                'vendororganization.approval_status',
+                'vendororganization.status',
+    
+                'vendors.id as vendor_id',
+                'vendor_user.name as vendor_name',
+                'vendor_user.email as vendor_email',
+                'vendor_user.phone_no as vendor_phone',
+                DB::raw("CASE 
+                            WHEN vendor_user.profile_picture IS NULL OR vendor_user.profile_picture = '' 
+                            THEN NULL 
+                            ELSE CONCAT('$baseUrl/storage/', vendor_user.profile_picture) 
+                        END as vendor_profile_picture"),
+    
+                'organizations.id as organization_id',
+                'org_user.name as org_user_name',
+                'org_user.email as org_user_email'
+            );
+    
+        // Separate queries for each status
+        $pending = (clone $baseQuery)->where('vendororganization.approval_status', 'pending')->get();
+        $approved = (clone $baseQuery)->where('vendororganization.approval_status', 'approved')->get();
+        $rejected = (clone $baseQuery)->where('vendororganization.approval_status', 'rejected')->get();
+    
+        return response()->json([
+            'pending_requests' => $pending,
+            'approved_requests' => $approved,
+            'rejected_requests' => $rejected,
+        ], 200);
+    }
+    
+// public function getPendingVendorRequests($organizationId)
+// {
+//     $baseQuery = DB::table('vendororganization')
+//         ->join('vendors', 'vendororganization.vendor_ID', '=', 'vendors.id')
+//         ->join('organizations', 'vendororganization.organization_ID', '=', 'organizations.id')
+//         ->join('lmd_users as vendor_user', 'vendors.lmd_users_ID', '=', 'vendor_user.id')
+//         ->join('lmd_users as org_user', 'organizations.lmd_users_ID', '=', 'org_user.id')
+//         ->where('vendororganization.organization_ID', $organizationId)
+//         ->select(
+//             'vendororganization.id as request_id',
+//             'vendororganization.approval_status',
+//             'vendororganization.status',
 
-            'vendors.id as vendor_id',
-            'vendor_user.name as vendor_name',
-            'vendor_user.email as vendor_email',
-            'vendor_user.phone_no as vendor_phone', // ✅ fixed phone_no
+//             'vendors.id as vendor_id',
+//             'vendor_user.name as vendor_name',
+//             'vendor_user.email as vendor_email',
+//             'vendor_user.phone_no as vendor_phone',
 
-            'organizations.id as organization_id',
-            // ❌ removed: 'organizations.name as organization_name',
-            'org_user.name as org_user_name',
-            'org_user.email as org_user_email'
-        )
-        ->get();
+//             'organizations.id as organization_id',
+//             'org_user.name as org_user_name',
+//             'org_user.email as org_user_email'
+//         );
 
-    return response()->json(['pending_requests' => $pending], 200);
-}
+//     // Separate queries for each status
+//     $pending = (clone $baseQuery)->where('vendororganization.approval_status', 'pending')->get();
+//     $approved = (clone $baseQuery)->where('vendororganization.approval_status', 'approved')->get();
+//     $rejected = (clone $baseQuery)->where('vendororganization.approval_status', 'rejected')->get();
+
+//     return response()->json([
+//         'pending_requests' => $pending,
+//         'approved_requests' => $approved,
+//         'rejected_requests' => $rejected,
+//     ], 200);
+// }
 
     
 
