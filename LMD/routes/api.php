@@ -103,6 +103,8 @@ Route::get('/deliveryboy/{id}/assigned-suborders', [DeliveryBoyController::class
 Route::patch('/deliveryboy/order/{suborderId}/pickup', [DeliveryBoyController::class, 'confirmPickup']);
 Route::put('/deliveryboy/order/{suborderId}/location', [DeliveryBoyController::class, 'updateLocation']);
 Route::post('/deliveryboy/reach-destination/{deliveryBoyId}/{suborderId}', [DeliveryBoyController::class, 'reachDestination']);
+Route::get('/suborder/{suborderId}/latest-location', [DeliveryBoyController::class, 'getLatestLocationBySuborderId']);
+
 Route::post('/deliveryboy/confirm-payment/{suborderId}', [DeliveryBoyController::class, 'confirmPaymentByDeliveryBoy']);
 
 

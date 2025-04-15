@@ -1176,6 +1176,26 @@ public function reachDestination(Request $request, $deliveryBoyId, $suborderId)
 
 
 
+public function getLatestLocationBySuborderId($suborderId)
+{
+    $latestLocation = LocationTracking::where('suborders_ID', $suborderId)
+        ->orderByDesc('time_stamp')
+        ->first();
+
+    if (!$latestLocation) {
+        return response()->json(['error' => 'No location found for this suborder.'], 404);
+    }
+
+    return response()->json([
+        'latitude' => $latestLocation->latitude,
+        'longitude' => $latestLocation->longitude,
+        'status' => $latestLocation->status,
+        'time_stamp' => $latestLocation->time_stamp,
+    ]);
+}
+
+
+
 
 public function confirmPaymentByDeliveryBoy($suborderId)
 {
