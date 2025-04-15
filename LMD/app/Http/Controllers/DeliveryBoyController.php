@@ -766,115 +766,6 @@ public function updateLiveTracking(Request $request)
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////   Order   ////////////////////////////////////
 
-// public function getReadySubordersForDeliveryBoy($id)
-// {
-//     $baseUrl = url('/');
-
-//     $deliveryBoyUserId = $id;
-
-//     // Get delivery boy's organization ID
-//     $deliveryBoy = DB::table('deliveryboys')
-//         ->where('lmd_users_ID', $deliveryBoyUserId)
-//         ->first();
-
-//     if (!$deliveryBoy || !$deliveryBoy->organization_id) {
-//         return response()->json([
-//             'status' => 'error',
-//             'message' => 'Delivery boy is not associated with any organization.',
-//         ], 400);
-//     }
-
-//     $organizationId = $deliveryBoy->organization_id;
-
-//     $suborders = DB::table('suborders')
-//         ->join('branches', 'suborders.branch_ID', '=', 'branches.id')
-//         ->join('shops', 'branches.shops_ID', '=', 'shops.id')
-//         ->join('vendors', 'shops.vendors_ID', '=', 'vendors.id')
-//         ->join('vendororganization', function ($join) use ($organizationId) {
-//             $join->on('vendororganization.vendor_ID', '=', 'vendors.id')
-//                 ->where('vendororganization.organization_ID', '=', $organizationId)
-//                 ->where('vendororganization.approval_status', '=', 'approved');
-//         })
-//         ->join('area', 'branches.area_ID', '=', 'area.id')
-//         ->join('city', 'area.city_ID', '=', 'city.id')
-//         ->join('orders', 'suborders.orders_ID', '=', 'orders.id')
-//         ->join('customers', 'orders.customers_ID', '=', 'customers.lmd_users_ID')
-//         ->join('lmd_users', 'customers.lmd_users_ID', '=', 'lmd_users.id')
-//         ->join('addresses', 'orders.addresses_ID', '=', 'addresses.id')
-//         ->where('suborders.status', 'ready')
-//         ->select(
-//             'suborders.id as suborder_id',
-//             'suborders.status as suborder_status',
-//             'suborders.total_amount as suborder_total_amount',
-
-//             'shops.name as shop_name',
-//             'branches.description as branch_name',
-//             DB::raw("CASE 
-//                         WHEN branches.branch_picture IS NULL OR branches.branch_picture = '' 
-//                         THEN NULL 
-//                         ELSE CONCAT('$baseUrl/storage/', branches.branch_picture) 
-//                     END as branch_picture"),
-
-//             'branches.latitude as pickup_latitude',
-//             'branches.longitude as pickup_longitude',
-//             'area.name as pickup_area',
-//             'city.name as pickup_city',
-
-//             'lmd_users.name as customer_name',
-//             'lmd_users.phone_no as customer_phone',
-//             // 'lmd_users.profile_picture as customer_picture',
-//             DB::raw("CASE 
-//             WHEN lmd_users.profile_picture IS NULL OR lmd_users.profile_picture = '' 
-//             THEN NULL 
-//             ELSE CONCAT('$baseUrl/storage/', lmd_users.profile_picture) 
-//         END as customer_picture"),
-
-//             'addresses.street as delivery_area',
-//             'addresses.city as delivery_city',
-//             'addresses.latitude as delivery_latitude',
-//             'addresses.longitude as delivery_longitude'
-//         )
-//         ->get()
-//         ->map(function ($item) {
-//             return [
-//                 'suborder_id' => $item->suborder_id,
-//                 'status' => $item->suborder_status,
-//                 'total_amount' => $item->suborder_total_amount,
-
-//                 'shop' => [
-//                     'name' => $item->shop_name,
-//                     'branch' => [
-//                         'name' => $item->branch_name,
-//                         'picture' => $item->branch_picture,
-//                         'pickup_location' => [
-//                             'latitude' => $item->pickup_latitude,
-//                             'longitude' => $item->pickup_longitude,
-//                             'area' => $item->pickup_area,
-//                             'city' => $item->pickup_city,
-//                         ]
-//                     ]
-//                 ],
-
-//                 'customer' => [
-//                     'name' => $item->customer_name,
-//                     'phone' => $item->customer_phone,
-//                     'customer_picture' => $item->customer_picture,
-//                     'delivery_address' => [
-//                         'street' => $item->delivery_area,
-//                         'city' => $item->delivery_city,
-//                         'latitude' => $item->delivery_latitude,
-//                         'longitude' => $item->delivery_longitude,
-//                     ]
-//                 ]
-//             ];
-//         });
-
-//     return response()->json([
-//         'status' => 'success',
-//         'data' => $suborders,
-//     ], 200);
-// }
-
 
 //This id is lmdusertable id....
 public function getReadySubordersForDeliveryBoy($id)
@@ -1012,16 +903,40 @@ public function getReadySubordersForDeliveryBoy($id)
 
 
 
-public function acceptOrder($deliveryBoyId, $suborderId)
-{
-    $suborder = Suborder::findOrFail($suborderId);
+// public function acceptOrder($deliveryBoyId, $suborderId)
+// {
+//     $suborder = Suborder::findOrFail($suborderId);
 
     
+//     if ($suborder->status !== 'ready') {
+//         return response()->json(['error' => 'Order cannot be accepted in the current state.'], 400);
+//     }
+
+//     $deliveryBoy = DeliveryBoy::findOrFail($deliveryBoyId);
+
+//     $suborder->status = 'assigned';
+//     $suborder->deliveryboys_ID = $deliveryBoyId;
+//     $suborder->save();
+
+//     return response()->json(['message' => 'Order accepted successfully.']);
+// }
+public function acceptOrder($deliveryBoyId, $suborderId)
+{
+    try {
+        $suborder = Suborder::findOrFail($suborderId);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json(['error' => 'Suborder not found.'], 404);
+    }
+
     if ($suborder->status !== 'ready') {
         return response()->json(['error' => 'Order cannot be accepted in the current state.'], 400);
     }
 
-    $deliveryBoy = DeliveryBoy::findOrFail($deliveryBoyId);
+    try {
+        $deliveryBoy = DeliveryBoy::findOrFail($deliveryBoyId);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json(['error' => 'Delivery boy not found.'], 404);
+    }
 
     $suborder->status = 'assigned';
     $suborder->deliveryboys_ID = $deliveryBoyId;
@@ -1032,6 +947,133 @@ public function acceptOrder($deliveryBoyId, $suborderId)
 
 
 
+public function getAssignedSubordersForDeliveryBoy($id)
+{
+    $baseUrl = url('/');
+
+    $deliveryBoyUserId = $id;
+
+    // Get delivery boy's internal ID
+    $deliveryBoy = DB::table('deliveryboys')
+        ->where('lmd_users_ID', $deliveryBoyUserId)
+        ->first();
+
+    if (!$deliveryBoy) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Delivery boy not found.',
+        ], 400);
+    }
+
+    $deliveryBoyId = $deliveryBoy->id;
+
+    $suborders = DB::table('suborders')
+        ->join('branches', 'suborders.branch_ID', '=', 'branches.id')
+        ->join('shops', 'branches.shops_ID', '=', 'shops.id')
+        ->join('vendors', 'shops.vendors_ID', '=', 'vendors.id')
+        ->join('area', 'branches.area_ID', '=', 'area.id')
+        ->join('city', 'area.city_ID', '=', 'city.id')
+        ->join('orders', 'suborders.orders_ID', '=', 'orders.id')
+        ->join('customers', 'orders.customers_ID', '=', 'customers.lmd_users_ID')
+        ->join('lmd_users', 'customers.lmd_users_ID', '=', 'lmd_users.id')
+        ->join('addresses', 'orders.addresses_ID', '=', 'addresses.id')
+        ->where('suborders.deliveryboys_ID', $deliveryBoyId)
+        ->select(
+            'suborders.id as suborder_id',
+            'suborders.vendor_type',
+            'suborders.vendor_order_id',
+            'suborders.status as suborder_status',
+            'suborders.payment_status as suborder_payment_status',
+            'suborders.total_amount',
+            'suborders.estimated_delivery_time',
+            'suborders.delivery_time',
+            'suborders.deliveryboys_ID',
+            'suborders.orders_ID',
+            'suborders.vendor_ID',
+            'suborders.shop_ID',
+            'suborders.branch_ID',
+
+            'orders.order_date',
+            'orders.addresses_ID',
+
+            'shops.name as shop_name',
+            'branches.description as branch_name',
+            DB::raw("CASE 
+                        WHEN branches.branch_picture IS NULL OR branches.branch_picture = '' 
+                        THEN NULL 
+                        ELSE CONCAT('$baseUrl/storage/', branches.branch_picture) 
+                    END as branch_picture"),
+
+            'branches.latitude as pickup_latitude',
+            'branches.longitude as pickup_longitude',
+            'area.name as pickup_area',
+            'city.name as pickup_city',
+
+            'lmd_users.name as customer_name',
+            'lmd_users.phone_no as customer_phone',
+            DB::raw("CASE 
+                WHEN lmd_users.profile_picture IS NULL OR lmd_users.profile_picture = '' 
+                THEN NULL 
+                ELSE CONCAT('$baseUrl/storage/', lmd_users.profile_picture) 
+            END as customer_picture"),
+
+            'addresses.street as delivery_area',
+            'addresses.city as delivery_city',
+            'addresses.latitude as delivery_latitude',
+            'addresses.longitude as delivery_longitude'
+        )
+        ->get()
+        ->map(function ($item) {
+            return [
+                'suborder_id' => $item->suborder_id,
+                'vendor_type' => $item->vendor_type,
+                'vendor_order_id' => $item->vendor_order_id,
+                'status' => $item->suborder_status,
+                'payment_status' => $item->suborder_payment_status,
+                'total_amount' => $item->total_amount,
+                'estimated_delivery_time' => $item->estimated_delivery_time,
+                'delivery_time' => $item->delivery_time,
+                'deliveryboys_ID' => $item->deliveryboys_ID,
+                'orders_ID' => $item->orders_ID,
+                'vendor_ID' => $item->vendor_ID,
+                'shop_ID' => $item->shop_ID,
+                'branch_ID' => $item->branch_ID,
+                'order_date' => $item->order_date,
+
+                'shop' => [
+                    'name' => $item->shop_name,
+                    'branch' => [
+                        'name' => $item->branch_name,
+                        'picture' => $item->branch_picture,
+                        'pickup_location' => [
+                            'latitude' => $item->pickup_latitude,
+                            'longitude' => $item->pickup_longitude,
+                            'area' => $item->pickup_area,
+                            'city' => $item->pickup_city,
+                        ]
+                    ]
+                ],
+
+                'customer' => [
+                    'name' => $item->customer_name,
+                    'phone' => $item->customer_phone,
+                    'customer_picture' => $item->customer_picture,
+                    'delivery_address' => [
+                        'addresses_ID' => $item->addresses_ID,
+                        'street' => $item->delivery_area,
+                        'city' => $item->delivery_city,
+                        'latitude' => $item->delivery_latitude,
+                        'longitude' => $item->delivery_longitude,
+                    ]
+                ]
+            ];
+        });
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $suborders,
+    ], 200);
+}
 
 public function confirmPickup(Request $request, $suborderId)
 {
@@ -1058,6 +1100,11 @@ public function confirmPickup(Request $request, $suborderId)
 
     return response()->json(['message' => 'Order picked up successfully.']);
 }
+
+
+
+
+
 
 
 public function updateLocation(Request $request, $suborderId)
@@ -1126,6 +1173,9 @@ public function reachDestination(Request $request, $deliveryBoyId, $suborderId)
 
     return response()->json(['message' => 'Delivery boy has reached the destination and location tracking updated.']);
 }
+
+
+
 
 public function confirmPaymentByDeliveryBoy($suborderId)
 {
