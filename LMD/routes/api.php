@@ -63,6 +63,7 @@ Route::get('/cart/details', [CustomerController::class, 'getCartDetails']);
 
 Route::get('/statuses', [CustomerController::class, 'getStatuses']);
 Route::get('/suborders/{id}/route-info', [CustomerController::class, 'getDeliveryRouteInfo']);
+Route::get('/suborder/{suborderId}/payment-status', [CustomerController::class, 'getPaymentStatus']);
 
 
 

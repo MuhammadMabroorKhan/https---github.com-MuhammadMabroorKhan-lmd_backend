@@ -1815,6 +1815,19 @@ public function confirmPaymentByCustomer($suborderId)
     return response()->json(['message' => 'Payment confirmed by customer.']);
 }
 
+public function getPaymentStatus($suborderId)
+{
+    $suborder = Suborder::find($suborderId);
+
+    if (!$suborder) {
+        return response()->json(['error' => 'Suborder not found.'], 404);
+    }
+
+    return response()->json([
+        'suborder_id' => $suborderId,
+        'payment_status' => $suborder->payment_status,
+    ]);
+}
 
 
 
