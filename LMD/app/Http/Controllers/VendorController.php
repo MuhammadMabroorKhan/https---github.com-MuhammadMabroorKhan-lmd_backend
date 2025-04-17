@@ -1289,18 +1289,47 @@ public function getOrderedItemInformation($vendorId, $shopId, $branchId, $subord
 
 
 
+// public function markInProgress($suborderId)
+// {
+//     $suborder = Suborder::findOrFail($suborderId);
+
+//     if ($suborder->status !== 'pending') {
+//         return response()->json(['error' => 'Order cannot be marked as in progress in the current state.'], 400);
+//     }
+
+//     $suborder->status = 'in_progress';
+//     $suborder->save();
+
+//     return response()->json(['message' => 'Order marked as in progress.']);
+// }
 public function markInProgress($suborderId)
 {
     $suborder = Suborder::findOrFail($suborderId);
 
-    if ($suborder->status !== 'pending') {
-        return response()->json(['error' => 'Order cannot be marked as in progress in the current state.'], 400);
+    // Ensure suborder is in pending state
+    if (strtolower($suborder->status) !== 'pending') {
+        return response()->json(['error' => 'Suborder cannot be marked as in progress in the current state.'], 400);
     }
 
+    // Mark suborder as in_progress
     $suborder->status = 'in_progress';
     $suborder->save();
 
-    return response()->json(['message' => 'Order marked as in progress.']);
+    // Fetch related order
+    $order = DB::table('orders')->where('id', $suborder->orders_ID)->first();
+
+    // Check if order exists and is still pending (case-insensitive)
+    if ($order && strtolower($order->order_status) === 'pending') {
+        // Update order_status to confirmed
+        DB::table('orders')
+            ->where('id', $suborder->orders_ID)
+            ->update([
+                'order_status' => 'confirmed',
+                'updated_at' => now()
+            ]);
+    }
+
+    return response()->json(['message' => 'Suborder marked as in progress, and order status updated if applicable.']);
 }
 
 

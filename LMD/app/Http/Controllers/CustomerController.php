@@ -1742,7 +1742,7 @@ public function getLiveTracking($suborderId)
 {
     // Retrieve the latest location tracking entry for the given suborder ID
     $latestLocation = LocationTracking::where('suborders_ID', $suborderId)
-        ->orderBy('created_at', 'desc')
+        ->orderBy('time_stamp', 'desc')
         ->first();
 
     // Check if a location entry exists

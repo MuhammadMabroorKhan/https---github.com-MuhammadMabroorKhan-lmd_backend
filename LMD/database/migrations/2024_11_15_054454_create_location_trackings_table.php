@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->float('latitude');
             $table->float('longitude');
-           $table->enum('status', ['in_transit', 'reached_destination', 'delivered'])->default('in_transit');
-           $table->timestamp('time_stamp')->useCurrent();
+            $table->enum('status', ['in_transit', 'reached_destination', 'delivered'])->default('in_transit');
+            $table->timestamp('time_stamp')->useCurrent();
             $table->unsignedBigInteger('suborders_ID');
             $table->timestamps();
         });
