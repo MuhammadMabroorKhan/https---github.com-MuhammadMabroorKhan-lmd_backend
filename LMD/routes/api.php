@@ -33,6 +33,7 @@ Route::get('/shopcategories', [CustomerController::class, 'getAllShopCategories'
 Route::get('customer/main-screen/{customerID}', [CustomerController::class, 'getCustomerMainScreenInformation']);
 Route::get('vendor/{vendorId}/shop/{shopId}/branch/{branchId}/menu', [CustomerController::class, 'getVendorShopBranchMenu']);
 Route::get('/suborders/{suborderId}/live-tracking', [CustomerController::class, 'getLiveTracking']);
+Route::get('/suborders/{suborderId}/live-route-tracking', [CustomerController::class, 'getLiveRouteTracking']);
 
 Route::POST('/customer/place-order', [CustomerController::class, 'placeOrder']);
 Route::put('/customers/orders/{orderId}/cancel', [CustomerController::class, 'cancelOrder']);

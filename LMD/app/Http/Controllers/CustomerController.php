@@ -1763,6 +1763,33 @@ public function getLiveTracking($suborderId)
 }
 
 
+public function getLiveRouteTracking($suborderId)
+{
+    try {
+        // Retrieve all location tracking entries for the given suborder ID, ordered by timestamp
+        $locations = LocationTracking::where('suborders_ID', $suborderId)
+            ->orderBy('time_stamp', 'asc') // or 'desc' if you want latest first
+            ->get(['latitude', 'longitude', 'status', 'time_stamp']);
+
+        // Check if any location entries exist
+        if ($locations->isEmpty()) {
+            return response()->json(['error' => 'No location data available for this suborder.'], 404);
+        }
+
+        // Return all tracking points
+        return response()->json([
+            'message' => 'All tracking data for the suborder retrieved successfully.',
+            'data' => $locations
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Something went wrong.',
+            'details' => $e->getMessage()
+        ], 500);
+    }
+}
+
 public function confirmOrderDelivery($suborderId)
 {
     $suborder = Suborder::findOrFail($suborderId);
