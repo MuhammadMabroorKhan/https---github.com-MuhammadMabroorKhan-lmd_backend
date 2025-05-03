@@ -187,7 +187,6 @@ class OrganizationController extends Controller {
             'org_user.name as org_user_name',
             'org_user.email as org_user_email'
         );
-
         // Separate queries for each status
         $pending = ( clone $baseQuery )->where( 'vendororganization.approval_status', 'pending' )->get();
         $approved = ( clone $baseQuery )->where( 'vendororganization.approval_status', 'approved' )->get();

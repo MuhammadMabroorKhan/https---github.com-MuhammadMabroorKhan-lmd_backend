@@ -67,5 +67,4 @@ class LmdUserController extends Controller {
             return response()->json( [ 'message' => 'Failed to delete record' ], 500 );
         }
     }
-
 }

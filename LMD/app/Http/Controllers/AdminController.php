@@ -936,11 +936,6 @@ public function correctBranchRejectionReason(Request $request, $branch_id) {
         }
 
 
-
-
-
-
-
 //////////////////////////////////API Vendors///////////////////////
 public function getApiVendorsWithUsers()
 {

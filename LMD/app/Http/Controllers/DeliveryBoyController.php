@@ -1138,8 +1138,6 @@ public function updateLocation(Request $request, $suborderId)
 }
 
 
-
-
 public function reachDestination(Request $request, $deliveryBoyId, $suborderId)
 {
     $validator = Validator::make($request->all(), [

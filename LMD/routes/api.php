@@ -40,7 +40,6 @@ Route::put('/customers/orders/{orderId}/cancel', [CustomerController::class, 'ca
 Route::patch('/customer/order/{suborderId}/confirm-delivery', [CustomerController::class, 'confirmOrderDelivery']);
 Route::post('/customer/confirm-payment/{suborderId}', [CustomerController::class, 'confirmPaymentByCustomer']);
 
-
 Route::get('customers/{customerId}/orders/previous-week', [CustomerController::class, 'getPreviousWeekOrders']);
 Route::get('customers/{customerId}/orders/previous-month', [CustomerController::class, 'getPreviousMonthOrders']);
 Route::post('/orders/{orderId}/reorder', [CustomerController::class, 'reorder']);

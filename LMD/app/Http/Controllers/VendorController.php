@@ -98,7 +98,7 @@ class VendorController extends Controller
     }
     
    
-    
+
     public function getVendorData($id) {
         $baseUrl = url('/'); // Get the base URL (e.g., http://192.168.43.63:8000)
     
