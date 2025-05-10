@@ -198,12 +198,26 @@ Route::get('/admin/branches', [AdminController::class, 'getAllBranches']);
 Route::get('/admin/api-vendors', [AdminController::class, 'getApiVendorsWithUsers']);
 Route::get('/admin/vendor/{vendorId}/shops', [AdminController::class, 'getShopsAndCategories']);
 Route::get('/admin/vendor/{vendorId}/shop/{shopId}/branches', [AdminController::class, 'getBranches']);
+Route::get('/admin/api-vendor/{branchId}', [AdminController::class, 'getApiVendorByBranch']);
+Route::post('/admin/apivendor/store', [AdminController::class, 'storeApiVendor']);
+
+Route::get('/admin/apimethod-templates', [AdminController::class, 'getStandardApiMethods']);
+Route::post('/admin/apivendor/{apivendorId}/methods', [AdminController::class, 'saveApiMethods']);
+Route::get('/admin/apivendor/{apivendorId}/methods', [AdminController::class, 'getApiMethodsByVendor']);
+
 
 Route::post('/admin/branch/add-api-vendor', [AdminController::class, 'addApiVendor']);
 Route::post('/admin/vendor/add-api-method', [AdminController::class, 'addApiMethod']);
 Route::get('/admin/apivendor/{apivendor_id}/methods', [AdminController::class, 'getMethodsByApiVendorId']);
 Route::post('/admin/add-variable', [AdminController::class, 'addVariable']);
 Route::post('/admin/branch/add-mapping', [AdminController::class, 'addMapping']);
+
+
+Route::get('/integration-details/{branchId}', [AdminController::class, 'getIntegrationDetails']);
+Route::put('/apivendor/{id}', [AdminController::class, 'updateApiVendor']);
+Route::get('/variables', [AdminController::class, 'getAllVariables']);
+Route::get('/mappings/{branchId}/{apivendorId}', [AdminController::class, 'getMappings']);
+
 //ADMINROUTES FOR COURIERITEM
 Route::post('/admin/addcourieritemcategory', [AdminController::class, 'addCourierItemCategory']);
 Route::post('/admin/addcourieritem', [AdminController::class, 'addCourierItem']);

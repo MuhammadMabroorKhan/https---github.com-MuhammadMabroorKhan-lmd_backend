@@ -12,11 +12,15 @@ use App\Models\ShopCategory;
 use App\Models\Vehicle;
 use App\Models\CourierItemCategory;
 use App\Models\CourierItem;
-
+use App\Models\Apivendor;
+use App\Models\Apimethod;
+use App\Models\Variable;
+use App\Models\Mapping;
 use Illuminate\Support\Facades\Http;
 use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class AdminController extends Controller {
 
@@ -944,7 +948,7 @@ public function getApiVendorsWithUsers()
     
 
     $vendors = DB::table('vendors')
-        ->join('lmd_users', 'vendors.lmd_users_ID', ' = ', 'lmd_users.id')
+        ->join('lmd_users', 'vendors.lmd_users_ID', '=', 'lmd_users.id')
         ->where('vendors.vendor_type', 'API Vendor')
         ->select('vendors.id as vendor_ID','vendors.vendor_type',
         'vendors.approval_status','lmd_users_ID',
@@ -963,6 +967,277 @@ public function getApiVendorsWithUsers()
 
 
 
+
+public function getIntegrationDetails($branchId)
+{
+    // Step 1: Fetch apivendor based on branch_ID
+    $apiVendor = Apivendor::where('branches_ID', $branchId)
+        ->select('id', 'api_key', 'api_base_url', 'api_auth_method', 'api_version', 'vendor_integration_status', 'response_format', 'branches_ID')
+        ->first();
+
+    if (!$apiVendor) {
+        return response()->json([
+            'status' => false,
+            'message' => "No API integration found for this branch.",
+            'data' => []
+        ], 404);
+    }
+
+    // Step 2: Fetch related API methods
+    // $apiMethods = Apimethod::where('apivendor_ID', $apiVendor->id)
+    //     ->select('id', 'method_name', 'http_method', 'endpoint', 'description', 'apivendor_ID')
+    //     ->get();
+
+        $apiMethods = DB::table('apimethods')
+        ->where('apivendor_ID', $apiVendor->id)
+        ->select('id', 'method_name', 'http_method', 'endpoint', 'description', 'apivendor_ID')
+        ->get();
+
+    // Step 3: Fetch all variables
+    $variables = Variable::select('id', 'tags')->get();
+
+    // Step 4: Fetch mappings for this branch and API vendor
+    $mappings = Mapping::where('branch_ID', $branchId)
+        ->where('apivendor_ID', $apiVendor->id)
+        ->select('id', 'api_values', 'variable_ID', 'apivendor_ID', 'branch_ID')
+        ->get();
+
+  // Check if any of the required collections are empty
+  if ($apiMethods->isEmpty() || $variables->isEmpty() || $mappings->isEmpty()) {
+    return response()->json([
+        'status' => false,
+        'message' => "No API integration found for this branch.",
+        'data' => []
+    ], 404);
+}
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Integration data fetched successfully.',
+        'data' => [
+            'apivendor' => $apiVendor,
+            'apimethods' => $apiMethods,
+            'variables' => $variables,
+            'mappings' => $mappings
+        ]
+    ]);
+}
+
+
+
+public function getApiVendorByBranch($branchId)
+{
+    try {
+        // Attempt to fetch the API vendor data for the given branch ID
+        $apiVendor = Apivendor::where('branches_ID', $branchId)->first();
+
+        if ($apiVendor) {
+            return response()->json([
+                'status' => true,
+                'message' => 'API vendor integration found.',
+                'data' => [
+                    'id' => $apiVendor->id,
+                    'api_key' => $apiVendor->api_key,
+                    'api_base_url' => $apiVendor->api_base_url,
+                    'api_auth_method' => $apiVendor->api_auth_method,
+                    'api_version' => $apiVendor->api_version,
+                    'vendor_integration_status' => $apiVendor->vendor_integration_status,
+                    'response_format' => $apiVendor->response_format,
+                    'branches_ID' => $apiVendor->branches_ID,
+                    'created_at' => $apiVendor->created_at,
+                    'updated_at' => $apiVendor->updated_at,
+                ]
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'No API vendor integration found for this branch.',
+                'data' => null
+            ], 404);
+        }
+
+    } catch (\Exception $e) {
+        \Log::error('Error fetching API vendor integration: ' . $e->getMessage());
+
+        return response()->json([
+            'status' => false,
+            'message' => 'An error occurred while fetching the API vendor integration.',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
+public function storeApiVendor(Request $request)
+{
+    try {
+        // Log the full incoming request payload
+        Log::info('Incoming request to storeApiVendor:', $request->all());
+
+        $validated = $request->validate([
+            'api_key' => 'required|unique:apivendor,api_key',
+            'api_base_url' => 'nullable|string',
+            'api_auth_method' => 'nullable|string|max:50',
+            'api_version' => 'nullable|string|max:10',
+            'vendor_integration_status' => 'nullable|string|max:50',
+            'response_format' => 'nullable|in:JSON,XML',
+            'branches_ID' => 'required|exists:branches,id',
+        ]);
+
+        $vendor = Apivendor::create([
+            'api_key' => $validated['api_key'],
+            'api_base_url' => $validated['api_base_url'] ?? null,
+            'api_auth_method' => $validated['api_auth_method'] ?? null,
+            'api_version' => $validated['api_version'] ?? null,
+            'vendor_integration_status' => $validated['vendor_integration_status'] ?? 'Active',
+            'response_format' => $validated['response_format'] ?? 'JSON',
+            'branches_ID' => $validated['branches_ID'],
+            // 'created_at' => Carbon::now(),
+            // 'updated_at' => Carbon::now(),
+        ]);
+
+        Log::info('API Vendor saved:', $vendor->toArray());
+
+        return response()->json([
+            'status' => true,
+            'message' => 'API vendor details saved successfully.',
+             'data' => $vendor
+        ]);
+
+    } catch (\Exception $e) {
+        Log::error('Failed to save API Vendor: ' . $e->getMessage());
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Failed to save API vendor details.',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
+
+
+public function getStandardApiMethods()
+{
+    // Fetch methods from any vendor (e.g., the first vendor with methods)
+    $methods = DB::table('apimethods')
+        ->select('method_name', 'http_method')
+        ->distinct()
+        ->get();
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Standard method templates fetched successfully.',
+        'data' => $methods
+    ]);
+}
+public function saveApiMethods(Request $request, $apivendorId)
+{
+    $methods = $request->input('methods'); // array of methods
+    Log::info('Incoming request to storeApiVendor:', $request->all());
+    foreach ($methods as $method) {
+        // Apimethod::create([
+        //     'method_name' => $method['method_name'],
+        //     'http_method' => $method['http_method'],
+        //     'endpoint' => $method['endpoint'],
+        //     'description' => $method['description'],
+        //     'apivendor_ID' => $apivendorId,
+        // ]);
+
+        $insertedId = DB::table('apimethods')->insertGetId([
+            'method_name' => $method['method_name'],
+            'http_method' => $method['http_method'],
+            'endpoint' => $method['endpoint'],
+            'description' => $method['description'],
+            'apivendor_ID' => $apivendorId,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        Log::info("Inserted API Method with ID: $insertedId");
+
+
+    }
+
+    return response()->json([
+        'status' => true,
+        'message' => 'API methods saved successfully.'
+    ]);
+}
+
+public function getApiMethodsByVendor($apivendorId)
+{
+   // $methods = Apimethod::where('apivendor_ID', $apivendorId)->get();
+
+    $methods = DB::table('apimethods')->where('apivendor_ID', $apivendorId)->get();
+
+    return response()->json([
+        'status' => true,
+        'methods' => $methods
+    ]);
+}
+
+//
+
+public function updateApiVendor(Request $request, $id)
+{
+    $validated = $request->validate([
+        'api_key' => 'required|string|unique:apivendor,api_key,' . $id,
+        'api_base_url' => 'nullable|string',
+        'api_auth_method' => 'nullable|string|max:50',
+        'api_version' => 'nullable|string|max:10',
+        'vendor_integration_status' => 'nullable|string|max:50',
+        'response_format' => 'nullable|in:JSON,XML',
+        'branches_ID' => 'required|integer',
+    ]);
+
+    $updated = DB::table('apivendor')->where('id', $id)->update($validated);
+
+    if ($updated) {
+        return response()->json(['message' => 'API Vendor updated successfully.'], 200);
+    } else {
+        return response()->json(['message' => 'No changes or vendor not found.'], 404);
+    }
+}
+
+public function getAllVariables()
+{
+    $variables = Variable::select('id', 'tags')->get();
+
+    if ($variables->isEmpty()) {
+        return response()->json(['status' => false, 'message' => 'No variables found.']);
+    }
+
+    return response()->json(['status' => true, 'data' => $variables]);
+}
+
+
+public function getMappings($branchId, $apivendorId)
+{
+    $mappings = Mapping::where('branch_ID', $branchId)
+        ->where('apivendor_ID', $apivendorId)
+        ->select('id', 'api_values', 'variable_ID', 'apivendor_ID', 'branch_ID')
+        ->get();
+
+    if ($mappings->isEmpty()) {
+        return response()->json(['status' => false, 'message' => 'No mappings found.']);
+    }
+
+    return response()->json(['status' => true, 'data' => $mappings]);
+}
+
+
+
+
+
+
+
+////////////////
+
+
+
+////////////
 public function getShopsAndCategories($vendorId)
 {
     $shops = DB::table('shops')
