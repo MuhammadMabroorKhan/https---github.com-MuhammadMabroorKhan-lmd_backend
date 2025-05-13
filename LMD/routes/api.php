@@ -213,11 +213,11 @@ Route::get('/integration-details/{branchId}', [AdminController::class, 'getInteg
 Route::post('/admin/add-variable', [AdminController::class, 'addVariable']);
 Route::post('/admin/save-new-api-methods/{apivendorId?}', [AdminController::class, 'saveNewApiMethods']);
 
-Route::post('/admin/branch/add-api-vendor', [AdminController::class, 'addApiVendor']);
-Route::post('/admin/vendor/add-api-method', [AdminController::class, 'addApiMethod']);
-Route::get('/admin/apivendor/{apivendor_id}/methods', [AdminController::class, 'getMethodsByApiVendorId']);
+// Route::post('/admin/branch/add-api-vendor', [AdminController::class, 'addApiVendor']);
+// Route::post('/admin/vendor/add-api-method', [AdminController::class, 'addApiMethod']);
+// Route::get('/admin/apivendor/{apivendor_id}/methods', [AdminController::class, 'getMethodsByApiVendorId']);
 
-Route::post('/admin/branch/add-mapping', [AdminController::class, 'addMapping']);
+// Route::post('/admin/branch/add-mapping', [AdminController::class, 'addMapping']);
 
 
 
