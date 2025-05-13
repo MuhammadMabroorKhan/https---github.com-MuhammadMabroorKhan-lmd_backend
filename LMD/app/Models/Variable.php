@@ -10,6 +10,6 @@ class Variable extends Model
     protected $fillable = [
         'tags',
     ];
-    public $timestamps = false;
+    public $timestamps = true;
 }
 

@@ -759,12 +759,12 @@ public function getPendingBranches() {
     $baseUrl = url('/'); // Base URL for images
 
     $branches = DB::table('branches')
-        ->join('shops', 'branches.shops_id', ' = ', 'shops.id')
-        ->join('shopcategory', 'shops.shopcategory_ID', ' = ', 'shopcategory.id')
-        ->join('vendors', 'shops.vendors_ID', ' = ', 'vendors.id')
-        ->join('lmd_users', 'vendors.lmd_users_ID', ' = ', 'lmd_users.id')
-        ->join('area', 'branches.area_id', ' = ', 'area.id')
-        ->join('city', 'area.city_id', ' = ', 'city.id')
+        ->join('shops', 'branches.shops_id', '=', 'shops.id')
+        ->join('shopcategory', 'shops.shopcategory_ID', '=', 'shopcategory.id')
+        ->join('vendors', 'shops.vendors_ID', '=', 'vendors.id')
+        ->join('lmd_users', 'vendors.lmd_users_ID', '=', 'lmd_users.id')
+        ->join('area', 'branches.area_id', '=', 'area.id')
+        ->join('city', 'area.city_id', '=', 'city.id')
         //->where('branches.approval_status', 'pending')
         ->select(
             'branches.id as branch_id',
@@ -1115,8 +1115,81 @@ public function storeApiVendor(Request $request)
     }
 }
 
+public function updateApiVendor(Request $request, $id)
+{
+    try {
+        // Log incoming request
+        Log::info("Incoming request to updateApiVendor (ID: $id):", $request->all());
 
+        $validated = $request->validate([
+            'api_key' => 'required|string|unique:apivendor,api_key,' . $id,
+            'api_base_url' => 'nullable|string',
+            'api_auth_method' => 'nullable|string|max:50',
+            'api_version' => 'nullable|string|max:10',
+            'vendor_integration_status' => 'nullable|string|max:50',
+            'response_format' => 'nullable|in:JSON,XML',
+            'branches_ID' => 'required|integer|exists:branches,id',
+        ]);
 
+        $vendor = Apivendor::find($id);
+
+        if (!$vendor) {
+            Log::warning("API Vendor with ID $id not found.");
+            return response()->json([
+                'status' => false,
+                'message' => 'API Vendor not found.'
+            ], 404);
+        }
+
+        $vendor->update([
+            'api_key' => $validated['api_key'],
+            'api_base_url' => $validated['api_base_url'] ?? null,
+            'api_auth_method' => $validated['api_auth_method'] ?? null,
+            'api_version' => $validated['api_version'] ?? null,
+            'vendor_integration_status' => $validated['vendor_integration_status'] ?? 'Active',
+            'response_format' => $validated['response_format'] ?? 'JSON',
+            'branches_ID' => $validated['branches_ID'],
+        ]);
+
+        Log::info("API Vendor updated successfully (ID: $id):", $vendor->toArray());
+
+        return response()->json([
+            'status' => true,
+            'message' => 'API vendor details updated successfully.',
+            'data' => $vendor
+        ], 200);
+
+    } catch (\Exception $e) {
+        Log::error("Failed to update API Vendor (ID: $id): " . $e->getMessage());
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Failed to update API vendor details.',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+// public function updateApiVendor(Request $request, $id)
+// {
+//     $validated = $request->validate([
+//         'api_key' => 'required|string|unique:apivendor,api_key,' . $id,
+//         'api_base_url' => 'nullable|string',
+//         'api_auth_method' => 'nullable|string|max:50',
+//         'api_version' => 'nullable|string|max:10',
+//         'vendor_integration_status' => 'nullable|string|max:50',
+//         'response_format' => 'nullable|in:JSON,XML',
+//         'branches_ID' => 'required|integer',
+//     ]);
+
+//     $updated = DB::table('apivendor')->where('id', $id)->update($validated);
+
+//     if ($updated) {
+//         return response()->json(['message' => 'API Vendor updated successfully.'], 200);
+//     } else {
+//         return response()->json(['message' => 'No changes or vendor not found.'], 404);
+//     }
+// }
 
 public function getStandardApiMethods()
 {
@@ -1166,39 +1239,129 @@ public function saveApiMethods(Request $request, $apivendorId)
     ]);
 }
 
-public function getApiMethodsByVendor($apivendorId)
+public function updateApiMethod(Request $request, $id)
 {
-   // $methods = Apimethod::where('apivendor_ID', $apivendorId)->get();
+    Log::info("Incoming request to update API Method ID: $id", $request->all());
 
-    $methods = DB::table('apimethods')->where('apivendor_ID', $apivendorId)->get();
+    $validated = $request->validate([
+        'method_name' => 'required|string|max:100',
+        'http_method' => 'required|in:GET,POST,PUT,DELETE',
+        'endpoint' => 'required|string',
+        'description' => 'nullable|string',
+    ]);
+
+    $affected = DB::table('apimethods')
+        ->where('id', $id)
+        ->update([
+            'method_name' => $validated['method_name'],
+            'http_method' => $validated['http_method'],
+            'endpoint' => $validated['endpoint'],
+            'description' => $validated['description'],
+            'updated_at' => now()
+        ]);
+
+    if ($affected) {
+        return response()->json([
+            'status' => true,
+            'message' => 'API method updated successfully.'
+        ]);
+    } else {
+        return response()->json([
+            'status' => false,
+            'message' => 'No changes made or method not found.'
+        ], 404);
+    }
+}
+
+
+public function saveNewApiMethods(Request $request, $apivendorId = 0)
+{
+    $methods = $request->input('methods'); // array of methods
+    Log::info('Incoming request to saveNewApiMethods:', $request->all());
+
+    foreach ($methods as $method) {
+        $methodName = $method['method_name'] ?? 'Unnamed Method';
+        $httpMethod = $method['http_method'] ?? 'GET';
+
+        // Default endpoint: based on method name
+        $endpoint = $method['endpoint'] ?? 'api/' . strtolower(str_replace(' ', '_', $methodName));
+
+        // Default description: fallback if not provided
+        $description = $method['description'] ?? 'No description provided';
+
+        // Prefer URL param, fallback to body value or default 0
+        $vendorId = $apivendorId !== 0 ? $apivendorId : ($method['apivendor_ID'] ?? 0);
+
+        $insertedId = DB::table('apimethods')->insertGetId([
+            'method_name' => $methodName,
+            'http_method' => $httpMethod,
+            'endpoint' => $endpoint,
+            'description' => $description,
+            'apivendor_ID' => $vendorId,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Log::info("Inserted API Method with ID: $insertedId");
+        Log::info("Inserted methodName: $methodName");
+        Log::info("Inserted vendorId: $vendorId");
+        Log::info("Inserted httpMethod: $httpMethod");
+        Log::info("Inserted endpoint: $endpoint");
+        Log::info("Inserted description: $description");
+
+
+    }
 
     return response()->json([
         'status' => true,
+        'message' => 'API methods saved successfully.'
+    ]);
+}
+
+
+
+// public function getApiMethodsByVendor($apivendorId)
+// {
+//    // $methods = Apimethod::where('apivendor_ID', $apivendorId)->get();
+
+//     $methods = DB::table('apimethods')->where('apivendor_ID', $apivendorId)->get();
+
+//     return response()->json([
+//         'status' => true,
+//         'methods' => $methods
+//     ]);
+// }
+public function getApiMethodsByVendor($apivendorId)
+{
+    $methods = DB::table('apimethods')->where('apivendor_ID', $apivendorId)->get();
+
+    if ($methods->isEmpty()) {
+        return response()->json([
+            'status' => false,
+            'message' => 'No API methods found for the given API Vendor ID.',
+            'methods' => []
+        ], 404); // optional: 404 Not Found status code
+    }
+
+    return response()->json([
+        'status' => true,
+        'message' => 'API methods retrieved successfully.',
         'methods' => $methods
     ]);
 }
 
-//
 
-public function updateApiVendor(Request $request, $id)
+public function addVariable(Request $request)
 {
+    Log::info("Incoming request to Add New Variable", $request->all());
+
     $validated = $request->validate([
-        'api_key' => 'required|string|unique:apivendor,api_key,' . $id,
-        'api_base_url' => 'nullable|string',
-        'api_auth_method' => 'nullable|string|max:50',
-        'api_version' => 'nullable|string|max:10',
-        'vendor_integration_status' => 'nullable|string|max:50',
-        'response_format' => 'nullable|in:JSON,XML',
-        'branches_ID' => 'required|integer',
+        'tags' => 'required|string|unique:variables,tags'
     ]);
 
-    $updated = DB::table('apivendor')->where('id', $id)->update($validated);
+    //  $variable = DB::table('variables')->insert($validated);
 
-    if ($updated) {
-        return response()->json(['message' => 'API Vendor updated successfully.'], 200);
-    } else {
-        return response()->json(['message' => 'No changes or vendor not found.'], 404);
-    }
+    return response()->json(['message' => 'Variable added successfully'], 201);
 }
 
 public function getAllVariables()
@@ -1209,9 +1372,8 @@ public function getAllVariables()
         return response()->json(['status' => false, 'message' => 'No variables found.']);
     }
 
-    return response()->json(['status' => true, 'data' => $variables]);
+    return response()->json(['success' => true, 'data' => $variables]);
 }
-
 
 public function getMappings($branchId, $apivendorId)
 {
@@ -1221,18 +1383,86 @@ public function getMappings($branchId, $apivendorId)
         ->get();
 
     if ($mappings->isEmpty()) {
-        return response()->json(['status' => false, 'message' => 'No mappings found.']);
+        return response()->json([
+            'success' => false,
+            'message' => 'No mappings found.',
+            'data' => []
+        ], 200);
     }
 
-    return response()->json(['status' => true, 'data' => $mappings]);
+    return response()->json([
+        'success' => true,
+        'message' => 'Mappings retrieved successfully.',
+        'data' => $mappings
+    ], 200);
 }
 
 
+public function saveVariableMappings(Request $request)
+{
+    Log::info('Incoming request to storeApiVendor:', $request->all());
+    $data = $request->validate([
+        'branch_ID' => 'required|integer',
+        'apivendor_ID' => 'required|integer',
+        'mappings' => 'required|array',
+        'mappings.*.variable_ID' => 'required|integer',
+        'mappings.*.api_values' => 'required|string|max:255',
+    ]);
 
+    $savedMappings = [];
 
+    foreach ($data['mappings'] as $mapping) {
+        $saved = Mapping::updateOrCreate(
+            [
+                'branch_ID' => $data['branch_ID'],
+                'apivendor_ID' => $data['apivendor_ID'],
+                'variable_ID' => $mapping['variable_ID']
+            ],
+            [
+                'api_values' => $mapping['api_values']
+            ]
+        );
 
+        $savedMappings[] = $saved;
+    }
 
+    return response()->json([
+        'success' => true,
+        'message' => 'Mappings saved successfully.',
+        'data' => $savedMappings
+    ], 200);
+}
 
+public function updateVariableMapping(Request $request, $id)
+{
+    Log::info('Incoming update request for mapping ID ' . $id, $request->all());
+
+    $data = $request->validate([
+        'api_values' => 'required|string|max:255',
+    ]);
+
+    $mapping = Mapping::find($id);
+
+    if (!$mapping) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Mapping not found.'
+        ], 404);
+    }
+
+    $mapping->api_values = $data['api_values'];
+    $mapping->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Mapping updated successfully.',
+        'data' => $mapping
+    ], 200);
+}
+
+////////////////
+////////////////
+///////////////
 ////////////////
 
 
@@ -1263,130 +1493,121 @@ public function getBranches($vendorId, $shopId)
 
 
 //add api vendor
-public function addApiVendor(Request $request)
-{
-    try {
-        // Log the incoming request
-        \Log::info('Request Data:', $request->all());
+// public function addApiVendor(Request $request)
+// {
+//     try {
+//         // Log the incoming request
+//         \Log::info('Request Data:', $request->all());
 
-        // Validate the request
-        $validated = $request->validate([
-            'branches_ID' => 'required|exists:branches, id',
-            'api_key' => 'required|string|unique:apivendor, api_key',
-            'api_base_url' => 'required|url',
-            'api_auth_method' => 'required|string',
-            'api_version' => 'required|string',
-            'vendor_integration_status' => 'required|in:Active, Inactive',
-            'response_format' => 'required|in:JSON, XML'
-        ]);
+//         // Validate the request
+//         $validated = $request->validate([
+//             'branches_ID' => 'required|exists:branches, id',
+//             'api_key' => 'required|string|unique:apivendor, api_key',
+//             'api_base_url' => 'required|url',
+//             'api_auth_method' => 'required|string',
+//             'api_version' => 'required|string',
+//             'vendor_integration_status' => 'required|in:Active, Inactive',
+//             'response_format' => 'required|in:JSON, XML'
+//         ]);
 
-        // Insert into the database and get the ID
-        $apiVendorId = DB::table('apivendor')->insertGetId($validated);
+//         // Insert into the database and get the ID
+//         $apiVendorId = DB::table('apivendor')->insertGetId($validated);
 
-        // Return success response with the new ID
-        return response()->json([
-            'message' => 'API Vendor added successfully',
-            'apiVendorId' => $apiVendorId,
-            'data' => $validated
-        ], 201);
-    } catch (\Exception $e) {
-        // Log the exception
-        \Log::error('Error adding API Vendor:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+//         // Return success response with the new ID
+//         return response()->json([
+//             'message' => 'API Vendor added successfully',
+//             'apiVendorId' => $apiVendorId,
+//             'data' => $validated
+//         ], 201);
+//     } catch (\Exception $e) {
+//         // Log the exception
+//         \Log::error('Error adding API Vendor:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
 
-        // Return error response
-        return response()->json([
-            'error' => 'An error occurred while adding the API Vendor.',
-            'details' => $e->getMessage()
-        ], 500);
-    }
-}
-
-
-
-public function addApiMethod(Request $request)
-{
-    $validated = $request->validate([
-        'apivendor_ID' => 'required|exists:apivendor, id',
-        'method_name' => 'required|string',
-        'http_method' => 'required|in:GET, POST, PUT, DELETE',
-        'endpoint' => 'required|string',
-        'description' => 'nullable|string'
-    ]);
-
-    $apiMethod = DB::table('apimethods')->insert($validated);
-
-    return response()->json(['message' => 'API Method added successfully'], 201);
-}
-
-public function getMethodsByApiVendorId(Request $request, $apivendor_id)
-{
-    try {
-        // Validate that the apivendor_id exists
-        $apiVendorExists = DB::table('apivendor')->where('id', $apivendor_id)->exists();
-
-        if (!$apiVendorExists) {
-            return response()->json([
-                'error' => 'API Vendor not found.',
-                'details' => 'No API Vendor exists with the provided ID.'
-            ], 404);
-        }
-
-        // Fetch all methods associated with the apivendor_id
-        $methods = DB::table('apimethods')
-            ->where('apivendor_id', $apivendor_id)
-            ->get();
-
-        // Check if methods exist
-        if ($methods->isEmpty()) {
-            return response()->json([
-                'message' => 'No methods found for the specified API Vendor.',
-                'apivendor_id' => $apivendor_id
-            ], 404);
-        }
-
-        // Return success response with methods
-        return response()->json([
-            'message' => 'Methods retrieved successfully.',
-            'apivendor_id' => $apivendor_id,
-            'methods' => $methods
-        ], 200);
-    } catch (\Exception $e) {
-        // Log the exception
-        \Log::error('Error fetching methods for API Vendor:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-
-        // Return error response
-        return response()->json([
-            'error' => 'An error occurred while fetching methods.',
-            'details' => $e->getMessage()
-        ], 500);
-    }
-}
+//         // Return error response
+//         return response()->json([
+//             'error' => 'An error occurred while adding the API Vendor.',
+//             'details' => $e->getMessage()
+//         ], 500);
+//     }
+// }
 
 
-public function addVariable(Request $request)
-{
-    $validated = $request->validate([
-        'tags' => 'required|string|unique:variables, tags'
-    ]);
 
-    $variable = DB::table('variables')->insert($validated);
+// public function addApiMethod(Request $request)
+// {
+//     $validated = $request->validate([
+//         'apivendor_ID' => 'required|exists:apivendor, id',
+//         'method_name' => 'required|string',
+//         'http_method' => 'required|in:GET, POST, PUT, DELETE',
+//         'endpoint' => 'required|string',
+//         'description' => 'nullable|string'
+//     ]);
 
-    return response()->json(['message' => 'Variable added successfully'], 201);
-}
+//     $apiMethod = DB::table('apimethods')->insert($validated);
 
-public function addMapping(Request $request)
-{
-    $validated = $request->validate([
-        'variable_ID' => 'required|exists:variables, id',
-        'api_values' => 'required|string',
-        'apivendor_ID' => 'required|exists:apivendor, id',
-        'branch_ID' => 'required|exists:branches, id'
-    ]);
+//     return response()->json(['message' => 'API Method added successfully'], 201);
+// }
 
-    $mapping = DB::table('mapping')->insert($validated);
+// public function getMethodsByApiVendorId(Request $request, $apivendor_id)
+// {
+//     try {
+//         // Validate that the apivendor_id exists
+//         $apiVendorExists = DB::table('apivendor')->where('id', $apivendor_id)->exists();
 
-    return response()->json(['message' => 'Mapping added successfully'], 201);
-}
+//         if (!$apiVendorExists) {
+//             return response()->json([
+//                 'error' => 'API Vendor not found.',
+//                 'details' => 'No API Vendor exists with the provided ID.'
+//             ], 404);
+//         }
+
+//         // Fetch all methods associated with the apivendor_id
+//         $methods = DB::table('apimethods')
+//             ->where('apivendor_id', $apivendor_id)
+//             ->get();
+
+//         // Check if methods exist
+//         if ($methods->isEmpty()) {
+//             return response()->json([
+//                 'message' => 'No methods found for the specified API Vendor.',
+//                 'apivendor_id' => $apivendor_id
+//             ], 404);
+//         }
+
+//         // Return success response with methods
+//         return response()->json([
+//             'message' => 'Methods retrieved successfully.',
+//             'apivendor_id' => $apivendor_id,
+//             'methods' => $methods
+//         ], 200);
+//     } catch (\Exception $e) {
+//         // Log the exception
+//         \Log::error('Error fetching methods for API Vendor:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+
+//         // Return error response
+//         return response()->json([
+//             'error' => 'An error occurred while fetching methods.',
+//             'details' => $e->getMessage()
+//         ], 500);
+//     }
+// }
+
+
+
+
+// public function addMapping(Request $request)
+// {
+//     $validated = $request->validate([
+//         'variable_ID' => 'required|exists:variables, id',
+//         'api_values' => 'required|string',
+//         'apivendor_ID' => 'required|exists:apivendor, id',
+//         'branch_ID' => 'required|exists:branches, id'
+//     ]);
+
+//     $mapping = DB::table('mapping')->insert($validated);
+
+//     return response()->json(['message' => 'Mapping added successfully'], 201);
+// }
 
 
 
