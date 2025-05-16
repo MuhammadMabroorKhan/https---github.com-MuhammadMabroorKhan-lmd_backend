@@ -282,3 +282,19 @@ Route::get('/vendor/{vendorId}/suborders', [VendorController::class, 'getSubOrde
 Route::post('/suborders/{suborderId}/status', [VendorController::class, 'updateSuborderStatus']);
 Route::get('/vendor/{vendorId}/available-organizations', [VendorController::class, 'getAvailableOrganizationsForVendor']);
 
+
+
+
+
+
+
+
+
+
+
+
+
+//Stats for  Mai screen Infos
+Route::get('vendor/{vendorId}/summary', [VendorController::class, 'getVendorSummary']);
+Route::get('/organizations/{id}/organization-stats', [OrganizationController::class, 'getOrganizationStats']);
+Route::get('/admin/admin-stats', [AdminController::class, 'getAdminStats']);

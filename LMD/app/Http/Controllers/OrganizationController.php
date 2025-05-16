@@ -411,4 +411,64 @@ class OrganizationController extends Controller {
         return response()->json( [ 'error' => 'Organization not found' ], 404 );
     }
 
+
+
+
+
+
+
+    public function getOrganizationStats($organizationId)
+{
+    // 1. Validate organization
+    $organization = DB::table('organizations')
+        ->where('id', $organizationId)
+        ->first();
+
+    // if (!$organization) {
+    //     return response()->json(['error' => 'Organization not found'], 404);
+    // }
+
+    // 2. Total delivery boys linked directly via organization_ID
+    $deliveryBoyIds = DB::table('deliveryboys')
+        ->where('organization_ID', $organizationId)
+        ->pluck('id');
+
+    $totalDeliveryBoys = $deliveryBoyIds->count();
+
+    // 3. Vendor IDs linked via vendororganization table
+    $vendorIds = DB::table('vendororganization')
+        ->where('organization_ID', $organizationId)
+        ->pluck('vendor_ID');
+
+    $totalVendors = $vendorIds->count();
+
+    // 4. Count vendors by approval status
+    $vendorApprovalCounts = DB::table('vendors')
+        ->whereIn('id', $vendorIds)
+        ->select('approval_status', DB::raw('count(*) as count'))
+        ->groupBy('approval_status')
+        ->pluck('count', 'approval_status');
+
+    $vendorStatusCounts = [
+        'pending' => $vendorApprovalCounts['pending'] ?? 0,
+        'approved' => $vendorApprovalCounts['approved'] ?? 0,
+        'rejected' => $vendorApprovalCounts['rejected'] ?? 0,
+    ];
+
+    // 5. Total delivered suborders by those delivery boys
+    $totalDeliveredSuborders = DB::table('suborders')
+        ->whereIn('deliveryboys_ID', $deliveryBoyIds)
+        ->where('status', 'delivered')
+        ->count();
+
+    // 6. Return summary
+    return response()->json([
+        'total_delivery_boys' => $totalDeliveryBoys,
+        'total_vendors' => $totalVendors,
+        'vendor_approval_status' => $vendorStatusCounts,
+        'total_delivered_orders' => $totalDeliveredSuborders
+    ]);
+}
+
+
 }

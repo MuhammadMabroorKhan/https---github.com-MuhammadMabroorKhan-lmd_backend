@@ -1689,6 +1689,219 @@ public function getAvailableOrganizationsForVendor($vendorId)
 }
 
 
+
+
+// public function getVendorSummary($vendorId)
+// {
+//     // Total Shops for the vendor
+//     $totalShops = DB::table('shops')
+//         ->where('vendors_ID', $vendorId)
+//         ->count();
+
+//     // Total Branches linked through shops
+//     $totalBranches = DB::table('branches')
+//         ->whereIn('shops_ID', function($query) use ($vendorId) {
+//             $query->select('id')
+//                   ->from('shops')
+//                   ->where('vendors_ID', $vendorId);
+//         })
+//         ->count();
+
+//     // Total Approved Branches
+//     $approvedBranches = DB::table('branches')
+//         ->whereIn('shops_ID', function($query) use ($vendorId) {
+//             $query->select('id')
+//                   ->from('shops')
+//                   ->where('vendors_ID', $vendorId);
+//         })
+//         ->where('approval_status', 'approved')
+//         ->count();
+
+//     // Total Suborders for vendor
+//     $totalSuborders = DB::table('suborders')
+//         ->where('vendor_ID', $vendorId)
+//         ->count();
+
+//     // Total distinct Orders (each order can have multiple suborders)
+//     $totalOrders = DB::table('suborders')
+//         ->where('vendor_ID', $vendorId)
+//         ->distinct('orders_ID')
+//         ->count('orders_ID');
+
+//     // Total Revenue from suborders
+//     $totalRevenue = DB::table('suborders')
+//         ->where('vendor_ID', $vendorId)
+//         ->sum('total_amount');
+
+//     // Total Linked Organizations
+//     $totalOrganizations = DB::table('vendororganization')
+//         ->where('vendor_ID', $vendorId)
+//         ->count();
+
+//     return response()->json([
+//         'total_shops' => $totalShops,
+//         'total_branches' => $totalBranches,
+//         'total_approved_branches' => $approvedBranches,
+//         'total_suborders' => $totalSuborders,
+//         'total_orders' => $totalOrders,
+//         'total_revenue' => $totalRevenue,
+//         'total_linked_organizations' => $totalOrganizations,
+//     ]);
+// }
+
+
+// public function getVendorSummary($vendorId)
+// {
+//     // Total Shops
+//     $totalShops = DB::table('shops')
+//         ->where('vendors_ID', $vendorId)
+//         ->count();
+
+//     // Total Branches linked through shops
+//     $totalBranches = DB::table('branches')
+//         ->whereIn('shops_ID', function($query) use ($vendorId) {
+//             $query->select('id')
+//                 ->from('shops')
+//                 ->where('vendors_ID', $vendorId);
+//         })
+//         ->count();
+
+//     // Total Approved Branches
+//     $approvedBranches = DB::table('branches')
+//         ->whereIn('shops_ID', function($query) use ($vendorId) {
+//             $query->select('id')
+//                 ->from('shops')
+//                 ->where('vendors_ID', $vendorId);
+//         })
+//         ->where('approval_status', 'approved')
+//         ->count();
+
+//     // Total Suborders for the vendor
+//     $totalSuborders = DB::table('suborders')
+//         ->where('vendor_ID', $vendorId)
+//         ->count();
+
+//     // Total Delivered Suborders
+//     $deliveredSuborders = DB::table('suborders')
+//         ->where('vendor_ID', $vendorId)
+//         ->where('status', 'delivered')
+//         ->count();
+
+//     // Total Pending Suborders
+//     $pendingSuborders = DB::table('suborders')
+//         ->where('vendor_ID', $vendorId)
+//         ->where('status', 'pending')
+//         ->count();
+
+//     // Total distinct Orders (each order can have multiple suborders)
+//     $totalOrders = DB::table('suborders')
+//         ->where('vendor_ID', $vendorId)
+//         ->distinct('orders_ID')
+//         ->count('orders_ID');
+
+//     // Total Revenue from suborders
+//     $totalRevenue = DB::table('suborders')
+//         ->where('vendor_ID', $vendorId)
+//         ->sum('total_amount');
+
+//     // Average Revenue per Order
+//     $avgRevenuePerOrder = $totalOrders > 0 ? round($totalRevenue / $totalOrders, 2) : 0;
+
+//     // Total Linked Organizations
+//     $totalOrganizations = DB::table('vendororganization')
+//         ->where('vendor_ID', $vendorId)
+//         ->count();
+
+//     return response()->json([
+//         'total_shops' => $totalShops,
+//         'total_branches' => $totalBranches,
+//         'total_approved_branches' => $approvedBranches,
+//         'total_suborders' => $totalSuborders,
+//         'delivered_suborders' => $deliveredSuborders,
+//         'pending_suborders' => $pendingSuborders,
+//         'total_orders' => $totalOrders,
+//         'total_revenue' => $totalRevenue,
+//         'avg_revenue_per_order' => $avgRevenuePerOrder,
+//         'total_linked_organizations' => $totalOrganizations,
+//     ]);
+// }
+
+public function getVendorSummary($vendorId)
+{
+    // Total Shops
+    $totalShops = DB::table('shops')
+        ->where('vendors_ID', $vendorId)
+        ->count();
+
+    // Total Branches linked through shops
+    $totalBranches = DB::table('branches')
+        ->whereIn('shops_ID', function($query) use ($vendorId) {
+            $query->select('id')
+                ->from('shops')
+                ->where('vendors_ID', $vendorId);
+        })
+        ->count();
+
+    // Total Approved Branches
+    $approvedBranches = DB::table('branches')
+        ->whereIn('shops_ID', function($query) use ($vendorId) {
+            $query->select('id')
+                ->from('shops')
+                ->where('vendors_ID', $vendorId);
+        })
+        ->where('approval_status', 'approved')
+        ->count();
+
+    // Total Suborders
+    $totalSuborders = DB::table('suborders')
+        ->where('vendor_ID', $vendorId)
+        ->count();
+
+    // Delivered Suborders
+    $deliveredSuborders = DB::table('suborders')
+        ->where('vendor_ID', $vendorId)
+        ->where('status', 'delivered')
+        ->count();
+
+    // Pending Suborders
+    $pendingSuborders = DB::table('suborders')
+        ->where('vendor_ID', $vendorId)
+        ->where('status', 'pending')
+        ->count();
+
+    // Distinct Orders
+    $totalOrders = DB::table('suborders')
+        ->where('vendor_ID', $vendorId)
+        ->distinct('orders_ID')
+        ->count('orders_ID');
+
+    // Total Revenue (ensure it's always float with 2 decimals)
+    $totalRevenue = round(floatval(DB::table('suborders')
+        ->where('vendor_ID', $vendorId)
+        ->sum('total_amount')), 2);
+
+    // Average Revenue per Order (rounded to 2 decimals)
+    $avgRevenuePerOrder = $totalOrders > 0 ? round($totalRevenue / $totalOrders, 2) : 0.00;
+
+    // Linked Organizations
+    $totalOrganizations = DB::table('vendororganization')
+        ->where('vendor_ID', $vendorId)
+        ->count();
+
+    return response()->json([
+        'total_shops' => $totalShops,
+        'total_branches' => $totalBranches,
+        'total_approved_branches' => $approvedBranches,
+        'total_suborders' => $totalSuborders,
+        'delivered_suborders' => $deliveredSuborders,
+        'pending_suborders' => $pendingSuborders,
+        'total_orders' => $totalOrders,
+        'total_revenue' => $totalRevenue,
+        'avg_revenue_per_order' => $avgRevenuePerOrder,
+        'total_linked_organizations' => $totalOrganizations,
+    ]);
+}
+
 }
 
 

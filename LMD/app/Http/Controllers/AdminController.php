@@ -1664,5 +1664,65 @@ public function addCourierItem(Request $request)
         'message' => 'Courier item added successfully!',
         'item' => $item
             ] );
-        }
     }
+
+
+
+
+
+
+    public function getAdminStats()
+    {
+        // Total users
+        $totalUsers = DB::table('lmd_users')->count();
+    
+        // Users by role
+        $userRoles = DB::table('lmd_users')
+            ->select('lmd_user_role', DB::raw('count(*) as count'))
+            ->groupBy('lmd_user_role')
+            ->pluck('count', 'lmd_user_role');
+    
+        // Orders
+        $totalOrders = DB::table('orders')->count();
+        $ordersByStatus = DB::table('orders')
+            ->select('order_status', DB::raw('count(*) as count'))
+            ->groupBy('order_status')
+            ->pluck('count', 'order_status');
+    
+        // Shops & Branches
+        $totalShops = DB::table('shops')->count();
+        $totalBranches = DB::table('branches')->count();
+    
+        // Vendors by branch approval status
+        $vendorsByApproval = DB::table('branches')
+            ->select('approval_status', DB::raw('count(*) as count'))
+            ->groupBy('approval_status')
+            ->pluck('count', 'approval_status');
+    
+        return response()->json([
+            'total_users' => $totalUsers,
+            'users_by_role' => [
+                'customer' => $userRoles['customer'] ?? 0,
+                'vendor' => $userRoles['vendor'] ?? 0,
+                'organization' => $userRoles['organization'] ?? 0,
+                'deliveryboy' => $userRoles['deliveryboy'] ?? 0,
+                'admin' => $userRoles['admin'] ?? 0,
+            ],
+            'total_orders' => $totalOrders,
+            'orders_by_status' => [
+                'cancelled' => $ordersByStatus['cancelled'] ?? 0,
+                'pending' => $ordersByStatus['pending'] ?? 0,
+                'confirmed' => $ordersByStatus['confirmed'] ?? 0,
+            ],
+            'total_shops' => $totalShops,
+            'total_branches' => $totalBranches,
+            'branches_by_approval' => [
+                'pending' => $vendorsByApproval['pending'] ?? 0,
+                'approved' => $vendorsByApproval['approved'] ?? 0,
+                'rejected' => $vendorsByApproval['rejected'] ?? 0,
+            ],
+        ]);
+    }
+    
+    
+}
