@@ -1300,25 +1300,108 @@ public function getOrderedItemInformation($vendorId, $shopId, $branchId, $subord
 
 //     return response()->json(['message' => 'Order marked as in progress.']);
 // }
+
+
 public function markInProgress($suborderId)
 {
     $suborder = Suborder::findOrFail($suborderId);
+
+    // Fetch vendor
+    $vendor = DB::table('vendors')->where('id', $suborder->vendor_ID)->first();
+    if (!$vendor) {
+        return response()->json(['error' => 'Vendor not found.'], 404);
+    }
 
     // Ensure suborder is in pending state
     if (strtolower($suborder->status) !== 'pending') {
         return response()->json(['error' => 'Suborder cannot be marked as in progress in the current state.'], 400);
     }
 
-    // Mark suborder as in_progress
+    if ($vendor->vendor_type === 'API Vendor') {
+        // Get API vendor and endpoint info
+        $apiVendor = DB::table('vendors')
+            ->join('shops', 'vendors.id', '=', 'shops.vendors_ID')
+            ->join('branches', 'shops.id', '=', 'branches.shops_ID')
+            ->join('apivendor', 'branches.id', '=', 'apivendor.branches_ID')
+            ->where('vendors.id', $suborder->vendor_ID)
+            ->where('branches.id', $suborder->branch_ID)
+            ->select(
+                'apivendor.id as apivendor_ID',
+                'apivendor.api_base_url',
+                'apivendor.api_key',
+                'apivendor.response_format'
+            )
+            ->first();
+
+        if (!$apiVendor) {
+            return response()->json(['error' => 'API vendor configuration not found for the given branch and vendor.'], 404);
+        }
+
+        // Get method for marking as processing
+        $apiMethod = DB::table('apimethods')
+            ->where('apimethods.apivendor_ID', $apiVendor->apivendor_ID)
+            ->where('apimethods.method_name', 'mark-processing') // make sure this matches your DB
+            ->select('apimethods.endpoint', 'apimethods.http_method')
+            ->first();
+
+        if (!$apiMethod) {
+            return response()->json(['error' => 'API method for mark-processing not found.'], 404);
+        }
+
+        // Construct full URL
+        $vendorOrderId = $suborder->vendor_order_id;
+        if (!$vendorOrderId) {
+            return response()->json([
+                'error' => 'Vendor order ID is missing for this suborder. Cannot proceed with API call.'
+            ], 400);
+        }
+
+        $fullUrl = rtrim($apiVendor->api_base_url, '/') . '/' . ltrim($apiMethod->endpoint, '/');
+        $fullUrl = str_replace('{$vendorOrderId}', $vendorOrderId, $fullUrl);
+
+        try {
+            // Send request dynamically based on HTTP method
+            $httpMethod = strtolower($apiMethod->http_method);
+        
+            // 🔍 Log full URL before making request
+            \Log::info("Calling API method [{$httpMethod}] on URL: {$fullUrl}");
+        
+            $response = match ($httpMethod) {
+                'post' => Http::post($fullUrl),
+                'put' => Http::put($fullUrl),
+                'get' => Http::get($fullUrl),
+                'delete' => Http::delete($fullUrl),
+                default => null,
+            };
+        
+            // 🔍 Optional: Log full response status and body
+            \Log::info("Vendor response status: " . ($response ? $response->status() : 'null'));
+            \Log::info("Vendor response body: " . ($response ? $response->body() : 'null'));
+        
+            if (!$response || !$response->successful()) {
+    
+                return response()->json([
+                    'error' => 'Failed to update API vendor order. Vendor server responded with an error.'
+                ], 500);
+                
+
+            }
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'error' => 'Failed to connect to API vendor server.'
+            ], 500);
+        
+        }
+    }
+
+    // Continue local update for both In-App and API vendors
     $suborder->status = 'in_progress';
     $suborder->save();
 
-    // Fetch related order
+    // Update main order status if needed
     $order = DB::table('orders')->where('id', $suborder->orders_ID)->first();
-
-    // Check if order exists and is still pending (case-insensitive)
     if ($order && strtolower($order->order_status) === 'pending') {
-        // Update order_status to confirmed
         DB::table('orders')
             ->where('id', $suborder->orders_ID)
             ->update([
@@ -1327,24 +1410,166 @@ public function markInProgress($suborderId)
             ]);
     }
 
-    return response()->json(['message' => 'Suborder marked as in progress, and order status updated if applicable.']);
+    return response()->json([
+        'message' => 'Suborder marked as in progress, and order status updated if applicable.'
+    ]);
 }
+
+
+// public function markInProgress($suborderId)
+// {
+//     $suborder = Suborder::findOrFail($suborderId);
+
+//     // Ensure suborder is in pending state
+//     if (strtolower($suborder->status) !== 'pending') {
+//         return response()->json(['error' => 'Suborder cannot be marked as in progress in the current state.'], 400);
+//     }
+
+//     // Mark suborder as in_progress
+//     $suborder->status = 'in_progress';
+//     $suborder->save();
+
+//     // Fetch related order
+//     $order = DB::table('orders')->where('id', $suborder->orders_ID)->first();
+
+//     // Check if order exists and is still pending (case-insensitive)
+//     if ($order && strtolower($order->order_status) === 'pending') {
+//         // Update order_status to confirmed
+//         DB::table('orders')
+//             ->where('id', $suborder->orders_ID)
+//             ->update([
+//                 'order_status' => 'confirmed',
+//                 'updated_at' => now()
+//             ]);
+//     }
+
+//     return response()->json(['message' => 'Suborder marked as in progress, and order status updated if applicable.']);
+// }
+
+
+// public function markReady($suborderId)
+// {
+//     $suborder = Suborder::findOrFail($suborderId);
+
+//     if ($suborder->status !== 'in_progress') {
+//         return response()->json(['error' => 'Order cannot be marked as ready in the current state.'], 400);
+//     }
+
+//     $suborder->status = 'ready';
+//     $suborder->save();
+
+//     return response()->json(['message' => 'Order marked as ready for delivery.']);
+// }
 
 
 public function markReady($suborderId)
 {
     $suborder = Suborder::findOrFail($suborderId);
 
-    if ($suborder->status !== 'in_progress') {
-        return response()->json(['error' => 'Order cannot be marked as ready in the current state.'], 400);
+    // Check if suborder is in the correct state
+    if (strtolower($suborder->status) !== 'in_progress') {
+        return response()->json(['error' => 'Suborder cannot be marked as ready in the current state.'], 400);
     }
 
+    // Get vendor
+    $vendor = DB::table('vendors')->where('id', $suborder->vendor_ID)->first();
+    if (!$vendor) {
+        return response()->json(['error' => 'Vendor not found.'], 404);
+    }
+
+    if ($vendor->vendor_type === 'API Vendor') {
+        // Get API vendor info
+        $apiVendor = DB::table('vendors')
+            ->join('shops', 'vendors.id', '=', 'shops.vendors_ID')
+            ->join('branches', 'shops.id', '=', 'branches.shops_ID')
+            ->join('apivendor', 'branches.id', '=', 'apivendor.branches_ID')
+            ->where('vendors.id', $suborder->vendor_ID)
+            ->where('branches.id', $suborder->branch_ID)
+            ->select(
+                'apivendor.id as apivendor_ID',
+                'apivendor.api_base_url',
+                'apivendor.api_key',
+                'apivendor.response_format'
+            )
+            ->first();
+
+        if (!$apiVendor) {
+            return response()->json(['error' => 'API vendor configuration not found for the given branch and vendor.'], 404);
+        }
+
+        // Get API method for marking as ready
+        $apiMethod = DB::table('apimethods')
+            ->where('apimethods.apivendor_ID', $apiVendor->apivendor_ID)
+            ->where('apimethods.method_name', 'mark-ready') // Make sure this matches the correct method name
+            ->select('apimethods.endpoint', 'apimethods.http_method')
+            ->first();
+
+        if (!$apiMethod) {
+            return response()->json(['error' => 'API method for mark-ready not found.'], 404);
+        }
+
+        $vendorOrderId = $suborder->vendor_order_id;
+        if (!$vendorOrderId) {
+            return response()->json(['error' => 'Vendor order ID is missing for this suborder.'], 400);
+        }
+
+        // Construct full URL
+        // $fullUrl = rtrim($apiVendor->api_base_url, '/') . '/' . ltrim($apiMethod->endpoint, '/');
+        // $fullUrl = str_replace('{$vendorOrderId}', $vendorOrderId, $fullUrl);
+        $endpoint = str_replace('{id}', $vendorOrderId, $apiMethod->endpoint);
+        $fullUrl = rtrim($apiVendor->api_base_url, '/') . '/' . ltrim($endpoint, '/');
+        try {
+            $httpMethod = strtolower($apiMethod->http_method);
+
+            \Log::info("Calling API method [{$httpMethod}] on URL: {$fullUrl}");
+
+            $response = match ($httpMethod) {
+                'post' => Http::post($fullUrl),
+                'put' => Http::put($fullUrl),
+                'get' => Http::get($fullUrl),
+                'delete' => Http::delete($fullUrl),
+                default => null,
+            };
+
+            \Log::info("Vendor response status: " . ($response ? $response->status() : 'null'));
+            \Log::info("Vendor response body: " . ($response ? $response->body() : 'null'));
+
+            if (!$response || !$response->successful()) {
+                return response()->json([
+                    'error' => 'Failed to mark as ready on API vendor server. Vendor responded with an error.'
+                ], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to connect to API vendor server.'
+            ], 500);
+        }
+    }
+
+    // Update local suborder status
     $suborder->status = 'ready';
     $suborder->save();
 
-    return response()->json(['message' => 'Order marked as ready for delivery.']);
+    return response()->json([
+        'message' => 'Suborder marked as ready successfully.'
+    ]);
 }
 
+
+
+// public function confirmHandover($suborderId)
+// {
+//     $suborder = Suborder::findOrFail($suborderId);
+
+//     if ($suborder->status !== 'picked_up') {
+//         return response()->json(['error' => 'Order cannot be confirmed for handover in the current state.'], 400);
+//     }
+
+//     $suborder->status = 'handover_confirmed';
+//     $suborder->save();
+
+//     return response()->json(['message' => 'Order handover to deliveryboy .']);
+// }
 public function confirmHandover($suborderId)
 {
     $suborder = Suborder::findOrFail($suborderId);
@@ -1353,29 +1578,197 @@ public function confirmHandover($suborderId)
         return response()->json(['error' => 'Order cannot be confirmed for handover in the current state.'], 400);
     }
 
+    // Get vendor
+    $vendor = DB::table('vendors')->where('id', $suborder->vendor_ID)->first();
+    if (!$vendor) {
+        return response()->json(['error' => 'Vendor not found.'], 404);
+    }
+
+    // For API Vendor, sync handover status to vendor
+    if ($vendor->vendor_type === 'API Vendor') {
+        // Get API Vendor config
+        $apiVendor = DB::table('vendors')
+            ->join('shops', 'vendors.id', '=', 'shops.vendors_ID')
+            ->join('branches', 'shops.id', '=', 'branches.shops_ID')
+            ->join('apivendor', 'branches.id', '=', 'apivendor.branches_ID')
+            ->where('vendors.id', $suborder->vendor_ID)
+            ->where('branches.id', $suborder->branch_ID)
+            ->select(
+                'apivendor.id as apivendor_ID',
+                'apivendor.api_base_url',
+                'apivendor.api_key',
+                'apivendor.response_format'
+            )
+            ->first();
+
+        if (!$apiVendor) {
+            return response()->json(['error' => 'API vendor configuration not found for the given branch and vendor.'], 404);
+        }
+
+        // Get API Method for handover confirmation
+        $apiMethod = DB::table('apimethods')
+            ->where('apimethods.apivendor_ID', $apiVendor->apivendor_ID)
+            ->where('apimethods.method_name', 'mark-confirmed') // Make sure this matches
+            ->select('apimethods.endpoint', 'apimethods.http_method')
+            ->first();
+
+        if (!$apiMethod) {
+            return response()->json(['error' => 'API method for handover-confirmed not found.'], 404);
+        }
+
+        $vendorOrderId = $suborder->vendor_order_id;
+        if (!$vendorOrderId) {
+            return response()->json(['error' => 'Vendor order ID is missing for this suborder.'], 400);
+        }
+
+        // Construct endpoint URL
+        $endpoint = str_replace('{id}', $vendorOrderId, $apiMethod->endpoint);
+        $fullUrl = rtrim($apiVendor->api_base_url, '/') . '/' . ltrim($endpoint, '/');
+
+        try {
+            $httpMethod = strtolower($apiMethod->http_method);
+
+            \Log::info("Calling vendor handover-confirmed [{$httpMethod}] URL: {$fullUrl}");
+
+            $response = match ($httpMethod) {
+                'post' => Http::post($fullUrl),
+                'put' => Http::put($fullUrl),
+                'get' => Http::get($fullUrl),
+                'delete' => Http::delete($fullUrl),
+                default => null,
+            };
+
+            \Log::info("Vendor response status: " . ($response ? $response->status() : 'null'));
+            \Log::info("Vendor response body: " . ($response ? $response->body() : 'null'));
+
+            if (!$response || !$response->successful()) {
+                return response()->json([
+                    'error' => 'Failed to confirm handover on API vendor server. Vendor responded with error.'
+                ], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to connect to API vendor server.'
+            ], 500);
+        }
+    }
+
+    // Update local suborder status
     $suborder->status = 'handover_confirmed';
     $suborder->save();
 
+    // DO NOT change this response (frontend depends on it)
     return response()->json(['message' => 'Order handover to deliveryboy .']);
 }
 
 
 
 
+// public function confirmPaymentByVendor($suborderId)
+// {
+//     $suborder = Suborder::findOrFail($suborderId);
+
+//     if ($suborder->payment_status !== 'confirmed_by_deliveryboy') {
+//         return response()->json(['error' => 'Delivery boy must confirm payment first.'], 400);
+//     }
+
+//     $suborder->payment_status = 'confirmed_by_vendor';
+//     $suborder->save();
+
+//     return response()->json(['message' => 'Payment confirmed by vendor.']);
+// }
+
 public function confirmPaymentByVendor($suborderId)
 {
     $suborder = Suborder::findOrFail($suborderId);
 
+    // Validate the current status
     if ($suborder->payment_status !== 'confirmed_by_deliveryboy') {
         return response()->json(['error' => 'Delivery boy must confirm payment first.'], 400);
     }
 
+    // Fetch vendor info
+    $vendor = DB::table('vendors')->where('id', $suborder->vendor_ID)->first();
+    if (!$vendor) {
+        return response()->json(['error' => 'Vendor not found.'], 404);
+    }
+
+    // If vendor is an API Vendor
+    if ($vendor->vendor_type === 'API Vendor') {
+        // Get API vendor configuration
+        $apiVendor = DB::table('vendors')
+            ->join('shops', 'vendors.id', '=', 'shops.vendors_ID')
+            ->join('branches', 'shops.id', '=', 'branches.shops_ID')
+            ->join('apivendor', 'branches.id', '=', 'apivendor.branches_ID')
+            ->where('vendors.id', $suborder->vendor_ID)
+            ->where('branches.id', $suborder->branch_ID)
+            ->select(
+                'apivendor.id as apivendor_ID',
+                'apivendor.api_base_url',
+                'apivendor.api_key',
+                'apivendor.response_format'
+            )
+            ->first();
+
+        if (!$apiVendor) {
+            return response()->json(['error' => 'API vendor configuration not found.'], 404);
+        }
+
+        // Get API method for confirm payment by vendor
+        $apiMethod = DB::table('apimethods')
+            ->where('apivendor_ID', $apiVendor->apivendor_ID)
+            ->where('method_name', 'mark-confirm-payment-by-vendor')
+            ->select('endpoint', 'http_method')
+            ->first();
+
+        if (!$apiMethod) {
+            return response()->json(['error' => 'API method for confirm-payment-by-vendor not found.'], 404);
+        }
+
+        $vendorOrderId = $suborder->vendor_order_id;
+        if (!$vendorOrderId) {
+            return response()->json(['error' => 'Vendor order ID is missing.'], 400);
+        }
+
+        // Replace placeholder in endpoint and build full URL
+        $endpoint = str_replace('{id}', $vendorOrderId, $apiMethod->endpoint);
+        $fullUrl = rtrim($apiVendor->api_base_url, '/') . '/' . ltrim($endpoint, '/');
+
+        try {
+            $httpMethod = strtolower($apiMethod->http_method);
+            \Log::info("Calling API method [{$httpMethod}] on URL: {$fullUrl}");
+
+            $response = match ($httpMethod) {
+                'post' => Http::post($fullUrl),
+                'put' => Http::put($fullUrl),
+                'get' => Http::get($fullUrl),
+                'delete' => Http::delete($fullUrl),
+                default => null,
+            };
+
+            \Log::info("Vendor response status: " . ($response ? $response->status() : 'null'));
+            \Log::info("Vendor response body: " . ($response ? $response->body() : 'null'));
+
+            if (!$response || !$response->successful()) {
+                return response()->json([
+                    'error' => 'Failed to confirm payment on API vendor server. Vendor responded with an error.'
+                ], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to connect to API vendor server.',
+                'exception' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Update local suborder payment status
     $suborder->payment_status = 'confirmed_by_vendor';
     $suborder->save();
 
+    // DO NOT CHANGE THE RESPONSE (as requested)
     return response()->json(['message' => 'Payment confirmed by vendor.']);
 }
-
 
 
 // public function updateSuborderStatus(Request $request, $suborderId)

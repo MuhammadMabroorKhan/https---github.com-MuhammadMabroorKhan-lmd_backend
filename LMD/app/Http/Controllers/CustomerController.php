@@ -1631,6 +1631,65 @@ private function createOrUpdateSuborder($groupData, $orderId)
     }
 
   
+// public function cancelOrder($orderId)
+// {
+//     // Retrieve the order by ID
+//     $order = DB::table('orders')->where('id', $orderId)->first();
+
+//     // Check if the order exists
+//     if (!$order) {
+//         return response()->json(['message' => 'Order not found'], 404);
+//     }
+
+//     // Check if the order is in a cancellable status
+//     if ($order->order_status !== 'pending') {
+//         return response()->json(['message' => 'Order cannot be cancelled because it is not pending'], 400);
+//     }
+
+//     // Retrieve all related suborders
+//     $suborders = DB::table('suborders')->where('orders_ID', $orderId)->get();
+
+//     // Check if all related suborders have a status of 'pending'
+//     $allPending = $suborders->every(function ($suborder) {
+//         return $suborder->status === 'pending';
+//     });
+
+//     if (!$allPending) {
+//         return response()->json(['message' => 'Order cannot be cancelled because not all suborders are pending'], 400);
+//     }
+
+//     // Begin a transaction
+//     DB::beginTransaction();
+
+//     try {
+//         // Update the order status to 'cancelled'
+//         DB::table('orders')
+//             ->where('id', $orderId)
+//             ->update([
+//                 'order_status' => 'cancelled',
+//                 'updated_at' => now(),
+//             ]);
+
+//         // Update the status of all related suborders to 'cancelled'
+//         DB::table('suborders')
+//             ->where('orders_ID', $orderId)
+//             ->update([
+//                 'status' => 'cancelled',
+//                 'updated_at' => now(),
+//             ]);
+
+//         // Commit the transaction
+//         DB::commit();
+
+//         return response()->json(['message' => 'Order and all related suborders cancelled successfully'], 200);
+//     } catch (\Exception $e) {
+//         // Rollback the transaction in case of an error
+//         DB::rollBack();
+
+//         return response()->json(['message' => 'Failed to cancel the order', 'error' => $e->getMessage()], 500);
+//     }
+// }
+
 public function cancelOrder($orderId)
 {
     // Retrieve the order by ID
@@ -1658,6 +1717,73 @@ public function cancelOrder($orderId)
         return response()->json(['message' => 'Order cannot be cancelled because not all suborders are pending'], 400);
     }
 
+    // Loop through suborders and handle API vendor cancelation if needed
+    foreach ($suborders as $suborder) {
+        $vendor = DB::table('vendors')->where('id', $suborder->vendor_ID)->first();
+
+        if ($vendor && $vendor->vendor_type === 'API Vendor') {
+            $apiVendor = DB::table('vendors')
+                ->join('shops', 'vendors.id', '=', 'shops.vendors_ID')
+                ->join('branches', 'shops.id', '=', 'branches.shops_ID')
+                ->join('apivendor', 'branches.id', '=', 'apivendor.branches_ID')
+                ->where('vendors.id', $suborder->vendor_ID)
+                ->where('branches.id', $suborder->branch_ID)
+                ->select(
+                    'apivendor.id as apivendor_ID',
+                    'apivendor.api_base_url',
+                    'apivendor.api_key',
+                    'apivendor.response_format'
+                )
+                ->first();
+
+            if (!$apiVendor) {
+                return response()->json(['message' => 'API vendor configuration not found.'], 500);
+            }
+
+            $apiMethod = DB::table('apimethods')
+                ->where('apivendor_ID', $apiVendor->apivendor_ID)
+                ->where('method_name', 'mark-cancel')
+                ->select('endpoint', 'http_method')
+                ->first();
+
+            if (!$apiMethod) {
+                // return response()->json(['message' => 'API method for mark-cancel not found.'], 500);
+                continue;
+
+            }
+
+            $vendorOrderId = $suborder->vendor_order_id;
+            if (!$vendorOrderId) {
+                return response()->json(['message' => 'Vendor order ID is missing for a suborder.'], 500);
+            }
+
+            $endpoint = str_replace('{id}', $vendorOrderId, $apiMethod->endpoint);
+            $fullUrl = rtrim($apiVendor->api_base_url, '/') . '/' . ltrim($endpoint, '/');
+
+            try {
+                $httpMethod = strtolower($apiMethod->http_method);
+                \Log::info("Calling API cancel method [$httpMethod] on URL: $fullUrl");
+
+                $response = match ($httpMethod) {
+                    'post' => Http::post($fullUrl),
+                    'put' => Http::put($fullUrl),
+                    'get' => Http::get($fullUrl),
+                    'delete' => Http::delete($fullUrl),
+                    default => null,
+                };
+
+                \Log::info("Vendor cancel response status: " . ($response ? $response->status() : 'null'));
+                \Log::info("Vendor cancel response body: " . ($response ? $response->body() : 'null'));
+
+                if (!$response || !$response->successful()) {
+                    return response()->json(['message' => 'Failed to cancel the order on API vendor side'], 500);
+                }
+            } catch (\Exception $e) {
+                return response()->json(['message' => 'Failed to connect to API vendor during cancel process'], 500);
+            }
+        }
+    }
+
     // Begin a transaction
     DB::beginTransaction();
 
@@ -1670,7 +1796,7 @@ public function cancelOrder($orderId)
                 'updated_at' => now(),
             ]);
 
-        // Update the status of all related suborders to 'cancelled'
+        // Update all related suborders to 'cancelled'
         DB::table('suborders')
             ->where('orders_ID', $orderId)
             ->update([
@@ -1678,18 +1804,13 @@ public function cancelOrder($orderId)
                 'updated_at' => now(),
             ]);
 
-        // Commit the transaction
         DB::commit();
-
         return response()->json(['message' => 'Order and all related suborders cancelled successfully'], 200);
     } catch (\Exception $e) {
-        // Rollback the transaction in case of an error
         DB::rollBack();
-
         return response()->json(['message' => 'Failed to cancel the order', 'error' => $e->getMessage()], 500);
     }
 }
-
 
 
 
@@ -1788,6 +1909,41 @@ public function getLiveRouteTracking($suborderId)
     }
 }
 
+// public function confirmOrderDelivery($suborderId)
+// {
+//     $suborder = Suborder::findOrFail($suborderId);
+
+//     if ($suborder->status !== 'in_transit' && $suborder->status !== 'handover_confirmed') {
+//         return response()->json(['error' => 'Order cannot be confirmed as delivered in the current state.'], 400);
+//     }
+
+//  // Find the most recent LocationTracking record with status 'reached_destination' for the suborder
+//  $location = LocationTracking::where('suborders_ID', $suborderId)
+//  ->where('status', 'reached_destination')
+//  ->latest()  // Get the most recent entry
+//  ->first();
+
+// // If no reached destination record is found, return an error
+// if (!$location) {
+// return response()->json(['error' => 'No reached destination record found for this suborder.'], 400);
+// }
+
+//     $suborder->status = 'delivered';
+//     $suborder->save();
+
+   
+//  // Insert a new location tracking record with the same latitude and longitude as the reached destination
+//  LocationTracking::create([
+//     'latitude' => $location->latitude,  // Use latitude from the reached destination record
+//     'longitude' => $location->longitude, // Use longitude from the reached destination record
+//     'status' => 'delivered',
+//     'suborders_ID' => $suborderId
+// ]);
+
+
+//     return response()->json(['message' => 'Order confirmed as delivered.']);
+// }
+
 public function confirmOrderDelivery($suborderId)
 {
     $suborder = Suborder::findOrFail($suborderId);
@@ -1796,34 +1952,106 @@ public function confirmOrderDelivery($suborderId)
         return response()->json(['error' => 'Order cannot be confirmed as delivered in the current state.'], 400);
     }
 
- // Find the most recent LocationTracking record with status 'reached_destination' for the suborder
- $location = LocationTracking::where('suborders_ID', $suborderId)
- ->where('status', 'reached_destination')
- ->latest()  // Get the most recent entry
- ->first();
+    // Find the most recent LocationTracking record with status 'reached_destination' for the suborder
+    $location = LocationTracking::where('suborders_ID', $suborderId)
+        ->where('status', 'reached_destination')
+        ->latest()
+        ->first();
 
-// If no reached destination record is found, return an error
-if (!$location) {
-return response()->json(['error' => 'No reached destination record found for this suborder.'], 400);
-}
+    if (!$location) {
+        return response()->json(['error' => 'No reached destination record found for this suborder.'], 400);
+    }
 
+    // Get vendor info
+    $vendor = DB::table('vendors')->where('id', $suborder->vendor_ID)->first();
+
+    if ($vendor && $vendor->vendor_type === 'API Vendor') {
+        // Join API vendor tables
+        $apiVendor = DB::table('vendors')
+            ->join('shops', 'vendors.id', '=', 'shops.vendors_ID')
+            ->join('branches', 'shops.id', '=', 'branches.shops_ID')
+            ->join('apivendor', 'branches.id', '=', 'apivendor.branches_ID')
+            ->where('vendors.id', $suborder->vendor_ID)
+            ->where('branches.id', $suborder->branch_ID)
+            ->select(
+                'apivendor.id as apivendor_ID',
+                'apivendor.api_base_url',
+                'apivendor.api_key',
+                'apivendor.response_format'
+            )
+            ->first();
+
+        if ($apiVendor) {
+            // Get method details
+            $apiMethod = DB::table('apimethods')
+                ->where('apimethods.apivendor_ID', $apiVendor->apivendor_ID)
+                ->where('apimethods.method_name', 'mark-delivered')
+                ->select('apimethods.endpoint', 'apimethods.http_method')
+                ->first();
+
+            if ($apiMethod) {
+                $vendorOrderId = $suborder->vendor_order_id;
+                if ($vendorOrderId) {
+                    $endpoint = str_replace('{id}', $vendorOrderId, $apiMethod->endpoint);
+                    $fullUrl = rtrim($apiVendor->api_base_url, '/') . '/' . ltrim($endpoint, '/');
+                    $httpMethod = strtolower($apiMethod->http_method);
+
+                    try {
+                        \Log::info("Calling vendor API: [{$httpMethod}] $fullUrl");
+
+                        $response = match ($httpMethod) {
+                            'post' => Http::post($fullUrl),
+                            'put' => Http::put($fullUrl),
+                            'get' => Http::get($fullUrl),
+                            'delete' => Http::delete($fullUrl),
+                            default => null,
+                        };
+
+                        \Log::info("Vendor API response: " . ($response ? $response->status() : 'null'));
+                        \Log::info("Vendor API response body: " . ($response ? $response->body() : 'null'));
+
+                        if (!$response || !$response->successful()) {
+                            \Log::error("Failed to mark as delivered on API vendor server for Suborder ID: $suborderId");
+                        }
+                    } catch (\Exception $e) {
+                        \Log::error("Exception while calling API vendor for delivery: " . $e->getMessage());
+                    }
+                }
+            }
+        }
+    }
+
+    // Update local suborder status
     $suborder->status = 'delivered';
     $suborder->save();
 
-   
- // Insert a new location tracking record with the same latitude and longitude as the reached destination
- LocationTracking::create([
-    'latitude' => $location->latitude,  // Use latitude from the reached destination record
-    'longitude' => $location->longitude, // Use longitude from the reached destination record
-    'status' => 'delivered',
-    'suborders_ID' => $suborderId
-]);
+    // Insert new location tracking entry for delivered
+    LocationTracking::create([
+        'latitude' => $location->latitude,
+        'longitude' => $location->longitude,
+        'status' => 'delivered',
+        'suborders_ID' => $suborderId
+    ]);
 
-
+    // Return same response structure as before
     return response()->json(['message' => 'Order confirmed as delivered.']);
 }
 
+// public function confirmPaymentByCustomer($suborderId)
+// {
+//     $suborder = Suborder::findOrFail($suborderId);
 
+//     // Validate the current status
+//     if ($suborder->payment_status !== 'pending') {
+//         return response()->json(['error' => 'Payment is already confirmed or not in pending state.'], 400);
+//     }
+
+//     // Update payment status to confirmed by customer
+//     $suborder->payment_status = 'confirmed_by_customer';
+//     $suborder->save();
+
+//     return response()->json(['message' => 'Payment confirmed by customer.']);
+// }
 public function confirmPaymentByCustomer($suborderId)
 {
     $suborder = Suborder::findOrFail($suborderId);
@@ -1833,10 +2061,86 @@ public function confirmPaymentByCustomer($suborderId)
         return response()->json(['error' => 'Payment is already confirmed or not in pending state.'], 400);
     }
 
-    // Update payment status to confirmed by customer
+    // Fetch vendor info
+    $vendor = DB::table('vendors')->where('id', $suborder->vendor_ID)->first();
+    if (!$vendor) {
+        return response()->json(['error' => 'Vendor not found.'], 404);
+    }
+
+    // If vendor is an API Vendor
+    if ($vendor->vendor_type === 'API Vendor') {
+        // Get API vendor configuration
+        $apiVendor = DB::table('vendors')
+            ->join('shops', 'vendors.id', '=', 'shops.vendors_ID')
+            ->join('branches', 'shops.id', '=', 'branches.shops_ID')
+            ->join('apivendor', 'branches.id', '=', 'apivendor.branches_ID')
+            ->where('vendors.id', $suborder->vendor_ID)
+            ->where('branches.id', $suborder->branch_ID)
+            ->select(
+                'apivendor.id as apivendor_ID',
+                'apivendor.api_base_url',
+                'apivendor.api_key',
+                'apivendor.response_format'
+            )
+            ->first();
+
+        if (!$apiVendor) {
+            return response()->json(['error' => 'API vendor configuration not found.'], 404);
+        }
+
+        // Get API method for confirm payment by customer
+        $apiMethod = DB::table('apimethods')
+            ->where('apivendor_ID', $apiVendor->apivendor_ID)
+            ->where('method_name', 'mark-confirm-payment-by-customer')
+            ->select('endpoint', 'http_method')
+            ->first();
+
+        if (!$apiMethod) {
+            return response()->json(['error' => 'API method for confirm-payment-by-customer not found.'], 404);
+        }
+
+        $vendorOrderId = $suborder->vendor_order_id;
+        if (!$vendorOrderId) {
+            return response()->json(['error' => 'Vendor order ID is missing.'], 400);
+        }
+
+        // Replace placeholder in endpoint and build full URL
+        $endpoint = str_replace('{id}', $vendorOrderId, $apiMethod->endpoint);
+        $fullUrl = rtrim($apiVendor->api_base_url, '/') . '/' . ltrim($endpoint, '/');
+
+        try {
+            $httpMethod = strtolower($apiMethod->http_method);
+            \Log::info("Calling API method [{$httpMethod}] on URL: {$fullUrl}");
+
+            $response = match ($httpMethod) {
+                'post' => Http::post($fullUrl),
+                'put' => Http::put($fullUrl),
+                'get' => Http::get($fullUrl),
+                'delete' => Http::delete($fullUrl),
+                default => null,
+            };
+
+            \Log::info("Vendor response status: " . ($response ? $response->status() : 'null'));
+            \Log::info("Vendor response body: " . ($response ? $response->body() : 'null'));
+
+            if (!$response || !$response->successful()) {
+                return response()->json([
+                    'error' => 'Failed to confirm payment on API vendor server. Vendor responded with an error.'
+                ], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to connect to API vendor server.',
+                'exception' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Update local suborder payment status
     $suborder->payment_status = 'confirmed_by_customer';
     $suborder->save();
 
+    // DO NOT CHANGE THE RESPONSE (as requested)
     return response()->json(['message' => 'Payment confirmed by customer.']);
 }
 

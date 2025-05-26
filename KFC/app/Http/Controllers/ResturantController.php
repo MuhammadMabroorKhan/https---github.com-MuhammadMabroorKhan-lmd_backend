@@ -13,7 +13,8 @@ use App\Models\OrderDetail; // Import the OrderDetail model
 use App\Http\ResturantController\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Http;
+// use Illuminate\Support\Facades\Storage;
 class ResturantController extends Controller
 {
     
@@ -410,7 +411,466 @@ public function getItemsWithDetails()
 
 
 
+///New Ststuses update
+ // Mark order as 'processing'
+//  public function markAsProcessing($id)
+//  {
+//      $order = Order::find($id);
+ 
+//      if (!$order) {
+//          return response()->json([
+//              'success' => false,
+//              'message' => 'Order not found',
+//          ], 404);
+//      }
+ 
+//      if ($order->status !== 'pending') {
+//          return response()->json([
+//              'success' => false,
+//              'message' => "Cannot mark as processing. Order must be in 'pending' status.",
+//              'current_status' => $order->status,
+//          ], 400);
+//      }
+ 
+//      $order->status = 'processing';
+//      $order->save();
+ 
+//      return response()->json([
+//          'success' => true,
+//          'message' => 'Order marked as processing',
+//          'data' => [
+//              'order_id' => $order->id,
+//              'status' => $order->status,
+//          ]
+//      ]);
+//  }
+ 
 
+
+ public function markAsProcessing($id)
+ {
+     $order = Order::find($id);
+ 
+     if (!$order) {
+         return response()->json([
+             'success' => false,
+             'message' => 'Order not found',
+         ], 404);
+     }
+ 
+     if ($order->status !== 'pending') {
+         return response()->json([
+             'success' => false,
+             'message' => "Cannot mark as processing. Order must be in 'pending' status.",
+             'current_status' => $order->status,
+         ], 400);
+     }
+ 
+     // First update KFC side
+     $order->status = 'processing';
+     $order->save();
+ 
+     // Then call main server to mark as in_progress
+    //  $response = Http::patch("http://192.168.43.63:8000/vendor/order/{$order->suborder_id}/in-progress");
+ 
+     return response()->json([
+         'success' => true,
+         'message' => 'Order marked as processing (KFC) and in-progress (Main)',
+         'kfc_status' => $order->status,
+        //  'main_server_response' => $response->json(),
+     ]);
+ }
+ 
+
+
+ public function markAsReady($id)
+ {
+     $order = Order::find($id);
+ 
+     if (!$order) {
+         return response()->json([
+             'success' => false,
+             'message' => 'Order not found',
+         ], 404);
+     }
+ 
+     if (!in_array($order->status, ['processing'])) {
+         return response()->json([
+             'success' => false,
+             'message' => "Cannot mark as ready. Order must be in 'processing' status.",
+             'current_status' => $order->status,
+         ], 400);
+     }
+ 
+     $order->status = 'ready';
+     $order->save();
+ 
+     return response()->json([
+         'success' => true,
+         'message' => 'Order marked as ready',
+         'data' => [
+             'order_id' => $order->id,
+             'status' => $order->status,
+         ]
+     ]);
+ }
+
+
+// public function markAsReady($id)
+// {
+//     $order = Order::find($id);
+
+//     if (!$order) {
+//         return response()->json([
+//             'success' => false,
+//             'message' => 'Order not found',
+//         ], 404);
+//     }
+
+//     if ($order->status !== 'processing') {
+//         return response()->json([
+//             'success' => false,
+//             'message' => "Cannot mark as ready. Order must be in 'processing' status.",
+//             'current_status' => $order->status,
+//         ], 400);
+//     }
+
+//     // First update KFC side
+//     $order->status = 'ready';
+//     $order->save();
+
+//     // Then call main server to mark as ready
+//     $response = Http::patch("http://192.168.43.63:8000/vendor/order/{$order->suborder_id}/ready");
+
+//     return response()->json([
+//         'success' => true,
+//         'message' => 'Order marked as ready (KFC) and ready (Main)',
+//         'kfc_status' => $order->status,
+//         'main_server_response' => $response->json(),
+//     ]);
+// }
+
+
+
+
+
+
+public function markAssigned(Request $request, $id)
+{
+    \Log::info('Request data:', $request->all());
+   
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Order not found',
+        ], 404);
+    }
+
+    // Update order status to assigned
+    $order->status = 'assigned';
+    $order->save();
+
+    // Validate request
+    $request->validate([
+        'delivery_boy_id' => 'required|integer',
+        'delivery_boy_name' => 'nullable|string',
+        'delivery_boy_contact' => 'nullable|string',
+        'delivery_boy_image' => 'nullable|image|mimes:jpeg,png,jpg',
+    ]);
+
+    // Handle image upload
+    $imagePath = null;
+    if ($request->hasFile('delivery_boy_image')) {
+        $imagePath = $request->file('delivery_boy_image')->store('delivery_boy_images', 'public');
+    }
+
+    // Save to delivery_tracking table
+    DeliveryTracking::create([
+        'order_id' => $order->id,
+        'delivery_boy_id' => $request->delivery_boy_id,
+        'delivery_boy_name' => $request->delivery_boy_name,
+        'delivery_boy_contact' => $request->delivery_boy_contact,
+        'delivery_boy_image' => $imagePath, // saved as relative path in /storage/app/public/
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Order marked as assigned and delivery tracking saved',
+        'data' => [
+            'order_id' => $order->id,
+            'status' => $order->status,
+            'delivery_boy_image_url' => $imagePath ? asset('storage/' . $imagePath) : null,
+        ]
+    ]);
+}
+
+
+
+
+
+public function pickupOrder($id)
+{
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Order not found',
+        ], 404);
+    }
+
+    if (!in_array($order->status, ['assigned'])) {
+        return response()->json([
+            'success' => false,
+            'message' => "Cannot mark as picked up. Order must be in 'assigned' status.",
+            'current_status' => $order->status,
+        ], 400);
+    }
+
+    $order->status = 'picked_up';
+    $order->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Order marked as picked up',
+        'data' => [
+            'order_id' => $order->id,
+            'status' => $order->status,
+        ]
+    ]);
+}
+
+public function handoverConfirmed($id)
+{
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Order not found',
+        ], 404);
+    }
+
+    if (!in_array($order->status, ['picked_up'])) {
+        return response()->json([
+            'success' => false,
+            'message' => "Cannot mark as handover confirmed. Order must be in 'picked_up' status.",
+            'current_status' => $order->status,
+        ], 400);
+    }
+
+    $order->status = 'handover_confirmed';
+    $order->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Order marked as handover confirmed',
+        'data' => [
+            'order_id' => $order->id,
+            'status' => $order->status,
+        ]
+    ]);
+}
+
+
+public function inTransit($id)
+{
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Order not found',
+        ], 404);
+    }
+
+    if ($order->status === 'in_transit') {
+        return response()->json([
+            'success' => true,
+            'message' => 'Order already in transit',
+            'data' => [
+                'order_id' => $order->id,
+                'status' => $order->status,
+            ]
+        ]);
+    }
+
+    if ($order->status !== 'handover_confirmed') {
+        return response()->json([
+            'success' => false,
+            'message' => "Cannot mark as in transit. Order must be in 'handover_confirmed' or already 'in_transit' status.",
+            'current_status' => $order->status,
+        ], 400);
+    }
+
+    $order->status = 'in_transit';
+    $order->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Order marked as in transit',
+        'data' => [
+            'order_id' => $order->id,
+            'status' => $order->status,
+        ]
+    ]);
+}
+
+public function markDelivered($id)
+{
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Order not found',
+        ], 404);
+    }
+
+    if ($order->status !== 'in_transit') {
+        return response()->json([
+            'success' => false,
+            'message' => "Cannot mark as delivered. Order must be in 'in_transit' status.",
+            'current_status' => $order->status,
+        ], 400);
+    }
+
+    $order->status = 'delivered';
+    $order->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Order marked as delivered',
+        'data' => [
+            'order_id' => $order->id,
+            'status' => $order->status,
+        ]
+    ]);
+}
+
+
+public function cancelOrder($id)
+{
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Order not found',
+        ], 404);
+    }
+
+    if ($order->status !== 'pending') {
+        return response()->json([
+            'success' => false,
+            'message' => "Only 'pending' orders can be cancelled.",
+            'current_status' => $order->status,
+        ], 400);
+    }
+
+    $order->status = 'canceled';
+    $order->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Order has been cancelled',
+        'data' => [
+            'order_id' => $order->id,
+            'status' => $order->status,
+        ]
+    ]);
+}
+
+
+
+
+public function confirmPaymentByCustomer($id)
+{
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+    }
+
+    if ($order->payment_status !== 'pending') {
+        return response()->json([
+            'success' => false,
+            'message' => "Only 'pending' payment status can be confirmed by customer.",
+            'current_status' => $order->payment_status
+        ], 400);
+    }
+
+    $order->payment_status = 'confirmed_by_customer';
+    $order->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Payment confirmed by customer',
+        'data' => [
+            'order_id' => $order->id,
+            'payment_status' => $order->payment_status,
+        ]
+    ]);
+}
+public function confirmPaymentByDeliveryBoy($id)
+{
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+    }
+
+    if ($order->payment_status !== 'confirmed_by_customer') {
+        return response()->json([
+            'success' => false,
+            'message' => "Payment must be 'confirmed_by_customer' before delivery boy can confirm.",
+            'current_status' => $order->payment_status
+        ], 400);
+    }
+
+    $order->payment_status = 'confirmed_by_deliveryboy';
+    $order->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Payment confirmed by delivery boy',
+        'data' => [
+            'order_id' => $order->id,
+            'payment_status' => $order->payment_status,
+        ]
+    ]);
+}
+
+public function confirmPaymentByVendor($id)
+{
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+    }
+
+    if ($order->payment_status !== 'confirmed_by_deliveryboy') {
+        return response()->json([
+            'success' => false,
+            'message' => "Payment must be 'confirmed_by_deliveryboy' before vendor can confirm.",
+            'current_status' => $order->payment_status
+        ], 400);
+    }
+
+    $order->payment_status = 'confirmed_by_vendor';
+    $order->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Payment confirmed by vendor',
+        'data' => [
+            'order_id' => $order->id,
+            'payment_status' => $order->payment_status,
+        ]
+    ]);
+}
 
 }
 
