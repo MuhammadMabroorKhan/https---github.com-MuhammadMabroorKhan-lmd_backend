@@ -58,6 +58,9 @@ Route::get('/lmd/menu/{branchId}', [CustomerController::class, 'getMenuFromVendo
 Route::post('/cart/create', [CustomerController::class, 'createOrUpdateCart']);
 Route::post('/cart/add-item', [CustomerController::class, 'addItemToCart']);
 Route::post('/cart/remove-item', [CustomerController::class, 'removeItemFromCart']);
+Route::post('/cart/increase-quantity', [CustomerController::class, 'increaseCartItemQuantity']);
+Route::post('/cart/decrease-quantity', [CustomerController::class, 'decreaseCartItemQuantity']);
+
 Route::post('/cart/clear', [CustomerController::class, 'clearCart']);
 Route::get('/cart/details', [CustomerController::class, 'getCartDetails']);
 

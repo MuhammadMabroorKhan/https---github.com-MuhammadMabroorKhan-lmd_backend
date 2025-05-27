@@ -736,65 +736,255 @@ $vendorType = $vendor->vendor_type; // Get the vendor type
 
 //     return response()->json(['message' => 'Item removed from cart']);
 // }
+
+
+
+
+
+
+
+
+
+// public function removeItemFromCart(Request $request)
+// {
+//     DB::beginTransaction();
+
+//     try {
+//     $itemId = $request->input('cart_item_id');
+
+//     // Check if item exists
+//     $cartItem = DB::table('cart_items')->where('id', $itemId)->first();
+
+//     // if (!$cartItem) {
+//     //     return response()->json(['message' => 'Item not found in cart'], 404);
+//     // }
+//     if (!$cartItem) {
+//         throw new \Exception('Item not found in cart');
+//     }
+    
+//     // Get suborder and cart ID before deleting
+//     $suborderId = $cartItem->cart_suborders_ID;
+
+//     // Get suborder details
+//     $suborder = DB::table('cart_suborders')->where('id', $suborderId)->first();
+//     // if (!$suborder) {
+//     //     return response()->json(['message' => 'Suborder not found'], 404);
+//     // }
+//     if (!$suborder) {
+//         throw new \Exception('Suborder not found');
+//     }
+    
+//     // Get cart ID
+//     $cartId = $suborder->cart_ID;
+
+//     // Update suborder total amount
+//     DB::table('cart_suborders')
+//         ->where('id', $suborderId)
+//         ->update([
+//             'total_amount' => DB::raw("GREATEST(total_amount - {$cartItem->total}, 0)")
+//         ]);
+
+//     // Update main cart total amount
+//     DB::table('cart')
+//         ->where('id', $cartId)
+//         ->update([
+//             'total_amount' => DB::raw("GREATEST(total_amount - {$cartItem->total}, 0)")
+//         ]);
+
+//     // Delete item
+//     DB::table('cart_items')->where('id', $itemId)->delete();
+
+//     // Check if suborder has any items left
+//     $remainingItems = DB::table('cart_items')->where('cart_suborders_ID', $suborderId)->count();
+
+//     if ($remainingItems == 0) {
+//         // Delete suborder
+//         DB::table('cart_suborders')->where('id', $suborderId)->delete();
+
+//         // Check if there are any suborders left in the cart
+//         $remainingSuborders = DB::table('cart_suborders')->where('cart_ID', $cartId)->count();
+        
+//         if ($remainingSuborders == 0) {
+//             // Delete the cart if no suborders left
+//             DB::table('cart')->where('id', $cartId)->delete();
+//         }
+//     }
+//     DB::commit();
+//     return response()->json(['message' => 'Item removed from cart and totals updated']);
+// } catch (\Exception $e) {
+//     DB::rollBack();
+//     return response()->json(['error' => $e->getMessage()], 404); // or 500 depending on the case
+
+// }
+// }
 public function removeItemFromCart(Request $request)
 {
-    $itemId = $request->input('cart_item_id');
+    // ✅ Validate input
+    $validated = $request->validate([
+        'cart_item_id' => 'required|integer|exists:cart_items,id',
+    ]);
 
-    // Check if item exists
-    $cartItem = DB::table('cart_items')->where('id', $itemId)->first();
+    DB::beginTransaction();
 
-    if (!$cartItem) {
-        return response()->json(['message' => 'Item not found in cart'], 404);
-    }
+    try {
+        $itemId = $validated['cart_item_id'];
 
-    // Get suborder and cart ID before deleting
-    $suborderId = $cartItem->cart_suborders_ID;
-
-    // Get suborder details
-    $suborder = DB::table('cart_suborders')->where('id', $suborderId)->first();
-    if (!$suborder) {
-        return response()->json(['message' => 'Suborder not found'], 404);
-    }
-
-    // Get cart ID
-    $cartId = $suborder->cart_ID;
-
-    // Update suborder total amount
-    DB::table('cart_suborders')
-        ->where('id', $suborderId)
-        ->update([
-            'total_amount' => DB::raw("GREATEST(total_amount - {$cartItem->total}, 0)")
-        ]);
-
-    // Update main cart total amount
-    DB::table('cart')
-        ->where('id', $cartId)
-        ->update([
-            'total_amount' => DB::raw("GREATEST(total_amount - {$cartItem->total}, 0)")
-        ]);
-
-    // Delete item
-    DB::table('cart_items')->where('id', $itemId)->delete();
-
-    // Check if suborder has any items left
-    $remainingItems = DB::table('cart_items')->where('cart_suborders_ID', $suborderId)->count();
-
-    if ($remainingItems == 0) {
-        // Delete suborder
-        DB::table('cart_suborders')->where('id', $suborderId)->delete();
-
-        // Check if there are any suborders left in the cart
-        $remainingSuborders = DB::table('cart_suborders')->where('cart_ID', $cartId)->count();
-        
-        if ($remainingSuborders == 0) {
-            // Delete the cart if no suborders left
-            DB::table('cart')->where('id', $cartId)->delete();
+        // ✅ Get item
+        $cartItem = DB::table('cart_items')->where('id', $itemId)->first();
+        if (!$cartItem) {
+            throw new \Exception('Item not found in cart');
         }
-    }
 
-    return response()->json(['message' => 'Item removed from cart and totals updated']);
+        // ✅ Get suborder
+        $suborderId = $cartItem->cart_suborders_ID;
+        $suborder = DB::table('cart_suborders')->where('id', $suborderId)->first();
+        if (!$suborder) {
+            throw new \Exception('Suborder not found');
+        }
+
+        $cartId = $suborder->cart_ID;
+
+        // ✅ Update totals
+        DB::table('cart_suborders')
+            ->where('id', $suborderId)
+            ->update([
+                'total_amount' => DB::raw("GREATEST(total_amount - {$cartItem->total}, 0)")
+            ]);
+
+        DB::table('cart')
+            ->where('id', $cartId)
+            ->update([
+                'total_amount' => DB::raw("GREATEST(total_amount - {$cartItem->total}, 0)")
+            ]);
+
+        // ✅ Delete item
+        DB::table('cart_items')->where('id', $itemId)->delete();
+
+        // ✅ Check and delete suborder if empty
+        $remainingItems = DB::table('cart_items')->where('cart_suborders_ID', $suborderId)->count();
+
+        if ($remainingItems === 0) {
+            DB::table('cart_suborders')->where('id', $suborderId)->delete();
+
+            $remainingSuborders = DB::table('cart_suborders')->where('cart_ID', $cartId)->count();
+
+            if ($remainingSuborders === 0) {
+                DB::table('cart')->where('id', $cartId)->delete();
+            }
+        }
+
+        DB::commit();
+        return response()->json(['message' => 'Item removed from cart and totals updated']);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json(['error' => $e->getMessage()], 404);
+    }
 }
 
+public function increaseCartItemQuantity(Request $request)
+{
+    $validated = $request->validate([
+        'cart_item_id' => 'required|integer|exists:cart_items,id',
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        $itemId = $validated['cart_item_id'];
+
+        $cartItem = DB::table('cart_items')->where('id', $itemId)->first();
+        if (!$cartItem) {
+            throw new \Exception('Cart item not found');
+        }
+
+        $newQuantity = $cartItem->quantity + 1;
+        $newItemTotal = $newQuantity * $cartItem->price;
+        $difference = $cartItem->price; // because increased by 1
+
+        // Update cart item
+        DB::table('cart_items')
+            ->where('id', $itemId)
+            ->update([
+                'quantity' => $newQuantity,
+                'total' => $newItemTotal,
+            ]);
+
+        // Update suborder total
+        DB::table('cart_suborders')
+            ->where('id', $cartItem->cart_suborders_ID)
+            ->update([
+                'total_amount' => DB::raw("total_amount + {$difference}")
+            ]);
+
+        // Update cart total
+        $suborder = DB::table('cart_suborders')->where('id', $cartItem->cart_suborders_ID)->first();
+        DB::table('cart')
+            ->where('id', $suborder->cart_ID)
+            ->update([
+                'total_amount' => DB::raw("total_amount + {$difference}")
+            ]);
+
+        DB::commit();
+        return response()->json(['message' => 'Quantity increased']);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json(['error' => $e->getMessage()], 404);
+    }
+}
+public function decreaseCartItemQuantity(Request $request)
+{
+    $validated = $request->validate([
+        'cart_item_id' => 'required|integer|exists:cart_items,id',
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        $itemId = $validated['cart_item_id'];
+
+        $cartItem = DB::table('cart_items')->where('id', $itemId)->first();
+        if (!$cartItem) {
+            throw new \Exception('Cart item not found');
+        }
+
+        if ($cartItem->quantity <= 1) {
+            throw new \Exception('Quantity cannot be less than 1');
+        }
+
+        $newQuantity = $cartItem->quantity - 1;
+        $newItemTotal = $newQuantity * $cartItem->price;
+        $difference = $cartItem->price; // because decreased by 1
+
+        // Update cart item
+        DB::table('cart_items')
+            ->where('id', $itemId)
+            ->update([
+                'quantity' => $newQuantity,
+                'total' => $newItemTotal,
+            ]);
+
+        // Update suborder total
+        DB::table('cart_suborders')
+            ->where('id', $cartItem->cart_suborders_ID)
+            ->update([
+                'total_amount' => DB::raw("GREATEST(total_amount - {$difference}, 0)")
+            ]);
+
+        // Update cart total
+        $suborder = DB::table('cart_suborders')->where('id', $cartItem->cart_suborders_ID)->first();
+        DB::table('cart')
+            ->where('id', $suborder->cart_ID)
+            ->update([
+                'total_amount' => DB::raw("GREATEST(total_amount - {$difference}, 0)")
+            ]);
+
+        DB::commit();
+        return response()->json(['message' => 'Quantity decreased']);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json(['error' => $e->getMessage()], 404);
+    }
+}
 
 public function clearCart(Request $request)
 {
