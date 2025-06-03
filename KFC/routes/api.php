@@ -28,8 +28,7 @@ Route::put('order/{orderId}/ready', [ResturantController::class, 'markOrderReady
 // Route to track delivery
 Route::get('order/{orderId}/track', [ResturantController::class, 'trackDelivery']);
 
-// Route to add item rating
-Route::post('item/rating', [ResturantController::class, 'addItemRating']);
+
 
 // Route to get all orders for a restaurant
 Route::get('getAllorders', [ResturantController::class, 'getAllOrders']);
@@ -60,3 +59,7 @@ Route::post('/vendors/orders/{id}/confirm-payment/customer', [ResturantControlle
 Route::post('/vendors/orders/{id}/confirm-payment/deliveryboy', [ResturantController::class, 'confirmPaymentByDeliveryBoy']);
 Route::post('/vendors/orders/{id}/confirm-payment/vendor', [ResturantController::class, 'confirmPaymentByVendor']);
 
+
+Route::get('/order/{orderId}/ratings', [ResturantController::class, 'getItemRatingForOrder']);
+// Route to add item rating
+Route::post('item/rating', [ResturantController::class, 'addItemRating']);

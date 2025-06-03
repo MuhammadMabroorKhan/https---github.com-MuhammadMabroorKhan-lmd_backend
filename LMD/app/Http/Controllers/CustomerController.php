@@ -1599,63 +1599,474 @@ private function createOrUpdateSuborder($groupData, $orderId)
 
 
 
+        public function getSuborderDetailsForRating($suborderId)
+{
+    $baseImageUrl = url('storage'); // Assuming images are in the 'storage/app/public' directory
 
+    // Get the suborder
+    $suborder = DB::table('suborders')->where('id', $suborderId)->first();
+    if (!$suborder) {
+        return response()->json(['error' => 'Suborder not found'], 404);
+    }
 
- 
-        public function addItemRating(Request $request)
-        {
-            $request->validate([
-                'suborders_ID' => 'required|exists:suborders,id',
-                'itemdetails_ID' => 'required|',//exists:itemdetails,id',
-                'rating_stars' => 'required|integer|min:1|max:5',
-                'comments' => 'nullable|string|max:255',
-                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image files
+    // Helper function to handle image URLs
+    $getImageUrl = function ($path) use ($baseImageUrl) {
+        return $path ? $baseImageUrl . '/' . ltrim($path, '/') : null;
+    };
+
+    // Fetch delivery boy info if assigned
+    $deliveryBoyInfo = null;
+    if ($suborder->deliveryboys_ID) {
+        $deliveryBoyInfo = DB::table('deliveryboys')
+            ->join('lmd_users', 'deliveryboys.lmd_users_ID', '=', 'lmd_users.id')
+            ->where('deliveryboys.id', $suborder->deliveryboys_ID)
+            ->select(
+                'deliveryboys.id as deliveryboy_id',
+                'deliveryboys.total_deliveries',
+                'deliveryboys.license_no',
+                'deliveryboys.status',
+                'deliveryboys.approval_status',
+                'deliveryboys.license_front',
+                'deliveryboys.license_back',
+                'lmd_users.name',
+                'lmd_users.email',
+                'lmd_users.phone_no',
+                'lmd_users.profile_picture'
+            )
+            ->first();
+
+        if ($deliveryBoyInfo) {
+            $deliveryBoyInfo->license_front = $getImageUrl($deliveryBoyInfo->license_front);
+            $deliveryBoyInfo->license_back = $getImageUrl($deliveryBoyInfo->license_back);
+            $deliveryBoyInfo->profile_picture = $getImageUrl($deliveryBoyInfo->profile_picture);
+        }
+    }
+
+    // Get all items from orderdetails for this suborder
+    $items = DB::table('orderdetails')
+        ->where('suborders_ID', $suborderId)
+        ->get();
+
+    // Fetch menu information
+    $menuInformation = $this->getVendorShopBranchMenu(
+        $suborder->vendor_ID,
+        $suborder->shop_ID,
+        $suborder->branch_ID
+    );
+
+    if ($menuInformation instanceof \Illuminate\Http\JsonResponse) {
+        $menuInformation = $menuInformation->getData(true);
+    } else {
+        $menuInformation = json_decode($menuInformation, true);
+    }
+
+    $menuCollection = collect($menuInformation);
+
+    // Attach menu info to items
+    foreach ($items as &$item) {
+        $menuItem = $menuCollection->firstWhere('itemdetail_id', (int) $item->itemdetails_ID);
+
+        $item->item_name = $menuItem['item_name'] ?? null;
+        $item->item_detail_id = $menuItem['itemdetail_id'] ?? null;
+        $item->item_description = $menuItem['item_description'] ?? null;
+        $item->timesensitive = $menuItem['timesensitive'] ?? null;
+        $item->preparation_time = $menuItem['preparation_time'] ?? null;
+        // $item->itemPicture = isset($menuItem['itemPicture']) ? $getImageUrl($menuItem['itemPicture']) : null;
+        $item->itemPicture = $menuItem['itemPicture'] ?? null;
+        $item->variation_name = $menuItem['variation_name'] ?? null;
+        $item->menu_price = $menuItem['price'] ?? null;
+        $item->additional_info = $menuItem['additional_info'] ?? null;
+        $item->item_category_id = $menuItem['item_category_id'] ?? null;
+        $item->item_category_name = $menuItem['item_category_name'] ?? null;
+        $item->attributes = $menuItem['attributes'] ?? [];
+
+        $item->error_message = $menuItem ? null : "Item details not found for itemdetails_ID: " . $item->itemdetails_ID;
+    }
+
+    return response()->json([
+        'suborder' => $suborder,
+        'delivery_boy_info' => $deliveryBoyInfo,
+        'items' => $items
+    ]);
+}
+
+public function getRatingsStatusForSuborder($suborderId)
+{
+    try {
+        $suborder = DB::table('suborders')->where('id', $suborderId)->first();
+        if (!$suborder) throw new \Exception('Suborder not found');
+
+        $vendor = DB::table('vendors')->where('id', $suborder->vendor_ID)->first();
+        if (!$vendor) throw new \Exception('Vendor not found');
+
+        $responseData = [
+            'vendor_type' => $vendor->vendor_type,
+            'has_rated' => false,
+            'delivery_boy_rating' => ['has_rated' => false],
+            'item_ratings' => ['has_rated' => false, 'ratings' => []],
+        ];
+
+        // ✅ Delivery Boy Rating
+        $deliveryRating = DB::table('deliveryboysrating')->where('suborder_ID', $suborderId)->first();
+        if ($deliveryRating) {
+            $responseData['delivery_boy_rating'] = [
+                'has_rated' => true,
+                'rating_stars' => $deliveryRating->rating_stars,
+                'comments' => $deliveryRating->comments,
+                'rating_date' => $deliveryRating->rating_date,
+            ];
+        }
+
+        // ✅ In-App Vendor
+        if ($vendor->vendor_type === 'In-App Vendor') {
+            $itemRatings = DB::table('itemrating')->where('suborders_ID', $suborderId)->get();
+            $baseUrl = url('storage'); // or wherever your images are stored
+
+            // Fetch all images related to this suborder
+            $allImages = DB::table('rateditemimages')
+                ->where('suborders_ID', $suborderId)
+                ->get()
+                ->groupBy('itemdetails_ID');
+
+            if ($itemRatings->isNotEmpty()) {
+                $responseData['item_ratings'] = [
+                    'has_rated' => true,
+                    'ratings' => $itemRatings->map(function ($rating) use ($baseUrl, $allImages) {
+                        $images = $allImages->get($rating->itemdetails_ID, collect());
+
+                        return [
+                            'itemdetails_ID' => $rating->itemdetails_ID,
+                            'rating_stars' => $rating->rating_stars,
+                            'comments' => $rating->comments,
+                            'rating_date' => $rating->rating_date,
+                            'images' => $images->map(function ($img) use ($baseUrl) {
+                                return $baseUrl . '/' . $img->image_path;
+                            })->values()
+                        ];
+                    })->values(),
+                ];
+            }
+
+            $responseData['has_rated'] = $responseData['delivery_boy_rating']['has_rated'] || $responseData['item_ratings']['has_rated'];
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Ratings fetched successfully',
+                'data' => $responseData,
             ]);
-        
-            DB::beginTransaction();
-        
-            try {
-                // Insert the rating into the itemrating table
-                $ratingId = DB::table('itemrating')->insertGetId([
-                    'suborders_ID' => $request->input('suborders_ID'),
-                    'itemdetails_ID' => $request->input('itemdetails_ID'),
-                    'rating_stars' => $request->input('rating_stars'),
-                    'comments' => $request->input('comments'),
-                    'rating_date' => now(),
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-        
-                // Check if images are provided and handle uploads
-                if ($request->hasFile('images')) {
-                    foreach ($request->file('images') as $image) {
-                        // Store the image and get the file path
-                        $path = $image->store('rated_item_images', 'public');
-        
-                        // Insert the image path into the rateditemimages table
-                        DB::table('rateditemimages')->insert([
-                            'image_path' => $path,
-                            'suborders_ID' => $request->input('suborders_ID'),
-                            'itemdetails_ID' => $request->input('itemdetails_ID'),
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]);
-                    }
-                }
-        
-                DB::commit();
-        
-                return response()->json(['message' => 'Rating and images added successfully'], 201);
-            } catch (\Exception $e) {
-                DB::rollBack();
-        
-                return response()->json([
-                    'message' => 'Failed to add rating and images',
-                    'error' => $e->getMessage(),
-                ], 500);
+        }
+
+        // ✅ API Vendor
+        if ($vendor->vendor_type === 'API Vendor') {
+            $apiVendor = DB::table('vendors')
+                ->join('shops', 'vendors.id', '=', 'shops.vendors_ID')
+                ->join('branches', 'shops.id', '=', 'branches.shops_ID')
+                ->join('apivendor', 'branches.id', '=', 'apivendor.branches_ID')
+                ->where('vendors.id', $suborder->vendor_ID)
+                ->where('branches.id', $suborder->branch_ID)
+                ->select('apivendor.id as apivendor_ID', 'apivendor.api_base_url', 'apivendor.api_key', 'apivendor.response_format')
+                ->first();
+
+            if (!$apiVendor) throw new \Exception('API vendor configuration not found.');
+
+            $apiMethod = DB::table('apimethods')
+                ->where('apivendor_ID', $apiVendor->apivendor_ID)
+                ->where('method_name', 'get-order-item-rating')
+                ->select('endpoint', 'http_method')
+                ->first();
+
+            if (!$apiMethod) throw new \Exception('API method for get-order-item-rating not found.');
+            if (!$suborder->vendor_order_id) throw new \Exception('Vendor order ID is missing.');
+
+            $endpoint = str_replace('{orderId}', $suborder->vendor_order_id, $apiMethod->endpoint);
+            $fullUrl = rtrim($apiVendor->api_base_url, '/') . '/' . ltrim($endpoint, '/');
+            $httpMethod = strtolower($apiMethod->http_method);
+            Log::info("Calling vendor API [$httpMethod] at: $fullUrl");
+
+            $response = match ($httpMethod) {
+                'post' => Http::post($fullUrl),
+                'put' => Http::put($fullUrl),
+                'get' => Http::get($fullUrl),
+                'delete' => Http::delete($fullUrl),
+                default => null,
+            };
+
+            if (!$response || !$response->successful()) throw new \Exception('Failed to retrieve ratings from vendor API.');
+            $data = $response->json();
+
+            // ✅ Field Mapping
+            $mappedFields = DB::table('mapping')
+                ->join('variables', 'mapping.variable_ID', '=', 'variables.id')
+                ->where('mapping.apivendor_ID', $apiVendor->apivendor_ID)
+                ->where('mapping.branch_ID', $suborder->branch_ID)
+                ->select('variables.tags as lmd_field', 'mapping.api_values as vendor_field')
+                ->get()
+                ->pluck('vendor_field', 'lmd_field');
+
+            if (!empty($data['has_rated']) && $data['has_rated'] === true && isset($data['ratings'])) {
+                $normalizedRatings = collect($data['ratings'])->map(function ($rating) use ($mappedFields) {
+                    return [
+                        'itemdetails_ID' => $rating[$mappedFields['item_detail_id']] ?? null,
+                        'rating_stars' => $rating[$mappedFields['rating_stars']] ?? null,
+                        'comments' => $rating[$mappedFields['reviews']] ?? null,
+                        'rating_date' => $rating[$mappedFields['rating_date']] ?? null,
+                        'images' => collect($rating[$mappedFields['rated_item_image']] ?? [])->map(function ($imgPath) {
+                            return $imgPath; // assume full URLs are already given in API response
+                        })->values()
+                    ];
+                });
+
+                $responseData['item_ratings'] = [
+                    'has_rated' => true,
+                    'ratings' => $normalizedRatings,
+                ];
+
+                $responseData['has_rated'] = true;
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Ratings fetched successfully',
+                'data' => $responseData,
+            ]);
+        }
+
+        throw new \Exception('Unsupported vendor type.');
+
+    } catch (\Exception $e) {
+        Log::error("getRatingsStatusForSuborder Error: " . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+            'data' => null,
+        ], 500);
+    }
+}
+
+
+public function addItemRating(Request $request)
+{
+    \Log::info('Incoming Request LMD Data:', $request->all());
+
+    $request->validate([
+        'suborders_ID' => 'required|exists:suborders,id',
+        'itemdetails_ID' => 'required',
+        'rating_stars' => 'required|integer|min:1|max:5',
+        'comments' => 'nullable|string|max:255',
+        'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|',
+    ]);
+
+    try {
+        $suborder = DB::table('suborders')->where('id', $request->input('suborders_ID'))->first();
+        $vendor = DB::table('vendors')->where('id', $suborder->vendor_ID)->first();
+
+        $imageContents = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageContents[] = [
+                    'original_name' => $image->getClientOriginalName(),
+                    'content' => file_get_contents($image->getRealPath()),
+                    'extension' => $image->getClientOriginalExtension(),
+                ];
             }
         }
+
+        if ($vendor->vendor_type === 'API Vendor') {
+            $apiVendor = DB::table('vendors')
+                ->join('shops', 'vendors.id', '=', 'shops.vendors_ID')
+                ->join('branches', 'shops.id', '=', 'branches.shops_ID')
+                ->join('apivendor', 'branches.id', '=', 'apivendor.branches_ID')
+                ->where('vendors.id', $suborder->vendor_ID)
+                ->where('branches.id', $suborder->branch_ID)
+                ->select('apivendor.id as apivendor_ID', 'apivendor.api_base_url', 'apivendor.api_key')
+                ->first();
+
+            if (!$apiVendor) {
+                throw new \Exception('API vendor configuration not found.');
+            }
+
+            $apiMethod = DB::table('apimethods')
+                ->where('apivendor_ID', $apiVendor->apivendor_ID)
+                ->where('method_name', 'giveItemRating')
+                ->select('id', 'endpoint', 'http_method')
+                ->first();
+
+            if (!$apiMethod) {
+                throw new \Exception('API method for item/rating not found.');
+            }
+
+            $mappedFields = DB::table('mapping')
+            ->join('variables', 'mapping.variable_ID', '=', 'variables.id')
+            ->where('mapping.apivendor_ID', $apiVendor->apivendor_ID) // ✅ use apivendor_ID
+            ->pluck('mapping.api_values', 'variables.tags')
+            ->toArray();
         
+        
+
+            $vendorOrderId = $suborder->vendor_order_id;
+
+            $lmdFields = [
+                'vendor_order_id' => $vendorOrderId,
+                'item_detail_id' => $request->input('itemdetails_ID'),
+                'rating_stars' => $request->input('rating_stars'),
+                'reviews' => $request->input('comments'),
+            ];
+
+            $multipartData = [];
+
+            foreach ($lmdFields as $key => $value) {
+                if (!is_null($value) && isset($mappedFields[$key])) {
+                    $multipartData[] = [
+                        'name' => $mappedFields[$key],
+                        'contents' => $value,
+                    ];
+                }
+            }
+
+            if (!isset($mappedFields['rated_item_image'])) {
+                throw new \Exception('Mapped field for rated_item_image not found.');
+            }
+
+            $imageField = $mappedFields['rated_item_image'];
+
+            foreach ($imageContents as $image) {
+                $multipartData[] = [
+                    'name' => $imageField . '[]',
+                    'contents' => $image['content'],
+                    'filename' => $image['original_name'],
+                ];
+            }
+
+            $url = rtrim($apiVendor->api_base_url, '/') . '/' . ltrim($apiMethod->endpoint, '/');
+            Log::info('Sending rating to API Vendor', [
+                'url' => $url,
+                'mappedFields' => $mappedFields,
+                'lmdFields' => $lmdFields,
+                'multipartData' => collect($multipartData)->map(function ($part) {
+                    if (isset($part['name']) && str_contains($part['name'], 'rated_images')) {
+                        return [
+                            'name' => $part['name'],
+                            'contents' => '[binary image content omitted]',
+                        ];
+                    }
+                    return $part;
+                }),
+            ]);
+            
+            
+            $response = Http::asMultipart()->post($url, $multipartData);
+
+            $responseData = $response->json(); // Laravel automatically parses JSON body
+
+            Log::info('API Vendor Response', [
+                'status' => $response->status(),
+                'body' => $responseData,
+            ]);
+            
+            if (
+                !$response->successful() ||
+                !isset($responseData['success']) ||
+                $responseData['success'] !== true
+            ) {
+                throw new \Exception('Failed to send rating to API vendor. Response: ' . json_encode($responseData));
+            }
+            
+        }
+
+        // ✅ Only now we save locally
+        DB::beginTransaction();
+
+        $ratingId = DB::table('itemrating')->insertGetId([
+            'suborders_ID' => $request->input('suborders_ID'),
+            'itemdetails_ID' => $request->input('itemdetails_ID'),
+            'rating_stars' => $request->input('rating_stars'),
+            'comments' => $request->input('comments'),
+            'rating_date' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        foreach ($imageContents as $image) {
+            $path = 'rated_item_images/' . uniqid() . '.' . $image['extension'];
+            Storage::disk('public')->put($path, $image['content']);
+
+            DB::table('rateditemimages')->insert([
+                'image_path' => $path,
+                'suborders_ID' => $request->input('suborders_ID'),
+                'itemdetails_ID' => $request->input('itemdetails_ID'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        DB::commit();
+
+        return response()->json(['message' => 'Rating and images added successfully'], 201);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'message' => 'Failed to add rating and images',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+
+
+
+
+public function rateDeliveryBoy(Request $request)
+{
+    try {
+        $validated = $request->validate([
+            'suborder_ID' => 'required|exists:suborders,id',
+            'rating_stars' => 'required|integer|min:1|max:5',
+            'comments' => 'nullable|string|max:255',
+        ]);
+
+        $suborder = DB::table('suborders')->where('id', $validated['suborder_ID'])->first();
+
+        if (!$suborder->deliveryboys_ID) {
+            throw new \Exception('No delivery boy assigned to this suborder.');
+        }
+
+        // Check if already rated
+        $existingRating = DB::table('deliveryboysrating')
+            ->where('suborder_ID', $validated['suborder_ID'])
+            ->first();
+
+        if ($existingRating) {
+            throw new \Exception('You have already rated this delivery boy for this suborder.');
+        }
+
+        // Insert rating
+        DB::table('deliveryboysrating')->insert([
+            'deliveryboys_ID' => $suborder->deliveryboys_ID,
+            'suborder_ID' => $validated['suborder_ID'],
+            'rating_stars' => $validated['rating_stars'],
+            'comments' => $validated['comments'],
+            'rating_date' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Delivery boy rated successfully.',
+        ]);
+    } catch (\Exception $e) {
+        Log::error('rateDeliveryBoy Error: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+        ], 400);
+    }
+}
+
+
+
+
         public function reorder($orderId)
         {
             try {
@@ -1821,64 +2232,6 @@ private function createOrUpdateSuborder($groupData, $orderId)
     }
 
   
-// public function cancelOrder($orderId)
-// {
-//     // Retrieve the order by ID
-//     $order = DB::table('orders')->where('id', $orderId)->first();
-
-//     // Check if the order exists
-//     if (!$order) {
-//         return response()->json(['message' => 'Order not found'], 404);
-//     }
-
-//     // Check if the order is in a cancellable status
-//     if ($order->order_status !== 'pending') {
-//         return response()->json(['message' => 'Order cannot be cancelled because it is not pending'], 400);
-//     }
-
-//     // Retrieve all related suborders
-//     $suborders = DB::table('suborders')->where('orders_ID', $orderId)->get();
-
-//     // Check if all related suborders have a status of 'pending'
-//     $allPending = $suborders->every(function ($suborder) {
-//         return $suborder->status === 'pending';
-//     });
-
-//     if (!$allPending) {
-//         return response()->json(['message' => 'Order cannot be cancelled because not all suborders are pending'], 400);
-//     }
-
-//     // Begin a transaction
-//     DB::beginTransaction();
-
-//     try {
-//         // Update the order status to 'cancelled'
-//         DB::table('orders')
-//             ->where('id', $orderId)
-//             ->update([
-//                 'order_status' => 'cancelled',
-//                 'updated_at' => now(),
-//             ]);
-
-//         // Update the status of all related suborders to 'cancelled'
-//         DB::table('suborders')
-//             ->where('orders_ID', $orderId)
-//             ->update([
-//                 'status' => 'cancelled',
-//                 'updated_at' => now(),
-//             ]);
-
-//         // Commit the transaction
-//         DB::commit();
-
-//         return response()->json(['message' => 'Order and all related suborders cancelled successfully'], 200);
-//     } catch (\Exception $e) {
-//         // Rollback the transaction in case of an error
-//         DB::rollBack();
-
-//         return response()->json(['message' => 'Failed to cancel the order', 'error' => $e->getMessage()], 500);
-//     }
-// }
 
 public function cancelOrder($orderId)
 {
@@ -2099,40 +2452,7 @@ public function getLiveRouteTracking($suborderId)
     }
 }
 
-// public function confirmOrderDelivery($suborderId)
-// {
-//     $suborder = Suborder::findOrFail($suborderId);
 
-//     if ($suborder->status !== 'in_transit' && $suborder->status !== 'handover_confirmed') {
-//         return response()->json(['error' => 'Order cannot be confirmed as delivered in the current state.'], 400);
-//     }
-
-//  // Find the most recent LocationTracking record with status 'reached_destination' for the suborder
-//  $location = LocationTracking::where('suborders_ID', $suborderId)
-//  ->where('status', 'reached_destination')
-//  ->latest()  // Get the most recent entry
-//  ->first();
-
-// // If no reached destination record is found, return an error
-// if (!$location) {
-// return response()->json(['error' => 'No reached destination record found for this suborder.'], 400);
-// }
-
-//     $suborder->status = 'delivered';
-//     $suborder->save();
-
-   
-//  // Insert a new location tracking record with the same latitude and longitude as the reached destination
-//  LocationTracking::create([
-//     'latitude' => $location->latitude,  // Use latitude from the reached destination record
-//     'longitude' => $location->longitude, // Use longitude from the reached destination record
-//     'status' => 'delivered',
-//     'suborders_ID' => $suborderId
-// ]);
-
-
-//     return response()->json(['message' => 'Order confirmed as delivered.']);
-// }
 
 public function confirmOrderDelivery($suborderId)
 {

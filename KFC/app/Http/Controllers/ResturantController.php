@@ -14,6 +14,7 @@ use App\Http\ResturantController\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\JsonResponse;
 // use Illuminate\Support\Facades\Storage;
 class ResturantController extends Controller
 {
@@ -78,6 +79,118 @@ class ResturantController extends Controller
         'total_reviews' => $kfcRatings->total_reviews, // Total number of reviews
         'average_rating' => round($kfcRatings->average_rating, 2) // Rounded average rating (out of 5)
     ]);
+}
+
+
+
+
+public function getItemRatingForOrder($orderId)
+{
+    $ratings = DB::table('itemrating')
+        ->where('order_ID', $orderId)
+        ->get();
+
+    if ($ratings->isEmpty()) {
+        return response()->json([
+            'has_rated' => false,
+            'message' => 'No ratings found for this order.'
+        ]);
+    }
+
+    $baseUrl = url('storage'); // assuming images stored with public disk
+
+    // Collect item_detail_IDs
+    $itemDetailIds = $ratings->pluck('item_detail_ID')->toArray();
+
+    // Fetch all related images for this order and those items
+    $images = DB::table('rateditemimages')
+        ->where('order_ID', $orderId)
+        ->whereIn('item_detail_ID', $itemDetailIds)
+        ->get()
+        ->groupBy('item_detail_ID');
+
+    // Format ratings
+    $formattedRatings = $ratings->map(function ($rating) use ($images, $baseUrl) {
+        $itemImages = $images->get($rating->item_detail_ID, collect());
+
+        return [
+            'item_detail_id' => $rating->item_detail_ID,
+            'stars' => $rating->stars,
+            'comments' => $rating->comments,
+            'ratings_date' => $rating->ratingdate,
+            'rated_images' => $itemImages->map(function ($img) use ($baseUrl) {
+                return $baseUrl . '/' . $img->image_path;
+            })->values()
+        ];
+    });
+
+    return response()->json([
+        'has_rated' => true,
+        'ratings' => $formattedRatings
+    ]);
+}
+
+
+
+public function addItemRating(Request $request): JsonResponse
+{
+    \Log::info('Incoming Request Data:', $request->all());
+
+    $request->validate([
+        'id' => 'required|exists:orders,id',
+        'item_detail_id' => 'required|exists:itemdetails,id',
+        'stars' => 'required|numeric|min:1|max:5',
+        'comments' => 'nullable|string|max:255',
+        'rated_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    $existingRating = DB::table('itemrating')
+        ->where('order_ID', $request->id)
+        ->where('item_detail_ID', $request->item_detail_id)
+        ->first();
+
+    if ($existingRating) {
+        return response()->json([
+            'success' => false,
+            'status' => 409,
+            'message' => 'This item is already rated for this order.',
+            'error' => [
+                'type' => 'DuplicateRating',
+                'details' => [
+                    'item_detail_id' => $request->item_detail_id,
+                    'order_id' => $request->id,
+                ]
+            ]
+        ], 409);
+    }
+
+    DB::table('itemrating')->insert([
+        'order_ID' => $request->id,
+        'item_detail_ID' => $request->item_detail_id,
+        'stars' => $request->stars,
+        'comments' => $request->comments,
+        'ratingdate' => now(),
+    ]);
+
+    if ($request->hasFile('rated_images')) {
+        foreach ($request->file('rated_images') as $image) {
+            $path = $image->store('rated_item_images', 'public');
+            DB::table('rateditemimages')->insert([
+                'image_path' => $path,
+                'order_ID' => $request->id,
+                'item_detail_ID' => $request->item_detail_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+    }
+
+    return response()->json([
+        'success' => true,
+        'status' => 200,
+        'message' => 'Rating and images added successfully.',
+        'data' => null
+    ], 200);
 }
 
 
@@ -154,27 +267,7 @@ class ResturantController extends Controller
   }
   
 
-  // Add Item Rating
-  public function addItemRating(Request $request)
-  {
-      // Validate the rating input
-      $request->validate([
-          'stars' => 'required|numeric|min:1|max:5',
-          'comments' => 'nullable|string',
-          'order_ID' => 'required|exists:orders,id',
-          'item_detail_ID' => 'required|', //exists:item_details,id',
-      ]);
 
-      // Create and save the rating
-      $rating = new ItemRating();
-      $rating->stars = $request->input('stars');
-      $rating->comments = $request->input('comments');
-      $rating->order_ID = $request->input('order_ID');
-      $rating->item_detail_ID = $request->input('item_detail_ID');
-      $rating->save();
-
-      return response()->json(['message' => 'Rating added successfully!', 'rating' => $rating]);
-  }
 
   // Get All Orders
 public function getAllOrders()
