@@ -28,7 +28,7 @@ class ResturantController extends Controller
       $request->validate([
           'total_amount' => 'nullable|numeric',
           'delivery_address' => 'sometimes|string',
-          'order_type' => 'required|in:dine_in,takeaway,delivery,lmd',
+          'order_type' => 'required|in:dine_in,takeaway,delivery,lmd,lmd/test',
           'order_details' => 'required|array',
           'order_details.*.item_detail_id' => 'required|',//exists:item_details,id',
           'order_details.*.qty' => 'required|numeric',
@@ -48,6 +48,11 @@ class ResturantController extends Controller
   
       // Add order details
       foreach ($request->input('order_details') as $item) {
+
+          $itemDetailId = $item['item_detail_id'];
+        $qty = $item['qty'];
+
+
           $orderDetail = new OrderDetail();
           $orderDetail->order_id = $order->id;
           $orderDetail->item_detail_id = $item['item_detail_id'];
@@ -55,6 +60,18 @@ class ResturantController extends Controller
           $orderDetail->unit_price = $item['unit_price'];
           $orderDetail->subtotal = $item['subtotal'];
           $orderDetail->save();
+
+
+           // Update stock based on order type
+        if ($order->order_type === 'lmd') {
+            DB::table('stocks')
+                ->where('item_detail_ID', $itemDetailId)
+                ->decrement('stock_qty', $qty);
+        } elseif ($order->order_type === 'lmd/test') {
+            DB::table('test_stocks')
+                ->where('item_detail_ID', $itemDetailId)
+                ->decrement('stock_qty', $qty);
+        }
       }
   
       // Return a shortened response
@@ -609,41 +626,6 @@ public function getItemsWithDetails()
  }
 
 
-// public function markAsReady($id)
-// {
-//     $order = Order::find($id);
-
-//     if (!$order) {
-//         return response()->json([
-//             'success' => false,
-//             'message' => 'Order not found',
-//         ], 404);
-//     }
-
-//     if ($order->status !== 'processing') {
-//         return response()->json([
-//             'success' => false,
-//             'message' => "Cannot mark as ready. Order must be in 'processing' status.",
-//             'current_status' => $order->status,
-//         ], 400);
-//     }
-
-//     // First update KFC side
-//     $order->status = 'ready';
-//     $order->save();
-
-//     // Then call main server to mark as ready
-//     $response = Http::patch("http://192.168.43.63:8000/vendor/order/{$order->suborder_id}/ready");
-
-//     return response()->json([
-//         'success' => true,
-//         'message' => 'Order marked as ready (KFC) and ready (Main)',
-//         'kfc_status' => $order->status,
-//         'main_server_response' => $response->json(),
-//     ]);
-// }
-
-
 
 
 
@@ -964,6 +946,46 @@ public function confirmPaymentByVendor($id)
         ]
     ]);
 }
+
+
+
+
+
+
+
+
+
+public function getStocksByItemDetails(Request $request)
+{
+    $itemDetailIds = $request->input('item_detail_id'); // Expecting an array
+
+    if (!is_array($itemDetailIds) || empty($itemDetailIds)) {
+        return response()->json([
+            'message' => 'item_detail_id must be a non-empty array.'
+        ], 422);
+    }
+
+    $results = [];
+
+    foreach ($itemDetailIds as $id) {
+        $stock = DB::table('stocks')
+            ->where('item_detail_ID', $id)
+            ->first();
+
+        $testStock = DB::table('test_stocks')
+            ->where('item_detail_ID', $id)
+            ->first();
+        $results[] = [
+    'item_detail_ID' => $id,
+    'stock' => $stock ? ($stock->stock_qty ?? 0) : null,
+    'test_stock' => $testStock ? ($testStock->stock_qty ?? 0) : null,
+];
+
+    }
+
+    return response()->json($results);
+}
+
 
 }
 

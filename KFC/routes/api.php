@@ -63,3 +63,6 @@ Route::post('/vendors/orders/{id}/confirm-payment/vendor', [ResturantController:
 Route::get('/order/{orderId}/ratings', [ResturantController::class, 'getItemRatingForOrder']);
 // Route to add item rating
 Route::post('item/rating', [ResturantController::class, 'addItemRating']);
+
+//stocks
+Route::post('/get-stocks-by-itemdetails', [ResturantController::class, 'getStocksByItemDetails']);

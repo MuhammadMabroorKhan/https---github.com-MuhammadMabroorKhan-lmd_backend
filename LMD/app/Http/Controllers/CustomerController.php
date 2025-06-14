@@ -709,114 +709,6 @@ $vendorType = $vendor->vendor_type; // Get the vendor type
 }
 
 
-
-// public function removeItemFromCart(Request $request)
-// {
-//     $itemId = $request->input('cart_item_id');
-
-//     // Check if item exists
-//     $cartItem = DB::table('cart_items')->where('id', $itemId)->first();
-
-//     if (!$cartItem) {
-//         return response()->json(['message' => 'Item not found in cart'], 404);
-//     }
-
-//     // Get suborder ID before deleting
-//     $suborderId = $cartItem->cart_suborders_ID;
-
-//     // Delete item
-//     DB::table('cart_items')->where('id', $itemId)->delete();
-
-//     // Check if suborder has any items left
-//     $remainingItems = DB::table('cart_items')->where('cart_suborders_ID', $suborderId)->count();
-
-//     if ($remainingItems == 0) {
-//         DB::table('cart_suborders')->where('id', $suborderId)->delete();
-//     }
-
-//     return response()->json(['message' => 'Item removed from cart']);
-// }
-
-
-
-
-
-
-
-
-
-// public function removeItemFromCart(Request $request)
-// {
-//     DB::beginTransaction();
-
-//     try {
-//     $itemId = $request->input('cart_item_id');
-
-//     // Check if item exists
-//     $cartItem = DB::table('cart_items')->where('id', $itemId)->first();
-
-//     // if (!$cartItem) {
-//     //     return response()->json(['message' => 'Item not found in cart'], 404);
-//     // }
-//     if (!$cartItem) {
-//         throw new \Exception('Item not found in cart');
-//     }
-    
-//     // Get suborder and cart ID before deleting
-//     $suborderId = $cartItem->cart_suborders_ID;
-
-//     // Get suborder details
-//     $suborder = DB::table('cart_suborders')->where('id', $suborderId)->first();
-//     // if (!$suborder) {
-//     //     return response()->json(['message' => 'Suborder not found'], 404);
-//     // }
-//     if (!$suborder) {
-//         throw new \Exception('Suborder not found');
-//     }
-    
-//     // Get cart ID
-//     $cartId = $suborder->cart_ID;
-
-//     // Update suborder total amount
-//     DB::table('cart_suborders')
-//         ->where('id', $suborderId)
-//         ->update([
-//             'total_amount' => DB::raw("GREATEST(total_amount - {$cartItem->total}, 0)")
-//         ]);
-
-//     // Update main cart total amount
-//     DB::table('cart')
-//         ->where('id', $cartId)
-//         ->update([
-//             'total_amount' => DB::raw("GREATEST(total_amount - {$cartItem->total}, 0)")
-//         ]);
-
-//     // Delete item
-//     DB::table('cart_items')->where('id', $itemId)->delete();
-
-//     // Check if suborder has any items left
-//     $remainingItems = DB::table('cart_items')->where('cart_suborders_ID', $suborderId)->count();
-
-//     if ($remainingItems == 0) {
-//         // Delete suborder
-//         DB::table('cart_suborders')->where('id', $suborderId)->delete();
-
-//         // Check if there are any suborders left in the cart
-//         $remainingSuborders = DB::table('cart_suborders')->where('cart_ID', $cartId)->count();
-        
-//         if ($remainingSuborders == 0) {
-//             // Delete the cart if no suborders left
-//             DB::table('cart')->where('id', $cartId)->delete();
-//         }
-//     }
-//     DB::commit();
-//     return response()->json(['message' => 'Item removed from cart and totals updated']);
-// } catch (\Exception $e) {
-//     DB::rollBack();
-//     return response()->json(['error' => $e->getMessage()], 404); // or 500 depending on the case
-
-// }
-// }
 public function removeItemFromCart(Request $request)
 {
     // ✅ Validate input
@@ -1208,9 +1100,21 @@ public function placeOrder(Request $request)
 
         // if  API Vendor, forward order to the vendor API
         if ($groupData['vendor_type'] === 'API Vendor') {
-            $apiResponse = $this->forwardOrderToVendorAPI($groupData['vendor_id'], 
-            array_merge($groupData, ['total_amount' => $totalAmount]),
-               $suborderId );
+            // $apiResponse = $this->forwardOrderToVendorAPI($groupData['vendor_id'], 
+            // array_merge($groupData, ['total_amount' => $totalAmount]),
+            //    $suborderId );
+
+$apiResponse = $this->forwardOrderToVendorAPI(
+    $groupData['vendor_id'], 
+    array_merge($groupData, [
+        'total_amount' => $totalAmount,
+        'customer_id' => $validatedData['customer_id']  // ✅ added here
+    ]),
+    $suborderId
+);
+
+
+
             $responseGroup['api_response'] = $apiResponse;
         }
     
@@ -1253,6 +1157,33 @@ private function forwardOrderToVendorAPI($vendorId, $groupData, $suborderId)
     if (empty($groupData['total_amount']) || !is_numeric($groupData['total_amount'])) {
         return response()->json(['error' => 'Invalid or missing total_amount'], 400);
     }
+
+
+// Step 1: Get customerID
+$customerID = $groupData['customer_id'];
+
+// Step 2: Fetch customer's name from lmd_users via customers table
+$customerName = DB::table('customers')
+    ->join('lmd_users', 'customers.lmd_users_ID', '=', 'lmd_users.id')
+    ->where('customers.id', $customerID)
+    ->value('lmd_users.name');
+
+// Step 3: Determine if user is a test user
+$isTestUser = false;
+if ($customerName) {
+    $normalized = str_replace(['_', ' '], '', strtolower($customerName));
+    $isTestUser = str_contains($normalized, 'testcustomer');
+}
+
+// Step 4: Set the orderType variable accordingly
+$orderType = $isTestUser ? 'lmd/test' : 'lmd';
+
+
+
+
+
+
+
 
     $apiVendor = DB::table('vendors')
         ->join('shops', 'vendors.id', '=', 'shops.vendors_ID')
@@ -1300,7 +1231,8 @@ private function forwardOrderToVendorAPI($vendorId, $groupData, $suborderId)
 
     $apiData = [
         $mappings['total_amount'] => $groupData['total_amount'],
-        $mappings['order_type'] => 'lmd',
+      //  $mappings['order_type'] => 'lmd',
+         $mappings['order_type'] => $orderType,
         $mappings['order_details'] => $orderDetails,
     ];
 
@@ -1351,10 +1283,10 @@ private function validateRelationships($item)
         throw new Exception("Invalid branch for shop ID: {$item['shop_id']}");
     }
 
-    $itemDetails = DB::table('itemdetails')->where('id', $item['item_detail_id'])->first();
-    if (!$itemDetails) {
-        throw new Exception("Item details not found for item detail ID: {$item['item_detail_id']}");
-    }
+    // $itemDetails = DB::table('itemdetails')->where('id', $item['item_detail_id'])->first();
+    // if (!$itemDetails) {
+    //     throw new Exception("Item details not found for item detail ID: {$item['item_detail_id']}");
+    // }
 }
 private function createOrUpdateSuborder($groupData, $orderId)
 {
@@ -2923,6 +2855,224 @@ public function getLiveTrackingData($courierOrderId)
 
 
 
+
+
+public function getStockForItems(Request $request)
+{
+    // Log full incoming request for debugging
+    Log::info('getStockForItems - Incoming Request:', $request->all());
+
+    // Validate request structure
+    $validated = $request->validate([
+        'items' => 'required|array|min:1',
+        'items.*.vendor_ID' => 'required|integer|exists:vendors,id',
+        'items.*.shop_ID' => 'required|integer',
+        'items.*.branch_ID' => 'required|integer',
+        'items.*.item_detail_ID' => 'required|integer',
+    ]);
+
+    $items = $validated['items'];
+    $responseData = [];
+
+    foreach ($items as $group) {
+        $vendorId = $group['vendor_ID'];
+        $shopId = $group['shop_ID'];
+        $branchId = $group['branch_ID'];
+        $itemDetailId = $group['item_detail_ID'];
+
+        // Log individual group processing
+        Log::info("Processing group: ", $group);
+
+        // Fetch vendor
+        $vendor = DB::table('vendors')->where('id', $vendorId)->first();
+
+        if (!$vendor) {
+            $responseData[] = [
+                'vendor_ID' => $vendorId,
+                'shop_ID' => $shopId,
+                'branch_ID' => $branchId,
+                'item_detail_ID' => $itemDetailId,
+                'stock_qty' => null,
+                'source' => null,
+                'error' => 'Vendor not found.'
+            ];
+            continue;
+        }
+
+        if ($vendor->vendor_type === 'API Vendor') {
+    try {
+        // Step 1: Get API vendor info
+        $apiVendor = DB::table('vendors')
+            ->join('shops', 'vendors.id', '=', 'shops.vendors_ID')
+            ->join('branches', 'shops.id', '=', 'branches.shops_ID')
+            ->join('apivendor', 'branches.id', '=', 'apivendor.branches_ID')
+            ->where('vendors.id', $vendorId)
+            ->where('branches.id', $branchId)
+            ->select(
+                'apivendor.id as apivendor_ID',
+                'apivendor.api_base_url',
+                'apivendor.api_key',
+                'apivendor.response_format'
+            )
+            ->first();
+
+        if (!$apiVendor) {
+            throw new \Exception("API vendor config not found");
+        }
+
+        // Step 2: Get endpoint/method for this operation
+        $apiMethod = DB::table('apimethods')
+            ->where('apivendor_ID', $apiVendor->apivendor_ID)
+            ->where('method_name', 'getStocksByItemDetails')
+            ->select('endpoint', 'http_method')
+            ->first();
+
+        if (!$apiMethod) {
+            throw new \Exception("API method not found");
+        }
+
+        // Step 3: Get mapped variable name (e.g., item_detail_id => itemId)
+        // $variableName = DB::table('variables')
+        //     ->join('mapping', 'variables.id', '=', 'mapping.variable_ID')
+        //     ->where('mapping.apivendor_ID', $apiVendor->apivendor_ID)
+        //     ->where('mapping.branch_ID', $branchId)
+        //     ->where('variables.tags', 'item_detail_id')
+        //     ->value('mapping.api_values') ?? 'item_detail_id';
+
+        $variableName = DB::table('variables')
+    ->join('mapping', 'variables.id', '=', 'mapping.variable_ID')
+    ->where('mapping.apivendor_ID', $apiVendor->apivendor_ID)
+    ->where('mapping.branch_ID', $branchId)
+    ->where('variables.tags', 'item_detail_id')
+    ->value('mapping.api_values');
+
+if (!$variableName) {
+    throw new \Exception("Mapping not found for 'item_detail_id' for this vendor and branch.");
+}
+
+        // Step 4: Prepare API URL and request payload
+        $fullUrl = rtrim($apiVendor->api_base_url, '/') . '/' . ltrim($apiMethod->endpoint, '/');
+        $httpMethod = strtolower($apiMethod->http_method);
+        $requestPayload = [
+            $variableName => [$itemDetailId]
+        ];
+
+        \Log::info("Calling external API [$httpMethod] $fullUrl with payload: " . json_encode($requestPayload));
+
+        // Step 5: Perform API Call
+        $apiResponse = match ($httpMethod) {
+            'post' => Http::post($fullUrl, $requestPayload),
+            'put' => Http::put($fullUrl, $requestPayload),
+            'get' => Http::get($fullUrl, $requestPayload),
+            'delete' => Http::delete($fullUrl, $requestPayload),
+            default => throw new \Exception("Unsupported HTTP method: $httpMethod")
+        };
+
+        // Step 6: Process response
+        if ($apiResponse->successful()) {
+           $apiData = $apiResponse->json();
+$stockInfo = $apiData[0] ?? [];
+
+$variableTags = ['stock_qty', 'test_stock_qty'];
+$mappedValues = [];
+
+foreach ($variableTags as $tag) {
+    $apiKey = DB::table('variables')
+        ->join('mapping', 'variables.id', '=', 'mapping.variable_ID')
+        ->where('variables.tags', $tag)
+        ->where('mapping.apivendor_ID', $apiVendor->apivendor_ID)
+        ->where('mapping.branch_ID', $branchId)
+        ->value('mapping.api_values') ?? $tag;
+
+    $mappedValues[$tag] = $stockInfo[$apiKey] ?? null;
+}
+
+$responseData[] = [
+    'vendor_ID' => $vendorId,
+    'shop_ID' => $shopId,
+    'branch_ID' => $branchId,
+    'item_detail_ID' => $itemDetailId,
+    'stock_qty' => $mappedValues['stock_qty'],
+    'test_stock_qty' => $mappedValues['test_stock_qty'],
+    'source' => 'API Vendor',
+    'error' => null
+];
+
+
+        } else {
+            $responseData[] = [
+                'vendor_ID' => $vendorId,
+                'shop_ID' => $shopId,
+                'branch_ID' => $branchId,
+                'item_detail_ID' => $itemDetailId,
+                'stock_qty' => null,
+                'test_stock_qty' => null,
+                'source' => 'API Vendor',
+                'error' => 'API call failed with status: ' . $apiResponse->status()
+            ];
+        }
+    } catch (\Exception $e) {
+        \Log::error("API Exception for vendor_ID {$vendorId}: " . $e->getMessage());
+
+        $responseData[] = [
+            'vendor_ID' => $vendorId,
+            'shop_ID' => $shopId,
+            'branch_ID' => $branchId,
+            'item_detail_ID' => $itemDetailId,
+            'stock_qty' => null,
+            'test_stock_qty' => null,
+            'source' => 'API Vendor',
+            'error' => 'Exception: ' . $e->getMessage()
+        ];
+    }
+}
+else {
+    $stockInfo = DB::table('stock')
+        ->join('itemdetails', 'stock.item_detail_ID', '=', 'itemdetails.id')
+        ->join('items', 'itemdetails.item_ID', '=', 'items.id')
+        ->join('branches', 'items.branches_ID', '=', 'branches.id')
+        ->join('shops', 'branches.shops_ID', '=', 'shops.id')
+        ->join('vendors', 'shops.vendors_ID', '=', 'vendors.id')
+        ->where('vendors.id', $vendorId)
+        ->where('shops.id', $shopId)
+        ->where('branches.id', $branchId)
+        ->where('itemdetails.id', $itemDetailId)
+        ->select('stock.stock_qty')
+        ->first();
+
+    if ($stockInfo) {
+        $responseData[] = [
+            'vendor_ID' => $vendorId,
+            'shop_ID' => $shopId,
+            'branch_ID' => $branchId,
+            'item_detail_ID' => $itemDetailId,
+            'stock_qty' => $stockInfo->stock_qty,
+            'test_stock_qty' => null,
+            'source' => 'In-App Vendor',
+            'error' => null
+        ];
+    } else {
+        $responseData[] = [
+            'vendor_ID' => $vendorId,
+            'shop_ID' => $shopId,
+            'branch_ID' => $branchId,
+            'item_detail_ID' => $itemDetailId,
+            'stock_qty' => null,
+            'test_stock_qty' => null,
+            'source' => 'In-App Vendor',
+            'error' => 'Invalid hierarchy or no stock found.'
+        ];
+    }
+}
+
+    }
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Stock information fetched successfully.',
+        'data' => $responseData
+    ]);
+}
 
 
 ///////////////////////////////////////////

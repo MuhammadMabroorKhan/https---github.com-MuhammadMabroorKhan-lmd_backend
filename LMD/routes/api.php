@@ -304,3 +304,6 @@ Route::get('/vendor/{vendorId}/available-organizations', [VendorController::clas
 Route::get('vendor/{vendorId}/summary', [VendorController::class, 'getVendorSummary']);
 Route::get('/organizations/{id}/organization-stats', [OrganizationController::class, 'getOrganizationStats']);
 Route::get('/admin/admin-stats', [AdminController::class, 'getAdminStats']);
+
+
+Route::post('/customer/get-stock-for-items', [CustomerController::class, 'getStockForItems']);
