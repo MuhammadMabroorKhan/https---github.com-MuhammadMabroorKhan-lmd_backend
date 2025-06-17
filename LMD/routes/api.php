@@ -307,3 +307,9 @@ Route::get('/admin/admin-stats', [AdminController::class, 'getAdminStats']);
 
 
 Route::post('/customer/get-stock-for-items', [CustomerController::class, 'getStockForItems']);
+
+
+Route::prefix('vehicle-categories')->group(function () {
+    Route::post('/', [DeliveryBoyController::class, 'addVehicleCategory']); // POST /api/vehicle-categories
+    Route::get('/', [DeliveryBoyController::class, 'getVehicleCategory']);  // GET  /api/vehicle-categories
+});

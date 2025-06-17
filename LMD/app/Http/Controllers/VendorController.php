@@ -735,6 +735,7 @@ public function addItem(Request $request, $vendorId, $shopId, $branchId)
         'attributes' => 'nullable|array', 
         'attributes.*.key' => 'required|string', 
         'attributes.*.value' => 'required|string',
+         'stock_qty' => 'nullable|integer|min:0', 
     ]);
 
     DB::beginTransaction();
@@ -772,6 +773,15 @@ public function addItem(Request $request, $vendorId, $shopId, $branchId)
         
             'picture' => $picturePath,
             'item_ID' => $itemId,
+        ]);
+
+
+
+ // 🔥 Insert into stock table
+        DB::table('stock')->insert([
+            'item_detail_ID' => $itemDetailId,
+            'stock_qty' => $validated['stock_qty'] ?? 0, // default to 0 if not provided
+            'last_updated' => now(),
         ]);
 
         // Insert dynamic attributes
@@ -828,7 +838,7 @@ public function addItem(Request $request, $vendorId, $shopId, $branchId)
 public function updateItemPicture(Request $request, $itemDetailId)
 {
     $validated = $request->validate([
-        'itemPicture' => 'required|file|mimes:jpeg,png,jpg|max:2048', // Validate image
+        'itemPicture' => 'required|file|mimes:jpeg,png,jpg', // Validate image
     ]);
 
     DB::beginTransaction();

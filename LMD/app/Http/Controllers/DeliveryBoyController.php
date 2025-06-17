@@ -435,11 +435,71 @@ class DeliveryBoyController extends Controller {
     
     
 
+
+
+
+
+
+
+
+
+ public function addVehicleCategory(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:50',
+            'per_km_charge' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $categoryId = DB::table('vehicle_categories')->insertGetId([
+            'name' => $request->name,
+            'per_km_charge' => $request->per_km_charge,
+            'description' => $request->description,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Vehicle category added successfully.',
+            'data' => ['id' => $categoryId]
+        ]);
+    }
+
+    // ✅ GET: Get all vehicle categories (for dropdown)
+    public function getVehicleCategory()
+    {
+        $categories = DB::table('vehicle_categories')
+            ->select('id', 'name', 'per_km_charge', 'description')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Vehicle categories fetched successfully.',
+            'data' => $categories
+        ]);
+    }
+
+
+
+
+
+
+
+
     public function addVehicle( Request $request, $deliveryBoyId ) {
         $validated = $request->validate( [
             'plate_no' => 'required|string|max:20|unique:vehicles',
             'color' => 'nullable|string|max:50',
-            'vehicle_type' => 'required|string|max:50',
+            // 'vehicle_type' => 'required|string|max:50',
+            'vehicle_type' => 'required|exists:vehicle_categories,id', // ID check
             'model' => 'nullable|string|max:50',
         ] );
 
@@ -457,27 +517,74 @@ class DeliveryBoyController extends Controller {
         ], 201 );
     }
 
-    public function getVehiclesByDeliveryBoy($deliveryBoyId)
-    {
+    // public function getVehiclesByDeliveryBoy($deliveryBoyId)
+    // {
         
-        $deliveryBoy = DB::table('deliveryboys')->where('ID', $deliveryBoyId)->first();
+    //     $deliveryBoy = DB::table('deliveryboys')->where('ID', $deliveryBoyId)->first();
     
-        if (!$deliveryBoy) {
-            return response()->json(['message' => 'Delivery Boy not found'], 404);
-        }
+    //     if (!$deliveryBoy) {
+    //         return response()->json(['message' => 'Delivery Boy not found'], 404);
+    //     }
     
-        $vehicles = Vehicle::where('deliveryboys_ID', $deliveryBoyId)->get();
+    //     $vehicles = Vehicle::where('deliveryboys_ID', $deliveryBoyId)->get();
     
-        if ($vehicles->isEmpty()) {
-            return response()->json(['message' => 'No vehicles found for this delivery boy'], 404);
-        }
+    //     if ($vehicles->isEmpty()) {
+    //         return response()->json(['message' => 'No vehicles found for this delivery boy'], 404);
+    //     }
     
+    //     return response()->json([
+    //         'message' => 'Vehicles retrieved successfully',
+    //         'vehicles' => $vehicles,
+    //     ], 200);
+    // }
+
+public function getVehiclesByDeliveryBoy($deliveryBoyId)
+{
+    // Step 1: Check if delivery boy exists
+    $deliveryBoy = DB::table('deliveryboys')->where('id', $deliveryBoyId)->first();
+
+    if (!$deliveryBoy) {
         return response()->json([
-            'message' => 'Vehicles retrieved successfully',
-            'vehicles' => $vehicles,
-        ], 200);
+            'status' => false,
+            'message' => 'Delivery boy not found',
+            'data' => null
+        ], 404);
     }
-    
+
+    // Step 2: Get vehicles with category info
+    $vehicles = DB::table('vehicles')
+        ->where('vehicles.deliveryboys_ID', $deliveryBoyId)
+        ->join('vehicle_categories', 'vehicles.vehicle_type', '=', 'vehicle_categories.id')
+        ->select(
+            'vehicles.id as vehicle_id',
+            'vehicles.plate_no',
+            'vehicles.color',
+            'vehicles.model',
+            'vehicle_categories.id as category_id',
+            'vehicle_categories.name as category_name',
+            'vehicle_categories.per_km_charge',
+            'vehicle_categories.description as category_description'
+        )
+        ->get();
+
+    if ($vehicles->isEmpty()) {
+        return response()->json([
+            'status' => false,
+            'message' => 'No vehicles found for this delivery boy',
+            'data' => []
+        ], 404);
+    }
+
+    // Step 3: Structured Response
+    return response()->json([
+        'status' => true,
+        'message' => 'Vehicles retrieved successfully',
+        'data' => [
+            'delivery_boy_id' => $deliveryBoyId,
+            'vehicles' => $vehicles
+        ]
+    ], 200);
+}
 
     public function updateVehicle( Request $request,  $deliveryBoyId, $vehicleId ) {
         $validated = $request->validate( [
@@ -1057,6 +1164,78 @@ try {
     $suborder->status = 'assigned';
     $suborder->deliveryboys_ID = $deliveryBoyId;
     $suborder->save();
+
+
+
+
+
+
+try {
+    // Get pickup (branch) location
+    $pickup = DB::table('branches')
+        ->where('id', $suborder->branch_ID)
+        ->select('latitude', 'longitude')
+        ->first();
+
+
+    // Get drop (customer address) location
+    $order = DB::table('orders')->where('id', $suborder->orders_ID)->first();
+
+    $address = DB::table('addresses')
+        ->where('id', $order->addresses_ID)
+        ->select('latitude', 'longitude')
+        ->first();
+
+    if (!$pickup || !$address) {
+        return response()->json(['error' => 'Pickup or drop location not found.'], 500);
+    }
+
+    // Calculate distance using Haversine formula
+    $theta = $pickup->longitude - $address->longitude;
+    $dist = sin(deg2rad($pickup->latitude)) * sin(deg2rad($address->latitude)) +
+            cos(deg2rad($pickup->latitude)) * cos(deg2rad($address->latitude)) * cos(deg2rad($theta));
+    $dist = acos($dist);
+    $dist = rad2deg($dist);
+    $km = $dist * 60 * 1.1515 * 1.609344; // Miles to KM
+
+    // Get delivery boy vehicle and rate per km
+    $vehicle = DB::table('vehicles')
+        ->where('deliveryboys_ID', $deliveryBoyId)
+        ->first();
+
+    if (!$vehicle) {
+        return response()->json(['error' => 'Vehicle for delivery boy not found.'], 404);
+    }
+
+    $ratePerKm = DB::table('vehicle_categories')
+        ->where('id', $vehicle->vehicle_type) // vehicle_type is category ID
+        ->value('per_km_charge');
+
+    if (!$ratePerKm) {
+        return response()->json(['error' => 'Per KM rate not found.'], 404);
+    }
+
+    $totalEarning = round($km * $ratePerKm, 2);
+
+    // Insert into delivery_earnings table
+    DB::table('delivery_earnings')->insert([
+        'deliveryboy_id' => $deliveryBoyId,
+        'suborder_id' => $suborder->id,
+        'distance_km' => round($km, 2),
+        'rate_per_km' => $ratePerKm,
+        'total_earning' => $totalEarning,
+        'created_at' => now(),
+        'updated_at' => now()
+    ]);
+} catch (\Exception $e) {
+    return response()->json(['error' => 'Failed to calculate and insert delivery earnings.'], 500);
+}
+
+
+
+
+
+
 
     return response()->json(['message' => 'Order accepted and marked assigned successfully.']);
 }

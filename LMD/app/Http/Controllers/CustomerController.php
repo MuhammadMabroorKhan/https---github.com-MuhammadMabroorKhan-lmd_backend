@@ -1087,6 +1087,43 @@ public function placeOrder(Request $request)
         }
 
         
+
+if ($groupData['vendor_type'] === 'In-App Vendor') {
+    foreach ($groupData['items'] as $item) {
+        $itemDetailId = $item['item_detail_id'];
+        $orderedQty = $item['quantity'];
+
+        $stockRecord = DB::table('stock')
+            ->join('itemdetails', 'stock.item_detail_ID', '=', 'itemdetails.id')
+            ->join('items', 'itemdetails.item_ID', '=', 'items.id')
+            ->join('branches', 'items.branches_ID', '=', 'branches.id')
+            ->join('shops', 'branches.shops_ID', '=', 'shops.id')
+            ->join('vendors', 'shops.vendors_ID', '=', 'vendors.id')
+            ->where('stock.item_detail_ID', $itemDetailId)
+            ->where('vendors.id', $groupData['vendor_id'])
+            ->where('shops.id', $groupData['shop_id'])
+            ->where('branches.id', $groupData['branch_id'])
+            ->select('stock.id', 'stock.stock_qty')
+            ->first();
+
+        if ($stockRecord) {
+            $newQty = max(0, $stockRecord->stock_qty - $orderedQty);
+
+            DB::table('stock')
+                ->where('id', $stockRecord->id)
+                ->update([
+                    'stock_qty' => $newQty,
+                    'last_updated' => now(),
+                ]);
+        }
+        // Else: stock doesn't exist, skip as required
+    }
+}
+
+
+
+
+
         DB::table( 'suborders' )->where( 'id', $suborderId )->update( [ 'total_amount' => $suborderTotal ] );
 //response for each vendor...
         $responseGroup = [

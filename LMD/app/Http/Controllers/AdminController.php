@@ -1359,7 +1359,7 @@ public function addVariable(Request $request)
         'tags' => 'required|string|unique:variables,tags'
     ]);
 
-    //  $variable = DB::table('variables')->insert($validated);
+      $variable = DB::table('variables')->insert($validated);
 
     return response()->json(['message' => 'Variable added successfully'], 201);
 }
