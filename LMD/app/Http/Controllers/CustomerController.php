@@ -1385,39 +1385,67 @@ private function createOrUpdateSuborder($groupData, $orderId)
         
         public function getOrderDetails($orderId)
         {
-            $orderDetails = DB::table('orders')
-                ->join('suborders', 'orders.id', '=', 'suborders.orders_ID')
-                ->join('orderdetails', 'suborders.id', '=', 'orderdetails.suborders_ID')
-                ->join('itemdetails', 'orderdetails.itemdetails_ID', '=', 'itemdetails.id')
-                ->join('items', 'itemdetails.item_ID', '=', 'items.id')
-                ->select(
-                    'orders.id as order_id',
-                    'orders.order_date',
-                    'orders.order_status',
-                    'orders.total_amount as order_total_amount',
-                    'suborders.id as suborder_id',
-                    'suborders.status as suborder_status',
-                    'suborders.payment_status as suborder_payment_status',
-                    'suborders.total_amount as suborder_total_amount',
-                    'suborders.vendor_type',
-                    'suborders.vendor_order_id',
-                    'suborders.estimated_delivery_time',
-                    'suborders.delivery_time',
-                    'suborders.deliveryboys_ID',
-                    'suborders.vendor_ID',
-                    'suborders.shop_ID',
-                    'suborders.branch_ID',
-                    'suborders.created_at as suborder_created_at',
-                    'suborders.updated_at as suborder_updated_at',
-                    'itemdetails.id as item_detail_id',
-                    'items.name as item_name',
-                    'itemdetails.price as item_price',
-                    'orderdetails.quantity as item_quantity',
-                    'orderdetails.total as item_total'
-                )
-                ->where('orders.id', $orderId)
-                ->get();
-        
+            // $orderDetails = DB::table('orders')
+            //     ->join('suborders', 'orders.id', '=', 'suborders.orders_ID')
+            //     ->join('orderdetails', 'suborders.id', '=', 'orderdetails.suborders_ID')
+            //     ->join('itemdetails', 'orderdetails.itemdetails_ID', '=', 'itemdetails.id')
+            //     ->join('items', 'itemdetails.item_ID', '=', 'items.id')
+            //     ->select(
+            //         'orders.id as order_id',
+            //         'orders.order_date',
+            //         'orders.order_status',
+            //         'orders.total_amount as order_total_amount',
+            //         'suborders.id as suborder_id',
+            //         'suborders.status as suborder_status',
+            //         'suborders.payment_status as suborder_payment_status',
+            //         'suborders.total_amount as suborder_total_amount',
+            //         'suborders.vendor_type',
+            //         'suborders.vendor_order_id',
+            //         'suborders.estimated_delivery_time',
+            //         'suborders.delivery_time',
+            //         'suborders.deliveryboys_ID',
+            //         'suborders.vendor_ID',
+            //         'suborders.shop_ID',
+            //         'suborders.branch_ID',
+            //         'suborders.created_at as suborder_created_at',
+            //         'suborders.updated_at as suborder_updated_at',
+            //         'itemdetails.id as item_detail_id',
+            //         'items.name as item_name',
+            //         'itemdetails.price as item_price',
+            //         'orderdetails.quantity as item_quantity',
+            //         'orderdetails.total as item_total'
+            //     )
+            //     ->where('orders.id', $orderId)
+            //     ->get();
+        $orderDetails = DB::table('orders')
+    ->join('suborders', 'orders.id', '=', 'suborders.orders_ID')
+    ->join('orderdetails', 'suborders.id', '=', 'orderdetails.suborders_ID')
+    ->select(
+        'orders.id as order_id',
+        'orders.order_date',
+        'orders.order_status',
+        'orders.total_amount as order_total_amount',
+        'suborders.id as suborder_id',
+        'suborders.status as suborder_status',
+        'suborders.payment_status as suborder_payment_status',
+        'suborders.total_amount as suborder_total_amount',
+        'suborders.vendor_type',
+        'suborders.vendor_order_id',
+        'suborders.estimated_delivery_time',
+        'suborders.delivery_time',
+        'suborders.deliveryboys_ID',
+        'suborders.vendor_ID',
+        'suborders.shop_ID',
+        'suborders.branch_ID',
+        'suborders.created_at as suborder_created_at',
+        'suborders.updated_at as suborder_updated_at',
+        'orderdetails.itemdetails_ID as item_detail_id', // Just the ID
+        'orderdetails.quantity as item_quantity',
+        'orderdetails.total as item_total'
+    )
+    ->where('orders.id', $orderId)
+    ->get();
+
             if ($orderDetails->isEmpty()) {
                 return response()->json(['message' => 'Order not found or no details available'], 404);
             }
@@ -1480,7 +1508,7 @@ private function createOrUpdateSuborder($groupData, $orderId)
 
                 $groupedOrderDetails[$suborderId]['items'][] = [
                     'item_detail_id' => $menuItem['itemdetail_id'] ?? $detail->item_detail_id,
-                    'item_name' => $menuItem['item_name'] ?? $detail->item_name,
+                    'item_name' => $menuItem['item_name'], // ?? $detail->item_name,
                     'item_quantity' => $detail->item_quantity,
                     'item_total' => $detail->item_total,
                     'item_description' => $menuItem['item_description'] ?? null,
