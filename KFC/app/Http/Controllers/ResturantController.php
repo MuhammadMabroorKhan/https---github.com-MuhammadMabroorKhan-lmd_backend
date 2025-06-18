@@ -987,6 +987,101 @@ public function getStocksByItemDetails(Request $request)
 }
 
 
+
+
+
+
+
+///////WEBSITES
+
+public function getAllOrdersWithDetailsForKFC()
+{
+    
+    $baseUrl = url('/');
+
+    $orders = DB::table('orders')
+        ->join('orderdetails', 'orders.id', '=', 'orderdetails.order_id')
+        ->join('itemdetails', 'orderdetails.item_detail_id', '=', 'itemdetails.id')
+        ->join('items', 'itemdetails.item_ID', '=', 'items.id')
+        ->select(
+            'orders.id as order_id',
+            'orders.order_date',
+            'orders.total_amount',
+            'orders.status as order_status',
+            'orders.payment_status',
+            'orders.payment_method',
+            'orders.delivery_address',
+            'orders.order_type',
+
+            'orderdetails.qty as item_quantity',
+            'orderdetails.unit_price',
+            'orderdetails.subtotal',
+
+            'itemdetails.id as item_detail_id',
+            'itemdetails.variation_name',
+            'itemdetails.cost',
+            'itemdetails.status as item_status',
+
+            DB::raw("CASE 
+                WHEN itemdetails.photo IS NULL OR itemdetails.photo = '' 
+                THEN NULL 
+                ELSE CONCAT('$baseUrl/storage/', itemdetails.photo) 
+            END as item_photo"),
+
+            'items.id as item_id',
+            'items.name as item_name',
+            'items.description',
+            'items.category_ID',
+            'items.restaurant_ID'
+        )
+        ->orderBy('orders.order_date', 'desc')
+        ->get();
+
+    if ($orders->isEmpty()) {
+        return response()->json(['message' => 'No orders found'], 404);
+    }
+
+    $grouped = [];
+    foreach ($orders as $row) {
+        $orderId = $row->order_id;
+
+        if (!isset($grouped[$orderId])) {
+            $grouped[$orderId] = [
+                'order_id' => $row->order_id,
+                'order_date' => $row->order_date,
+                'total_amount' => $row->total_amount,
+                'order_status' => $row->order_status,
+                'payment_status' => $row->payment_status,
+                'payment_method' => $row->payment_method,
+                'delivery_address' => $row->delivery_address,
+                'order_type' => $row->order_type,
+                'items' => [],
+            ];
+        }
+
+        $grouped[$orderId]['items'][] = [
+            'item_detail_id' => $row->item_detail_id,
+            'variation_name' => $row->variation_name,
+            'cost' => $row->cost,
+            'photo' => $row->item_photo, // Using generated URL
+            'status' => $row->item_status,
+            'item_quantity' => $row->item_quantity,
+            'unit_price' => $row->unit_price,
+            'subtotal' => $row->subtotal,
+            'item_name' => $row->item_name,
+            'item_description' => $row->description,
+            'category_ID' => $row->category_ID,
+            'restaurant_ID' => $row->restaurant_ID,
+        ];
+    }
+
+    return response()->json(array_values($grouped));
+}
+
+
+
+
+
 }
 
 

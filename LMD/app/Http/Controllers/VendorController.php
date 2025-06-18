@@ -1212,13 +1212,7 @@ public function getOrderedItemInformation($vendorId, $shopId, $branchId, $subord
             'itemdetails.price as item_detail_price',
             'itemdetails.additional_info',
             // 'itemdetails.picture as item_picture',
-
-
-
-
-
-
-
+         
             DB::raw("CASE 
             WHEN itemdetails.picture IS NULL OR itemdetails.picture = '' 
             THEN NULL 

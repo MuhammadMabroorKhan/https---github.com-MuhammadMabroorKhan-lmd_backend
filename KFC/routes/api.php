@@ -66,3 +66,13 @@ Route::post('item/rating', [ResturantController::class, 'addItemRating']);
 
 //stocks
 Route::post('/get-stocks-by-itemdetails', [ResturantController::class, 'getStocksByItemDetails']);
+
+
+
+
+
+
+
+
+//FOR KFC SIDES (FRONTEND)
+Route::get('kfcside/orders', [ResturantController::class, 'getAllOrdersWithDetailsForKFC']);
