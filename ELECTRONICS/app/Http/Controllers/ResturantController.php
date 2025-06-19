@@ -957,8 +957,9 @@ public function confirmPaymentByVendor($id)
 
 public function getStocksByItemDetails(Request $request)
 {
-    $itemDetailIds = $request->input('item_detail_id'); // Expecting an array
+       \Log::info('Incoming Stock Request:', $request->all());
 
+    $itemDetailIds = $request->input('item_detail_id'); // Expecting an array
     if (!is_array($itemDetailIds) || empty($itemDetailIds)) {
         return response()->json([
             'message' => 'item_detail_id must be a non-empty array.'

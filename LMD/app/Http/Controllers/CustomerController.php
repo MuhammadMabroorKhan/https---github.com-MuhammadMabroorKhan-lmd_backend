@@ -480,20 +480,21 @@ public function getVendorShopBranchMenu($vendorId, $shopId, $branchId)
                 $mapArray = $mappings->pluck('tags', 'api_values')->toArray();
     
                 // Function to recursively map response
-                function mapResponseKeys($data, $mapArray) {
-                    if (is_array($data)) {
-                        $mappedData = [];
-                        foreach ($data as $key => $value) {
-                            $newKey = $mapArray[$key] ?? $key; // Use mapped key or fallback to original
-                            $mappedData[$newKey] = is_array($value) ? mapResponseKeys($value, $mapArray) : $value;
-                        }
-                        return $mappedData;
-                    }
-                    return $data;
-                }
-    
+                // function mapResponseKeys($data, $mapArray) {
+                //     if (is_array($data)) {
+                //         $mappedData = [];
+                //         foreach ($data as $key => $value) {
+                //             $newKey = $mapArray[$key] ?? $key; // Use mapped key or fallback to original
+                //             $mappedData[$newKey] = is_array($value) ? mapResponseKeys($value, $mapArray) : $value;
+                //         }
+                //         return $mappedData;
+                //     }
+                //     return $data;
+                // }
+    $mappedResponse = $this->mapResponseKeys($apiResponse, $mapArray);
+
                 // Transform API response keys based on mapping
-                $mappedResponse = mapResponseKeys($apiResponse, $mapArray);
+                // $mappedResponse = mapResponseKeys($apiResponse, $mapArray);
     
                 return response()->json($mappedResponse);
             } else {
@@ -2996,13 +2997,7 @@ public function getStockForItems(Request $request)
             throw new \Exception("API method not found");
         }
 
-        // Step 3: Get mapped variable name (e.g., item_detail_id => itemId)
-        // $variableName = DB::table('variables')
-        //     ->join('mapping', 'variables.id', '=', 'mapping.variable_ID')
-        //     ->where('mapping.apivendor_ID', $apiVendor->apivendor_ID)
-        //     ->where('mapping.branch_ID', $branchId)
-        //     ->where('variables.tags', 'item_detail_id')
-        //     ->value('mapping.api_values') ?? 'item_detail_id';
+    
 
         $variableName = DB::table('variables')
     ->join('mapping', 'variables.id', '=', 'mapping.variable_ID')
@@ -3197,6 +3192,23 @@ public function getMenuFromVendor($branchId)
         // Handle any exceptions that occur during the API call
         return response()->json(['error' => 'Error during API request: ' . $e->getMessage()], 500);
     }
+}
+
+
+
+
+
+
+private function mapResponseKeys($data, $mapArray) {
+    if (is_array($data)) {
+        $mappedData = [];
+        foreach ($data as $key => $value) {
+            $newKey = $mapArray[$key] ?? $key;
+            $mappedData[$newKey] = is_array($value) ? $this->mapResponseKeys($value, $mapArray) : $value;
+        }
+        return $mappedData;
+    }
+    return $data;
 }
 
 }
