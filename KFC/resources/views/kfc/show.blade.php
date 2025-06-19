@@ -1,37 +1,4 @@
-<!-- resources/views/kfc/show.blade.php
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Order Details</title>
-</head>
-<body>
-    <h2>Order #{{ $order->id }}</h2>
-    <p><strong>Date:</strong> {{ $order->order_date }}</p>
-    <p><strong>Total Amount:</strong> {{ $order->total_amount }}</p>
-    <p><strong>Status:</strong> {{ $order->status }}</p>
-    <p><strong>Payment Status:</strong> {{ $order->payment_status }}</p>
-    <p><strong>Payment Method:</strong> {{ $order->payment_method }}</p>
-
-    <h3>Items:</h3>
-    <ul>
-        @foreach ($orderDetails as $item)
-            <li>
-                <strong>{{ $item->item_name }}</strong> ({{ $item->variation_name }}) - 
-                Qty: {{ $item->item_quantity }} | 
-                Unit Price: {{ $item->unit_price }} |
-                Subtotal: {{ $item->subtotal }} <br>
-                <em>{{ $item->description }}</em><br>
-                @if ($item->item_photo)
-                    <img src="{{ $item->item_photo }}" alt="Photo" width="100">
-                @endif
-            </li>
-        @endforeach
-    </ul>
-
-    <a href="{{ route('kfc.orders') }}">Back to Orders</a>
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -129,9 +96,9 @@
     <h2>Order #{{ $order->id }}</h2>
     <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($order->order_date)->format('d M Y, h:i A') }}</p>
     <p><strong>Total Amount:</strong> {{ $order->total_amount }}</p>
-    <!-- <p><strong>Status:</strong> {{ ucfirst($order->status) }}</p>
+    <p><strong>Status:</strong> {{ ucfirst($order->status) }}</p>
     <p><strong>Payment Status:</strong> {{ ucfirst($order->payment_status) }}</p>
-    <p><strong>Payment Method:</strong> {{ ucfirst($order->payment_method) }}</p> -->
+    <!-- <p><strong>Payment Method:</strong> {{ ucfirst($order->payment_method) }}</p> -->
 
     <h3>Ordered Items</h3>
     <div class="items-container">
@@ -148,6 +115,49 @@
             </div>
         @endforeach
     </div>
+
+
+@if ($order->status === 'pending')
+<h3>Update Order Status</h3>
+    <form method="POST" action="{{ url('/kfc/update-suborder-status') }}">
+        @csrf
+        <input type="hidden" name="vendor_order_id" value="{{ $order->id }}">
+        <input type="hidden" name="status_type" value="order">
+        <input type="hidden" name="status" value="processing">
+        <button type="submit" class="back-link">Mark as Processing</button>
+    </form>
+@elseif ($order->status === 'processing')
+<h3>Update Order Status</h3>
+    <form method="POST" action="{{ url('/kfc/update-suborder-status') }}">
+        @csrf
+        <input type="hidden" name="vendor_order_id" value="{{ $order->id }}">
+        <input type="hidden" name="status_type" value="order">
+        <input type="hidden" name="status" value="ready">
+        <button type="submit" class="back-link">Mark as Ready</button>
+    </form>
+@elseif ($order->status === 'picked_up')
+<h3>Update Order Status</h3>
+    <form method="POST" action="{{ url('/kfc/update-suborder-status') }}">
+        @csrf
+        <input type="hidden" name="vendor_order_id" value="{{ $order->id }}">
+        <input type="hidden" name="status_type" value="order">
+        <input type="hidden" name="status" value="handover_confirmed">
+        <button type="submit" class="back-link">Mark as Handover Confirmed</button>
+    </form>
+@endif
+
+
+
+@if ($order->payment_status === 'confirmed_by_deliveryboy')
+<h3>Update Payment Status</h3>
+    <form method="POST" action="{{ url('/kfc/update-suborder-status') }}">
+        @csrf
+        <input type="hidden" name="vendor_order_id" value="{{ $order->id }}">
+        <input type="hidden" name="status_type" value="payment">
+        <input type="hidden" name="status" value="confirmed_by_vendor">
+        <button type="submit" class="back-link">Confirm Payment (Vendor)</button>
+    </form>
+@endif
 
     <a class="back-link" href="{{ route('kfc.orders') }}">← Back to Orders</a>
 

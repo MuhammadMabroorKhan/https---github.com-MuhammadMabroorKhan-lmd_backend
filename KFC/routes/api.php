@@ -76,3 +76,4 @@ Route::post('/get-stocks-by-itemdetails', [ResturantController::class, 'getStock
 
 //FOR KFC SIDES (FRONTEND)
 Route::get('kfcside/orders', [ResturantController::class, 'getAllOrdersWithDetailsForKFC']);
+Route::post('/kfc/update-suborder-status', [ResturantController::class, 'updateSuborderStatusFromKFC']);

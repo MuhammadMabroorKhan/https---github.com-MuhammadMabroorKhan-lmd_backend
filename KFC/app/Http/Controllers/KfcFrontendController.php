@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\JsonResponse;
 
 class KfcFrontendController extends Controller
 {
@@ -57,5 +59,90 @@ class KfcFrontendController extends Controller
     $orders = DB::table('orders')->orderBy('order_date', 'desc')->get();
     return view('kfc.orders-table', compact('orders'));
 }
+
+
+public function updateOrderStatus(Request $request)
+{
+    $validated = $request->validate([
+        'vendor_order_id' => 'required|integer',
+        'status_type' => 'required|in:order,payment',
+        'status' => 'required|string',
+    ]);
+
+    $orderId = $validated['vendor_order_id'];
+    $statusType = $validated['status_type'];
+    $incomingStatus = strtolower($validated['status']);
+
+    $order = DB::table('orders')->where('id', $orderId)->first();
+    if (!$order) {
+        return redirect()->back()->with('error', 'Order not found.');
+    }
+
+    // Use query builder to update
+    if ($statusType === 'payment') {
+        if ($incomingStatus === 'confirmed_by_vendor' && $order->payment_status !== 'confirmed_by_deliveryboy') {
+            return redirect()->back()->with('error', 'Delivery boy must confirm payment first.');
+        }
+
+        $validPaymentStatuses = [
+            'pending',
+            'confirmed_by_customer',
+            'confirmed_by_deliveryboy',
+            'confirmed_by_vendor',
+        ];
+
+        if (!in_array($incomingStatus, $validPaymentStatuses)) {
+            return redirect()->back()->with('error', 'Invalid payment status.');
+        }
+
+        DB::table('orders')->where('id', $orderId)->update([
+            'payment_status' => $incomingStatus,
+        ]);
+    }
+
+    if ($statusType === 'order') {
+        $validTransitions = [
+            'pending' => 'processing',
+            'processing' => 'ready',
+            'picked_up' => 'handover_confirmed',
+            'handover_confirmed' => 'in_transit',
+            'in_transit' => 'delivered',
+            'delivered' => 'completed',
+        ];
+
+        $currentStatus = strtolower($order->status);
+        $nextAllowed = $validTransitions[$currentStatus] ?? null;
+
+        if ($nextAllowed !== $incomingStatus) {
+            return redirect()->back()->with('error', "Invalid order status transition from '$currentStatus' to '$incomingStatus'.");
+        }
+
+        DB::table('orders')->where('id', $orderId)->update([
+            'status' => $incomingStatus,
+        ]);
+    }
+
+    // Map for LMD side
+    $statusMap = [
+        'processing' => 'in_progress',
+        'canceled' => 'cancelled',
+    ];
+    $mappedStatus = $statusMap[$incomingStatus] ?? $incomingStatus;
+
+    try {
+        $lmdResponse = Http::timeout(60)->post('http://192.168.43.63:8000/api/vendor/update-suborder-status', [
+            'vendor_order_id' => (string)$orderId,
+            'status_type' => $statusType,
+            'status' => $mappedStatus,
+        ]);
+
+        $lmdData = $lmdResponse->json();
+
+        return redirect()->back()->with('success', 'Order status updated successfully.')->with('lmd_response', $lmdData);
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'LMD update failed: ' . $e->getMessage());
+    }
+}
+
 
 }

@@ -271,6 +271,8 @@ Route::post('/admin/addcourieritem', [AdminController::class, 'addCourierItem'])
 
 
 
+
+
 Route::post('/organization/signup', [OrganizationController::class, 'signup']);
 Route::get('/organizations/{id}', [OrganizationController::class, 'getOrganizationData']);
 Route::get('/organizations/{organization_id}/deliveryboys', [OrganizationController::class, 'getDeliveryBoysByOrganization']);
@@ -313,3 +315,9 @@ Route::prefix('vehicle-categories')->group(function () {
     Route::post('/', [DeliveryBoyController::class, 'addVehicleCategory']); // POST /api/vehicle-categories
     Route::get('/', [DeliveryBoyController::class, 'getVehicleCategory']);  // GET  /api/vehicle-categories
 });
+
+
+
+///From Website for api vendor
+Route::post('/vendor/update-suborder-status', [VendorController::class, 'updateSuborderStatusByVendorOrderId']);
+

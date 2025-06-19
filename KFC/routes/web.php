@@ -14,3 +14,4 @@ Route::get('/orders/{orderId}', [KfcFrontendController::class, 'show'])->name('k
 // AJAX route to return HTML partial
 // ✅ AJAX route moved here
 Route::get('/kfc/orders-json', [KfcFrontendController::class, 'ordersTable'])->name('kfc.orders.json');
+Route::post('/kfc/update-suborder-status', [KfcFrontendController::class, 'updateOrderStatus'])->name('kfc.update-status');
