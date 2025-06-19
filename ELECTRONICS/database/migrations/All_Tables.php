@@ -17,7 +17,7 @@ return new class extends Migration
     public function up()
     {
          // Restaurant Table
-    Schema::create('restaurant', function (Blueprint $table) {
+    Schema::create('Electronics', function (Blueprint $table) {
         $table->id();
         $table->string('name', 255);
         $table->string('description',255)->nullable();
@@ -27,9 +27,9 @@ return new class extends Migration
         $table->enum('status', ['online', 'offline'])->default('online');
     });
 
-    Schema::create('restaurant_images', function (Blueprint $table) {
+    Schema::create('electronics_images', function (Blueprint $table) {
         $table->id();
-        $table->unsignedBigInteger('restaurant_id'); // Foreign key to restaurants table
+        $table->unsignedBigInteger('electronic_id'); // Foreign key to restaurants table
         $table->string('image_path', 255); // Path to the image file
         $table->string('description', 255)->nullable(); // Optional description for the image
        });
@@ -46,7 +46,7 @@ return new class extends Migration
             $table->string('name'); // Name of the item (e.g., "Burger", "Pizza")
             $table->text('description')->nullable(); // General description of the item
             $table->unsignedBigInteger('category_ID')->nullable();
-            $table->unsignedBigInteger('restaurant_ID')->nullable();
+            $table->unsignedBigInteger('electronic_ID')->nullable();
         });
 
 
