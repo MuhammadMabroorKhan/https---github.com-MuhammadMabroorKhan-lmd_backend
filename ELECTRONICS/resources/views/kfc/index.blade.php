@@ -189,7 +189,7 @@
 </head>
 <body>
 
-    <h1>All KFC Orders</h1>
+    <h1>All Electronics Orders</h1>
 
     <div id="ordersTable">
         @include('kfc.orders-table', ['orders' => $orders])
