@@ -71,7 +71,7 @@ Route::post('/get-stocks-by-itemdetails', [ResturantController::class, 'getStock
 
 
 
-
+Route::post('/itemdetails/update-picture', [ResturantController::class, 'updateItemPicture']);
 
 
 //FOR KFC SIDES (FRONTEND)

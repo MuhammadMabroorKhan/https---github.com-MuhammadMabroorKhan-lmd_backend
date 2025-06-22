@@ -336,126 +336,6 @@ public function updateDeliveryTracking(Request $request, $orderId)
 
 
 
-// public function getItemsWithDetails()
-// {
-//     // Retrieve all items
-//     $items = DB::table('items')
-//         ->leftJoin('itemcategories', 'items.category_ID', '=', 'itemcategories.id')
-//         ->select('items.id as item_id', 'items.name as item_name', 'items.description', 'itemcategories.name as category_name', 'items.restaurant_ID')
-//         ->get();
-
-//     // Add item details to each item
-//     foreach ($items as $item) {
-//         $item->item_details = DB::table('itemdetails')
-//             ->where('item_ID', $item->item_id)
-//             ->select('id as detail_id', 'variation_name', 'cost', 'additional_info', 'photo', 'status')
-//             ->get();
-//     }
-
-//     if ($items->isEmpty()) {
-//         return response()->json(['message' => 'No items found.'], 404);
-//     }
-
-//     return response()->json(['message' => 'Items retrieved successfully!', 'items' => $items]);
-// }
-
-
-
-
-// public function getItemsWithDetails()
-// {
-//     // Retrieve all items with their categories and details
-//     $items = DB::table('items')
-//         ->leftJoin('itemcategories', 'items.category_ID', '=', 'itemcategories.id')
-//         ->leftJoin('itemdetails', 'items.id', '=', 'itemdetails.item_ID')
-//         ->leftJoin('itemattributes', 'itemdetails.id', '=', 'itemattributes.itemdetail_id') // Join with attributes
-//         ->select(
-//             'items.id as item_id',
-//             'items.name as item_name',
-//             'items.description as item_description',
-//             'itemcategories.name as item_category',
-//             'itemdetails.id as item_detail_id',
-//             'itemdetails.variation_name',
-//             'itemdetails.cost as item_detail_price',
-//             'itemdetails.additional_info',
-//             'itemdetails.photo',
-//             'itemdetails.status',
-//             'itemdetails.preparation_time',
-//             'itemdetails.timesensitive',
-//             'itemattributes.id as attribute_id',
-//             'itemattributes.key as attribute_key',
-//             'itemattributes.value as attribute_value'
-//         )
-//         ->get();
-
-//     if ($items->isEmpty()) {
-//         return response()->json(['message' => 'No items found.'], 404);
-//     }
-
-//     // Base URL for images
-//     $baseURL = asset('storage/');
-  
-
-
-//     // Process data to match the required JSON structure
-//     $formattedItems = [];
-//     foreach ($items as $item) {
-//         $itemId = $item->item_id;
-//         $detailId = $item->item_detail_id;
-
-//         // Skip items that have no details
-//         if (is_null($detailId)) {
-//             continue;
-//         }
-
-//         if (!isset($formattedItems[$itemId])) {
-//             $formattedItems[$itemId] = [
-//                 'item_id' => $item->item_id,
-//                 'item_name' => $item->item_name,
-//                 'item_description' => $item->item_description,
-//                 'item_category' => $item->item_category,
-//                 'item_details' => [],
-//             ];
-//         }
-
-//         if (!isset($formattedItems[$itemId]['item_details'][$detailId])) {
-//             $formattedItems[$itemId]['item_details'][$detailId] = [
-//                 'item_detail_id' => $item->item_detail_id,
-//                 'variation_name' => $item->variation_name,
-//                 'item_detail_price' => $item->item_detail_price,
-//                 'additional_info' => $item->additional_info,
-//                 'photo' => $item->photo ? $baseURL . '/' . $item->photo : null,
-//                 'status' => $item->status,
-//                 'preparation_time' => $item->preparation_time,
-//                 'timesensitive' => $item->timesensitive,
-//                 'item_attributes' => [],
-//             ];
-//         }
-
-//         // Add attributes only if they exist
-//         if ($item->attribute_id) {
-//             $formattedItems[$itemId]['item_details'][$detailId]['item_attributes'][] = [
-//                 'attribute_id' => $item->attribute_id,
-//                 'attribute_key' => $item->attribute_key,
-//                 'attribute_value' => $item->attribute_value,
-//             ];
-//         }
-//     }
-
-//     // Flatten the array and remove numeric keys
-//     $finalResponse = [];
-//     foreach ($formattedItems as $item) {
-//         $item['item_details'] = array_values($item['item_details']); // Reset numeric keys
-//         $finalResponse[] = $item;
-//     }
-
-//     return response()->json([
-//         'message' => 'Items retrieved successfully!',
-//         'items' => $finalResponse,
-//     ]);
-// }
-
-
 public function getItemsWithDetails()
 {
     $baseUrl = url('storage'); // Adjust this if needed
@@ -497,15 +377,17 @@ public function getItemsWithDetails()
             'item_description' => $firstItem->item_description,
             'timesensitive' => $firstItem->timesensitive,
             'preparation_time' => $firstItem->preparation_time,
-            'picture' => $firstItem->photo ? $baseUrl . '/' . $firstItem->photo : null, // Full URL
+            // 'picture' => $firstItem->photo ? $baseUrl . '/' . $firstItem->photo : null, // Full URL
+            'itemPicture' => $firstItem->photo ? $baseUrl . '/' . $firstItem->photo : null, // Full URL
             'itemdetail_id' => $firstItem->item_detail_id,
             'variation_name' => $firstItem->variation_name,
             'unit_price' => $firstItem->item_detail_price,
             'additional_info' => $firstItem->additional_info,
             'item_category_id' => $firstItem->item_category_id,
             'item_category' => $firstItem->item_category,
-            'item_attributes' => $itemDetails->filter(function ($detail) {
-                return !is_null($detail->attribute_id);
+            // 'item_attributes' => $itemDetails->filter(function ($detail) {
+               'attributes' => $itemDetails->filter(function ($detail) {
+            return !is_null($detail->attribute_id);
             })->map(function ($attribute) {
                 return [
                     'key' => $attribute->attribute_key,

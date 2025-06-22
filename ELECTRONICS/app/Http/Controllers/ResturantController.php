@@ -950,6 +950,38 @@ public function confirmPaymentByVendor($id)
 
 
 
+public function updateItemPicture(Request $request)
+{
+    $validated = $request->validate([
+        'id' => 'required|integer|exists:itemdetails,id',
+        'picture' => 'required|file|mimes:jpeg,png,jpg', // optional max size
+    ]);
+
+    DB::beginTransaction();
+    try {
+        $itemDetailId = $validated['id'];
+
+        // Handle picture upload
+        $picturePath = $validated['picture']->store('itemImages', 'public');
+
+        // Update the item detail with the new picture path
+        DB::table('itemdetails')->where('id', $itemDetailId)->update([
+            'photo' => $picturePath, // use correct column name: 'photo'
+        ]);
+
+        DB::commit();
+        return response()->json([
+            'message' => 'Item picture updated successfully!',
+            'picture_url' => url('storage/' . $picturePath),
+        ], 200);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'message' => 'Failed to update item picture.',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
 
 
 

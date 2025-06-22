@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pharmacy;
-use App\Models\RestaurantImages;
+use App\Models\PharmacyImages;
 use App\Models\Item;
 use App\Models\ItemRating;
 use App\Models\DeliveryTracking;
@@ -49,7 +49,7 @@ class PharmacyController extends Controller
       // Add order details
       foreach ($request->input('order_details') as $item) {
 
-          $itemDetailId = $item['itemdetails_ID'];
+          $itemdetails_ID = $item['itemdetails_ID'];
         $quantities = $item['quantities'];
 
 
@@ -148,6 +148,38 @@ public function getItemRatingForOrder($orderId)
 }
 
 
+public function updateItemPicture(Request $request)
+{
+    $validated = $request->validate([
+        'id' => 'required|integer|exists:itemdetails,id',
+        'picture' => 'required|file|mimes:jpeg,png,jpg', // optional max size
+    ]);
+
+    DB::beginTransaction();
+    try {
+        $itemDetailId = $validated['id'];
+
+        // Handle picture upload
+        $picturePath = $validated['picture']->store('itemImages', 'public');
+
+        // Update the item detail with the new picture path
+        DB::table('itemdetails')->where('id', $itemDetailId)->update([
+            'photo' => $picturePath, // use correct column name: 'photo'
+        ]);
+
+        DB::commit();
+        return response()->json([
+            'message' => 'Item picture updated successfully!',
+            'picture_url' => url('storage/' . $picturePath),
+        ], 200);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'message' => 'Failed to update item picture.',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
 
 public function addItemRating(Request $request): JsonResponse
 {
@@ -346,7 +378,7 @@ public function getItemsWithDetails()
     $items = DB::table('items')
         ->leftJoin('itemcategories', 'items.category_ID', '=', 'itemcategories.id')
         ->leftJoin('itemdetails', 'items.id', '=', 'itemdetails.item_ID')
-        ->leftJoin('itemattributes', 'itemdetails.id', '=', 'itemattributes.itemdetail_id')
+        ->leftJoin('itemattributes', 'itemdetails.id', '=', 'itemattributes.itemdetails_ID')
         ->select(
             'items.id as item_id',
             'items.name as item_name',
@@ -380,14 +412,15 @@ public function getItemsWithDetails()
             'item_description' => $firstItem->item_description,
             'timesensitive' => $firstItem->timesensitive,
             'preparation_time' => $firstItem->preparation_time,
-            'picture' => $firstItem->photo ? $baseUrl . '/' . $firstItem->photo : null, // Full URL
-            'itemdetails_ID' => $firstItem->itemdetails_ID,
+            'itemPicture' => $firstItem->photo ? $baseUrl . '/' . $firstItem->photo : null, // Full URL
+            // 'itemdetails_ID' => $firstItem->itemdetails_ID,
+            'itemdetail_id' => $firstItem->itemdetails_ID, 
             'variation_name' => $firstItem->variation_name,
             'unitprice' => $firstItem->item_detail_price,
             'additional_info' => $firstItem->additional_info,
             'item_category_id' => $firstItem->item_category_id,
             'item_category' => $firstItem->item_category,
-            'item_attributes' => $itemDetails->filter(function ($detail) {
+            'attributes' => $itemDetails->filter(function ($detail) {
                 return !is_null($detail->attribute_id);
             })->map(function ($attribute) {
                 return [
@@ -809,6 +842,7 @@ public function getStocksByItemDetails(Request $request)
        \Log::info('Incoming Stock Request:', $request->all());
 
     $itemDetailIds = $request->input('itemdetails_ID'); // Expecting an array
+    //  $itemDetailIds = $request->input('item_detail_id'); // Expecting an array
     if (!is_array($itemDetailIds) || empty($itemDetailIds)) {
         return response()->json([
             'message' => 'itemdetails_ID must be a non-empty array.'
@@ -826,9 +860,10 @@ public function getStocksByItemDetails(Request $request)
             ->where('itemdetails_ID', $id)
             ->first();
         $results[] = [
-    'itemdetails_ID' => $id,
-    'stock' => $stock ? ($stock->stock_qty ?? 0) : null,
-    'test_stock' => $testStock ? ($testStock->stock_qty ?? 0) : null,
+    // 'itemdetails_ID' => $id,
+    'item_detail_ID' => $id,
+    'item_stock' => $stock ? ($stock->stock_qty ?? 0) : null,
+    'item_test_stock' => $testStock ? ($testStock->stock_qty ?? 0) : null,
 ];
 
     }

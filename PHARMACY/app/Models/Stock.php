@@ -10,7 +10,7 @@ class Stock extends Model
 
   
     protected $fillable = [
-        'item_detail_ID',
+        'itemdetails_ID',
         'stock_qty',
         'last_updated',
     ];

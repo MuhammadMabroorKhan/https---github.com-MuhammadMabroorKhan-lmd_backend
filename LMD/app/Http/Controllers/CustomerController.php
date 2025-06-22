@@ -362,6 +362,146 @@ public function getCustomerMainScreenInformation($customerID)
 
 
 
+// public function getVendorShopBranchMenu($vendorId, $shopId, $branchId)
+// {
+//     // Fetch the vendor type
+//     $vendor = DB::table('vendors')
+//         ->where('id', $vendorId)
+//         ->select('vendor_type')
+//         ->first();
+
+//     if (!$vendor) {
+//         return response()->json(['error' => 'Vendor not found'], 404);
+//     }
+
+//     // Handle In-App Vendor
+//     if ($vendor->vendor_type === 'In-App Vendor') {
+//         $menuInformation = DB::table('shops')
+//         ->join('vendors', 'shops.vendors_ID', '=', 'vendors.id')
+//         ->join('shopcategory', 'shops.shopcategory_ID', '=', 'shopcategory.id')
+//         ->join('branches', 'shops.id', '=', 'branches.shops_ID')
+//         ->leftJoin('items', 'branches.id', '=', 'items.branches_ID')
+//         ->leftJoin('itemcategories', 'items.category_ID', '=', 'itemcategories.id')
+//         ->leftJoin('itemdetails', 'items.id', '=', 'itemdetails.item_ID')
+//         ->leftJoin('itemattributes', 'itemdetails.id', '=', 'itemattributes.itemdetail_id')
+//         ->select(
+//             'vendors.id as vendor_id',
+//             'vendors.vendor_type',
+//             'shops.id as shop_id',
+//             'shops.name as shop_name',
+//             'shops.description as shop_description',
+//             'shopcategory.name as shop_category_name',
+//             'branches.id as branch_id',
+//             'branches.latitude',
+//             'branches.longitude',
+//             'branches.description as branch_description',
+//             'branches.opening_hours',
+//             'branches.closing_hours',
+//             'branches.contact_number',
+//             'branches.status as branch_status',
+//             'branches.approval_status as branch_approval_status',
+//             'branches.branch_picture',
+//             'items.id as item_id',
+//             'items.name as item_name',
+//             'items.description as item_description',
+//             'itemcategories.id as category_ID',
+//             'itemcategories.name as item_category_name',
+//             'itemdetails.id as item_detail_id',
+//             'itemdetails.variation_name',
+//             'itemdetails.timesensitive',
+//             'itemdetails.preparation_time',
+//             'itemdetails.picture',
+//             'itemdetails.price as item_detail_price',
+//             'itemdetails.additional_info',
+//             'itemattributes.id as attribute_id',
+//             'itemattributes.key as attribute_key',
+//             'itemattributes.value as attribute_value'
+//         )
+//         ->where('vendors.id', $vendorId)
+//         ->where('shops.id', $shopId)
+//         ->where('branches.id', $branchId)
+//         ->where('branches.status', 'active')
+//         ->where(function ($query) {
+//             $query->whereNotNull('items.id')
+//                   ->orWhereNotNull('itemdetails.id');
+//         }) // Ensure at least one is not null
+//         ->get();
+    
+//         if ($menuInformation->isEmpty()) {
+//             return response()->json( 'No menu information found for this vendor/shop/branch', 404);
+//         }
+//         // Format the response for In-App Vendor
+//         return $this->formatInAppMenuResponse($menuInformation);
+//     }
+
+//     if ($vendor->vendor_type === 'API Vendor') {
+//         // Get the API details using the branchId
+//         $apiDetails = DB::table('apivendor')
+//             ->join('apimethods', 'apivendor.id', '=', 'apimethods.apivendor_ID')
+//             ->where('apivendor.branches_ID', $branchId) // Filter by branchId
+//             ->where('apimethods.method_name', 'getMenu') // Assuming the method is 'getMenu'
+//             ->select('apivendor.api_base_url', 'apimethods.endpoint', 'apimethods.http_method', 'apivendor.api_key', 'apivendor.id as apivendor_ID')
+//             ->first();
+    
+//         if (!$apiDetails) {
+//             return response()->json(['error' => 'API method or branch not found'], 404);
+//         }
+    
+//         // Build the full URL dynamically
+//         $url = $apiDetails->api_base_url . $apiDetails->endpoint;
+//      \Log::info("Calling external vendor API URL: $url");
+//         // Check if the server is reachable
+//         try {
+//             $serverStatus = Http::timeout(10)->get($url);
+//             if (!$serverStatus->successful()) {
+//                 return response()->json(['error' => 'Vendor server is not running or unreachable'], 503);
+//             }
+//         } catch (\Exception $e) {
+//             return response()->json(['error' => 'Vendor server is not reachable: ' . $e->getMessage()], 503);
+//         }
+    
+//         // Make the actual API request
+//         try {
+//             \Log::info("Calling external vendor API URL: $url");
+//             $response = Http::withHeaders([
+//                 'Authorization' => 'Bearer ' . $apiDetails->api_key,
+//             ])->{$apiDetails->http_method}($url);
+    
+//             \Log::info("API Response Status: " . $response->status());
+// \Log::info("API Response Body:", $response->json());
+
+//             if ($response->successful()) {
+//                 $apiResponse = $response->json();
+    
+//                 // Fetch mappings for the API vendor
+//                 $mappings = DB::table('mapping')
+//                     ->join('variables', 'mapping.variable_ID', '=', 'variables.id')
+//                     ->where('mapping.apivendor_ID', $apiDetails->apivendor_ID)
+//                     ->select('mapping.api_values', 'variables.tags')
+//                     ->get();
+    
+//                 // Convert mappings to an associative array
+//                 $mapArray = $mappings->pluck('tags', 'api_values')->toArray();
+    
+        
+//     $mappedResponse = $this->mapResponseKeys($apiResponse, $mapArray);
+
+//                 return response()->json($mappedResponse);
+//             } else {
+                
+//                 return response()->json(['error' => 'Failed to fetch menu from vendor API'], 500);
+//             }
+//         } catch (\Exception $e) {
+//             \Log::error('API request failed: ' . $e->getMessage());
+//             return response()->json(['error' => 'API request failed: ' . $e->getMessage()], 500);
+//         }
+//     }
+    
+
+//     return response()->json(['error' => 'Invalid vendor type'], 400);
+// }
+
+
 public function getVendorShopBranchMenu($vendorId, $shopId, $branchId)
 {
     // Fetch the vendor type
@@ -449,10 +589,10 @@ public function getVendorShopBranchMenu($vendorId, $shopId, $branchId)
     
         // Build the full URL dynamically
         $url = $apiDetails->api_base_url . $apiDetails->endpoint;
-    
+     \Log::info("Calling external vendor API URL: $url");
         // Check if the server is reachable
         try {
-            $serverStatus = Http::timeout(5)->get($url);
+            $serverStatus = Http::timeout(10)->get($url);
             if (!$serverStatus->successful()) {
                 return response()->json(['error' => 'Vendor server is not running or unreachable'], 503);
             }
@@ -462,45 +602,57 @@ public function getVendorShopBranchMenu($vendorId, $shopId, $branchId)
     
         // Make the actual API request
         try {
+            \Log::info("Calling external vendor API URL: $url");
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $apiDetails->api_key,
             ])->{$apiDetails->http_method}($url);
     
-            if ($response->successful()) {
-                $apiResponse = $response->json();
-    
-                // Fetch mappings for the API vendor
-                $mappings = DB::table('mapping')
-                    ->join('variables', 'mapping.variable_ID', '=', 'variables.id')
-                    ->where('mapping.apivendor_ID', $apiDetails->apivendor_ID)
-                    ->select('mapping.api_values', 'variables.tags')
-                    ->get();
-    
-                // Convert mappings to an associative array
-                $mapArray = $mappings->pluck('tags', 'api_values')->toArray();
-    
-                // Function to recursively map response
-                // function mapResponseKeys($data, $mapArray) {
-                //     if (is_array($data)) {
-                //         $mappedData = [];
-                //         foreach ($data as $key => $value) {
-                //             $newKey = $mapArray[$key] ?? $key; // Use mapped key or fallback to original
-                //             $mappedData[$newKey] = is_array($value) ? mapResponseKeys($value, $mapArray) : $value;
-                //         }
-                //         return $mappedData;
-                //     }
-                //     return $data;
-                // }
-    $mappedResponse = $this->mapResponseKeys($apiResponse, $mapArray);
+            \Log::info("API Response Status: " . $response->status());
+\Log::info("API Response Body:", $response->json());
 
-                // Transform API response keys based on mapping
-                // $mappedResponse = mapResponseKeys($apiResponse, $mapArray);
+    //         if ($response->successful()) {
+    //             $apiResponse = $response->json();
     
-                return response()->json($mappedResponse);
-            } else {
+    //             // Fetch mappings for the API vendor
+    //             $mappings = DB::table('mapping')
+    //                 ->join('variables', 'mapping.variable_ID', '=', 'variables.id')
+    //                 ->where('mapping.apivendor_ID', $apiDetails->apivendor_ID)
+    //                 ->select('mapping.api_values', 'variables.tags')
+    //                 ->get();
+    
+    //             // Convert mappings to an associative array
+    //             $mapArray = $mappings->pluck('tags', 'api_values')->toArray();
+    
+        
+    // $mappedResponse = $this->mapResponseKeys($apiResponse, $mapArray);
+
+    //             return response()->json($mappedResponse);
+    //         } 
+    if ($response->successful()) {
+    $apiResponse = $response->json();
+
+    // 1. Get vendor-specific mappings
+    $mappings = DB::table('mapping')
+        ->join('variables', 'mapping.variable_ID', '=', 'variables.id')
+        ->where('mapping.apivendor_ID', $apiDetails->apivendor_ID)
+        ->select('mapping.api_values', 'variables.tags')
+        ->get();
+
+    // 2. Convert to key-value array: ['price' => 'item_detail_price', ...]
+    $mapArray = $mappings->pluck('tags', 'api_values')->toArray();
+
+    // 3. Recursively remap keys to LMD format
+    $mappedResponse = $this->mapResponseKeys1($apiResponse, $mapArray);
+
+    return response()->json($mappedResponse);
+}
+
+    else {
+                
                 return response()->json(['error' => 'Failed to fetch menu from vendor API'], 500);
             }
         } catch (\Exception $e) {
+            \Log::error('API request failed: ' . $e->getMessage());
             return response()->json(['error' => 'API request failed: ' . $e->getMessage()], 500);
         }
     }
@@ -508,7 +660,28 @@ public function getVendorShopBranchMenu($vendorId, $shopId, $branchId)
 
     return response()->json(['error' => 'Invalid vendor type'], 400);
 }
+public function mapResponseKeys1($data, $mapArray)
+{
+    if (is_array($data)) {
+        // Check if associative array
+        if (array_keys($data) !== range(0, count($data) - 1)) {
+            // Associative: map keys
+            $mapped = [];
+            foreach ($data as $key => $value) {
+                $newKey = $mapArray[$key] ?? $key;
+                $mapped[$newKey] = is_array($value) ? $this->mapResponseKeys1($value, $mapArray) : $value;
+            }
+            return $mapped;
+        } else {
+            // Indexed array: recursively map each item
+            return array_map(function ($item) use ($mapArray) {
+                return $this->mapResponseKeys1($item, $mapArray);
+            }, $data);
+        }
+    }
 
+    return $data;
+}
 
 private function formatInAppMenuResponse($menuInformation)
 {
@@ -3018,7 +3191,7 @@ if (!$variableName) {
         ];
 
         \Log::info("Calling external API [$httpMethod] $fullUrl with payload: " . json_encode($requestPayload));
-
+   
         // Step 5: Perform API Call
         $apiResponse = match ($httpMethod) {
             'post' => Http::post($fullUrl, $requestPayload),
@@ -3027,6 +3200,8 @@ if (!$variableName) {
             'delete' => Http::delete($fullUrl, $requestPayload),
             default => throw new \Exception("Unsupported HTTP method: $httpMethod")
         };
+
+ \Log::info("Get stock response from api: " . ($apiResponse ? $apiResponse->body() : 'null'));
 
         // Step 6: Process response
         if ($apiResponse->successful()) {
@@ -3210,6 +3385,26 @@ private function mapResponseKeys($data, $mapArray) {
     }
     return $data;
 }
+// private function mapResponseKeys($data, $mapArray)
+// {
+//     if (is_array($data)) {
+//         $mappedData = [];
+//         foreach ($data as $key => $value) {
+//             $newKey = $mapArray[$key] ?? $key;
+
+//             // Log mapping info
+//             if ($newKey !== $key) {
+//                 \Log::info("Mapped key: '$key' → '$newKey'");
+//             } else {
+//                 \Log::info("Unchanged key: '$key'");
+//             }
+
+//             $mappedData[$newKey] = is_array($value) ? $this->mapResponseKeys($value, $mapArray) : $value;
+//         }
+//         return $mappedData;
+//     }
+//     return $data;
+// }
 
 }
 

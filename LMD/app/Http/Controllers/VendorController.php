@@ -215,23 +215,6 @@ class VendorController extends Controller
     }
     
 
-
- // Create a shop
-//  public function createShop(Request $request)
-//  {
-//      $validatedData = $request->validate([
-//          'name' => 'required|string|max:255',
-//          'description' => 'nullable|string|max:255',
-//          'shopcategory_ID' => 'required|exists:shopcategory,ID',
-//          'vendors_ID' => 'required|exists:vendors,ID',
-//      ]);
-
-//      $shop = Shop::create($validatedData);
-
-//      return response()->json(['message' => 'Shop created successfully', 'shop' => $shop], 201);
-//  }
-
-
 public function createShop(Request $request)
 {
     Log::info('Shop creation request data:', $request->all());
@@ -274,17 +257,7 @@ public function createShop(Request $request)
     }
 }
 
- // View all shops of a vendor
-//  public function getVendorShops($vendorId)
-//  {
-//      $shops = Shop::where('vendors_ID', $vendorId)->get();
 
-//      if ($shops->isEmpty()) {
-//          return response()->json(['message' => 'No shops found for this vendor'], 404);
-//      }
-
-//      return response()->json(['shops' => $shops], 200);
-//  }
 public function getVendorShops($vendorId)
 {
     $shops = Shop::join('shopcategory', 'shops.shopcategory_ID', '=', 'shopcategory.id')
@@ -805,35 +778,6 @@ public function addItem(Request $request, $vendorId, $shopId, $branchId)
     }
 }
 
-// public function updateItemPicture(Request $request, $itemDetailId)
-// {
-//     $validated = $request->validate([
-//         'itemPicture' => 'required|file|mimes:jpeg,png,jpg', // Validate image
-//     ]);
-
-//     DB::beginTransaction();
-//     try {
-//         // Check if item detail exists
-//         $itemDetail = DB::table('itemdetails')->where('id', $itemDetailId)->first();
-//         if (!$itemDetail) {
-//             return response()->json(['message' => 'Item detail not found'], 404);
-//         }
-
-//         // Handle picture upload
-//         $picturePath = $validated['itemPicture']->store('itemImages', 'public');
-
-//         // Update the item detail with the new picture path
-//         DB::table('itemdetails')->where('id', $itemDetailId)->update([
-//             'picture' => $picturePath,
-//         ]);
-
-//         DB::commit();
-//         return response()->json(['message' => 'Item picture updated successfully!', 'picture' => $picturePath], 200);
-//     } catch (\Exception $e) {
-//         DB::rollBack();
-//         return response()->json(['message' => 'Failed to update item picture.', 'error' => $e->getMessage()], 500);
-//     }
-// }
 
 public function updateItemPicture(Request $request, $itemDetailId)
 {
@@ -1177,117 +1121,6 @@ public function getSubOrders($vendorId, $shopId, $branchId)
 }
 
 
-// public function getOrderedItemInformation($vendorId, $shopId, $branchId, $suborderId)
-// {
-
-//     $baseUrl = url('/');
-
-//     // Call the function from CustomerController to get menu
-//     $customerController = new \App\Http\Controllers\CustomerController();
-//     $menuResponse = $customerController->getVendorShopBranchMenu($vendorId, $shopId, $branchId);
-
-//     // Convert the menu response to usable data
-//     $menuData = $menuResponse instanceof \Illuminate\Http\JsonResponse
-//         ? $menuResponse->getData(true)
-//         : json_decode($menuResponse, true);
-
-//     $menuCollection = collect($menuData);
-
-//     // Get all item details with suborder info and verify vendor/shop/branch ownership
-//     $orderDetails = DB::table('orderdetails')
-//         ->join('itemdetails', 'orderdetails.itemdetails_ID', '=', 'itemdetails.id')
-//         ->join('items', 'itemdetails.item_ID', '=', 'items.id')
-//         ->join('suborders', 'orderdetails.suborders_ID', '=', 'suborders.id')
-//         ->where('orderdetails.suborders_ID', $suborderId)
-//         ->where('suborders.vendor_ID', $vendorId)
-//         ->where('suborders.shop_ID', $shopId)
-//         ->where('suborders.branch_ID', $branchId)
-//         ->select(
-//             'orderdetails.id as order_detail_id',
-//             'orderdetails.quantity',
-//             'orderdetails.price as order_detail_price',
-//             'orderdetails.total as order_detail_total',
-//             'itemdetails.id as item_detail_id',
-//             'itemdetails.variation_name',
-//             'itemdetails.price as item_detail_price',
-//             'itemdetails.additional_info',
-//             // 'itemdetails.picture as item_picture',
-         
-//             DB::raw("CASE 
-//             WHEN itemdetails.picture IS NULL OR itemdetails.picture = '' 
-//             THEN NULL 
-//             ELSE CONCAT('$baseUrl/storage/', itemdetails.picture) 
-//         END as item_picture"),
-
-
-//             'items.id as item_id',
-//             'items.name as item_name',
-//             'items.description as item_description',
-//             // Suborder info
-//             'suborders.status as suborder_status',
-//             'suborders.payment_status',
-//             'suborders.total_amount',
-//             'suborders.estimated_delivery_time',
-//             'suborders.delivery_time',
-//             'suborders.deliveryboys_ID',
-//             'suborders.vendor_type',
-//             'suborders.vendor_order_id'
-//         )
-//         ->get();
-
-//     // Handle if no matching data
-//     if ($orderDetails->isEmpty()) {
-//         return response()->json(['message' => 'Suborder not found or access denied.'], 404);
-//     }
-
-//     // Extract suborder info
-//     $first = $orderDetails->first();
-
-//     $suborderInfo = [
-//         'suborder_id' => $suborderId,
-//         'status' => $first->suborder_status,
-//         'payment_status' => $first->payment_status,
-//         'total_amount' => $first->total_amount,
-//         'estimated_delivery_time' => $first->estimated_delivery_time,
-//         'delivery_time' => $first->delivery_time,
-//         'deliveryboy_id' => $first->deliveryboys_ID,
-//         'vendor_type' => $first->vendor_type,
-//         'vendor_order_id' => $first->vendor_order_id,
-//     ];
-
-//     // Format response
-//     $response = [
-//         'suborder_info' => $suborderInfo,
-//         'order_detail_info' => $orderDetails->map(function ($detail) use ($menuCollection) {
-//             $menuItem = $menuCollection->firstWhere('itemdetail_id', (int)$detail->item_detail_id);
-
-//             return [
-//                 'order_detail_id' => $detail->order_detail_id,
-//                 'quantity' => $detail->quantity,
-//                 'order_detail_price' => $detail->order_detail_price,
-//                 'order_detail_total' => $detail->order_detail_total,
-//                 'item' => [
-//                     'item_id' => $detail->item_id,
-//                     'item_name' => $menuItem['item_name'] ?? $detail->item_name,
-//                     'item_description' => $menuItem['item_description'] ?? $detail->item_description,
-//                     'item_detail_id' => $detail->item_detail_id,
-//                     'variation_name' => $menuItem['variation_name'] ?? $detail->variation_name,
-//                     'item_detail_price' => $menuItem['price'] ?? $detail->item_detail_price,
-//                     'additional_info' => $menuItem['additional_info'] ?? $detail->additional_info,
-//                     'item_picture' => $menuItem['itemPicture'] ?? $detail->item_picture,
-//                     'attributes' => $menuItem['attributes'] ?? [],
-//                     'timesensitive' => $menuItem['timesensitive'] ?? null,
-//                     'preparation_time' => $menuItem['preparation_time'] ?? null,
-//                     'item_category_id' => $menuItem['item_category_id'] ?? null,
-//                     'item_category_name' => $menuItem['item_category_name'] ?? null,
-//                     'error_message' => $menuItem ? null : "Item details not found in menu for itemdetail_id: " . $detail->item_detail_id,
-//                 ]
-//             ];
-//         }),
-//     ];
-
-//     return response()->json($response, 200);
-// }
 
 public function getOrderedItemInformation($vendorId, $shopId, $branchId, $suborderId)
 {
@@ -1377,20 +1210,6 @@ public function getOrderedItemInformation($vendorId, $shopId, $branchId, $subord
     return response()->json($response, 200);
 }
 
-
-// public function markInProgress($suborderId)
-// {
-//     $suborder = Suborder::findOrFail($suborderId);
-
-//     if ($suborder->status !== 'pending') {
-//         return response()->json(['error' => 'Order cannot be marked as in progress in the current state.'], 400);
-//     }
-
-//     $suborder->status = 'in_progress';
-//     $suborder->save();
-
-//     return response()->json(['message' => 'Order marked as in progress.']);
-// }
 
 
 public function markInProgress($suborderId)
@@ -1507,50 +1326,7 @@ public function markInProgress($suborderId)
 }
 
 
-// public function markInProgress($suborderId)
-// {
-//     $suborder = Suborder::findOrFail($suborderId);
 
-//     // Ensure suborder is in pending state
-//     if (strtolower($suborder->status) !== 'pending') {
-//         return response()->json(['error' => 'Suborder cannot be marked as in progress in the current state.'], 400);
-//     }
-
-//     // Mark suborder as in_progress
-//     $suborder->status = 'in_progress';
-//     $suborder->save();
-
-//     // Fetch related order
-//     $order = DB::table('orders')->where('id', $suborder->orders_ID)->first();
-
-//     // Check if order exists and is still pending (case-insensitive)
-//     if ($order && strtolower($order->order_status) === 'pending') {
-//         // Update order_status to confirmed
-//         DB::table('orders')
-//             ->where('id', $suborder->orders_ID)
-//             ->update([
-//                 'order_status' => 'confirmed',
-//                 'updated_at' => now()
-//             ]);
-//     }
-
-//     return response()->json(['message' => 'Suborder marked as in progress, and order status updated if applicable.']);
-// }
-
-
-// public function markReady($suborderId)
-// {
-//     $suborder = Suborder::findOrFail($suborderId);
-
-//     if ($suborder->status !== 'in_progress') {
-//         return response()->json(['error' => 'Order cannot be marked as ready in the current state.'], 400);
-//     }
-
-//     $suborder->status = 'ready';
-//     $suborder->save();
-
-//     return response()->json(['message' => 'Order marked as ready for delivery.']);
-// }
 
 
 public function markReady($suborderId)
@@ -1648,19 +1424,6 @@ public function markReady($suborderId)
 
 
 
-// public function confirmHandover($suborderId)
-// {
-//     $suborder = Suborder::findOrFail($suborderId);
-
-//     if ($suborder->status !== 'picked_up') {
-//         return response()->json(['error' => 'Order cannot be confirmed for handover in the current state.'], 400);
-//     }
-
-//     $suborder->status = 'handover_confirmed';
-//     $suborder->save();
-
-//     return response()->json(['message' => 'Order handover to deliveryboy .']);
-// }
 public function confirmHandover($suborderId)
 {
     $suborder = Suborder::findOrFail($suborderId);
@@ -1755,20 +1518,6 @@ public function confirmHandover($suborderId)
 
 
 
-// public function confirmPaymentByVendor($suborderId)
-// {
-//     $suborder = Suborder::findOrFail($suborderId);
-
-//     if ($suborder->payment_status !== 'confirmed_by_deliveryboy') {
-//         return response()->json(['error' => 'Delivery boy must confirm payment first.'], 400);
-//     }
-
-//     $suborder->payment_status = 'confirmed_by_vendor';
-//     $suborder->save();
-
-//     return response()->json(['message' => 'Payment confirmed by vendor.']);
-// }
-
 public function confirmPaymentByVendor($suborderId)
 {
     $suborder = Suborder::findOrFail($suborderId);
@@ -1861,79 +1610,6 @@ public function confirmPaymentByVendor($suborderId)
     return response()->json(['message' => 'Payment confirmed by vendor.']);
 }
 
-
-// public function updateSuborderStatus(Request $request, $suborderId)
-// {
-//     // Step 1: Validate input
-//     $validator = Validator::make($request->all(), [
-//         'status' => 'required|string',
-//     ]);
-
-//     if ($validator->fails()) {
-//         return response()->json([
-//             'success' => false,
-//             'message' => 'Validation failed.',
-//             'errors' => $validator->errors()
-//         ], 422);
-//     }
-
-//     $newStatus = strtolower($request->input('status')); // Convert to lowercase for comparison
-
-//     // Step 2: Fetch suborder
-//     $suborder = Suborder::find($suborderId);
-//     if (!$suborder) {
-//         return response()->json([
-//             'success' => false,
-//             'message' => 'Suborder not found.',
-//         ], 404);
-//     }
-
-//     $currentStatus = strtolower($suborder->status); // Current status in lowercase
-//     $currentPaymentStatus = strtolower($suborder->payment_status);
-//     // Step 3: Define allowed transitions
-//     $validTransitions = [
-//         'pending' => 'in_progress',
-//         'in_progress' => 'ready',
-//         'picked_up' => 'handover_confirmed',
-//         // 'handover_confirmed' => 'in_transit',
-//         // 'in_transit' => 'confirmed_by_vendor',
-// //  'confirmed_by_deliveryboy' => 'confirmed_by_vendor',
-//     ];
-
-//     // Step 4: Check if transition is allowed
-//     if (!isset($validTransitions[$currentStatus]) || $validTransitions[$currentStatus] !== $newStatus) {
-//         return response()->json([
-//             'success' => false,
-//             'message' => "Invalid status transition from '$currentStatus' to '$newStatus'.",
-//         ], 400);
-//     }
-
-//     // Step 5: Special handling for handover_confirmed → in_transit (automatically apply both)
-//     if ($newStatus === 'handover_confirmed') {
-//         $suborder->status = 'handover_confirmed';
-//         $suborder->save();
-
-//         // Now immediately move to in_transit
-//         $suborder->status = 'in_transit';
-//         $suborder->save();
-
-//         return response()->json([
-//             'success' => true,
-//             'message' => "Suborder status updated to 'handover_confirmed' and automatically moved to 'in_transit'.",
-//             'data' => ['status' => 'in_transit']
-//         ]);
-//     }
-
-//     // Step 6: Normal update
-//     $suborder->status = $newStatus;
-//     $suborder->save();
-
-//     return response()->json([
-//         'success' => true,
-//         'message' => "Suborder status updated to '$newStatus'.",
-//         'data' => ['status' => $newStatus]
-//     ]);
-// }
 
 public function updateSuborderStatus(Request $request, $suborderId)
 {
@@ -2085,37 +1761,6 @@ public function connectVendorToOrganization(Request $request) {
     }
 }
 
-// public function getAvailableOrganizationsForVendor($vendorId)
-// {
-//     $baseUrl = url('/');
-
-//     // Subquery: get all organization IDs that this vendor has already sent requests to
-//     $alreadyRequestedOrgIds = DB::table('vendororganization')
-//         ->where('vendor_ID', $vendorId)
-//         ->pluck('organization_ID');
-
-//     // Main query: get organizations that are NOT already requested or connected
-//     $organizations = DB::table('organizations')
-//         ->join('lmd_users', 'organizations.lmd_users_ID', '=', 'lmd_users.id')
-//         ->where('lmd_users.lmd_user_role', 'organization')
-//         ->whereNotIn('organizations.id', $alreadyRequestedOrgIds)
-//         ->select(
-//             'organizations.id as organization_id',
-//             'lmd_users.name',
-//             'lmd_users.email',
-//             'lmd_users.phone_no',
-//             'lmd_users.cnic',
-//             'lmd_users.lmd_user_role',
-//             DB::raw("CASE 
-//                         WHEN lmd_users.profile_picture IS NULL OR lmd_users.profile_picture = '' 
-//                         THEN NULL 
-//                         ELSE CONCAT('$baseUrl/storage/', lmd_users.profile_picture) 
-//                     END as profile_picture")
-//         )
-//         ->get();
-
-//     return response()->json(['available_organizations' => $organizations], 200);
-// }
 public function getAvailableOrganizationsForVendor($vendorId)
 {
     $baseUrl = url('/');
@@ -2171,144 +1816,6 @@ public function getAvailableOrganizationsForVendor($vendorId)
         'requested_or_connected_organizations' => $requestedOrConnectedOrganizations
     ], 200);
 }
-
-
-
-
-// public function getVendorSummary($vendorId)
-// {
-//     // Total Shops for the vendor
-//     $totalShops = DB::table('shops')
-//         ->where('vendors_ID', $vendorId)
-//         ->count();
-
-//     // Total Branches linked through shops
-//     $totalBranches = DB::table('branches')
-//         ->whereIn('shops_ID', function($query) use ($vendorId) {
-//             $query->select('id')
-//                   ->from('shops')
-//                   ->where('vendors_ID', $vendorId);
-//         })
-//         ->count();
-
-//     // Total Approved Branches
-//     $approvedBranches = DB::table('branches')
-//         ->whereIn('shops_ID', function($query) use ($vendorId) {
-//             $query->select('id')
-//                   ->from('shops')
-//                   ->where('vendors_ID', $vendorId);
-//         })
-//         ->where('approval_status', 'approved')
-//         ->count();
-
-//     // Total Suborders for vendor
-//     $totalSuborders = DB::table('suborders')
-//         ->where('vendor_ID', $vendorId)
-//         ->count();
-
-//     // Total distinct Orders (each order can have multiple suborders)
-//     $totalOrders = DB::table('suborders')
-//         ->where('vendor_ID', $vendorId)
-//         ->distinct('orders_ID')
-//         ->count('orders_ID');
-
-//     // Total Revenue from suborders
-//     $totalRevenue = DB::table('suborders')
-//         ->where('vendor_ID', $vendorId)
-//         ->sum('total_amount');
-
-//     // Total Linked Organizations
-//     $totalOrganizations = DB::table('vendororganization')
-//         ->where('vendor_ID', $vendorId)
-//         ->count();
-
-//     return response()->json([
-//         'total_shops' => $totalShops,
-//         'total_branches' => $totalBranches,
-//         'total_approved_branches' => $approvedBranches,
-//         'total_suborders' => $totalSuborders,
-//         'total_orders' => $totalOrders,
-//         'total_revenue' => $totalRevenue,
-//         'total_linked_organizations' => $totalOrganizations,
-//     ]);
-// }
-
-
-// public function getVendorSummary($vendorId)
-// {
-//     // Total Shops
-//     $totalShops = DB::table('shops')
-//         ->where('vendors_ID', $vendorId)
-//         ->count();
-
-//     // Total Branches linked through shops
-//     $totalBranches = DB::table('branches')
-//         ->whereIn('shops_ID', function($query) use ($vendorId) {
-//             $query->select('id')
-//                 ->from('shops')
-//                 ->where('vendors_ID', $vendorId);
-//         })
-//         ->count();
-
-//     // Total Approved Branches
-//     $approvedBranches = DB::table('branches')
-//         ->whereIn('shops_ID', function($query) use ($vendorId) {
-//             $query->select('id')
-//                 ->from('shops')
-//                 ->where('vendors_ID', $vendorId);
-//         })
-//         ->where('approval_status', 'approved')
-//         ->count();
-
-//     // Total Suborders for the vendor
-//     $totalSuborders = DB::table('suborders')
-//         ->where('vendor_ID', $vendorId)
-//         ->count();
-
-//     // Total Delivered Suborders
-//     $deliveredSuborders = DB::table('suborders')
-//         ->where('vendor_ID', $vendorId)
-//         ->where('status', 'delivered')
-//         ->count();
-
-//     // Total Pending Suborders
-//     $pendingSuborders = DB::table('suborders')
-//         ->where('vendor_ID', $vendorId)
-//         ->where('status', 'pending')
-//         ->count();
-
-//     // Total distinct Orders (each order can have multiple suborders)
-//     $totalOrders = DB::table('suborders')
-//         ->where('vendor_ID', $vendorId)
-//         ->distinct('orders_ID')
-//         ->count('orders_ID');
-
-//     // Total Revenue from suborders
-//     $totalRevenue = DB::table('suborders')
-//         ->where('vendor_ID', $vendorId)
-//         ->sum('total_amount');
-
-//     // Average Revenue per Order
-//     $avgRevenuePerOrder = $totalOrders > 0 ? round($totalRevenue / $totalOrders, 2) : 0;
-
-//     // Total Linked Organizations
-//     $totalOrganizations = DB::table('vendororganization')
-//         ->where('vendor_ID', $vendorId)
-//         ->count();
-
-//     return response()->json([
-//         'total_shops' => $totalShops,
-//         'total_branches' => $totalBranches,
-//         'total_approved_branches' => $approvedBranches,
-//         'total_suborders' => $totalSuborders,
-//         'delivered_suborders' => $deliveredSuborders,
-//         'pending_suborders' => $pendingSuborders,
-//         'total_orders' => $totalOrders,
-//         'total_revenue' => $totalRevenue,
-//         'avg_revenue_per_order' => $avgRevenuePerOrder,
-//         'total_linked_organizations' => $totalOrganizations,
-//     ]);
-// }
 
 public function getVendorSummary($vendorId)
 {
@@ -2448,29 +1955,62 @@ public function updateSuborderStatusByVendorOrderId(Request $request)
     }
 
     // Step 4: Handle order status
-    if ($statusType === 'order') {
-        $validTransitions = [
-            'pending' => 'in_progress',
-            'in_progress' => 'ready',
-            'picked_up' => 'handover_confirmed',
-            'handover_confirmed' => 'in_transit',
-            'in_transit' => 'delivered',
-            'delivered' => 'completed',
-        ];
+    // if ($statusType === 'order') {
+    //     $validTransitions = [
+    //         'pending' => 'in_progress',
+    //         'in_progress' => 'ready',
+    //         'picked_up' => 'handover_confirmed',
+    //         'handover_confirmed' => 'in_transit',
+    //         'in_transit' => 'delivered',
+    //         'delivered' => 'completed',
+    //     ];
 
-        $current = strtolower($order->status);
-        $allowedNext = $validTransitions[$current] ?? null;
+    //     $current = strtolower($order->status);
+    //     $allowedNext = $validTransitions[$current] ?? null;
 
-        if ($allowedNext !== $incomingStatus) {
-            return response()->json([
-                'success' => false,
-                'message' => "Invalid order status transition from '$current' to '$incomingStatus'.",
-            ], 400);
-        }
+    //     if ($allowedNext !== $incomingStatus) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => "Invalid order status transition from '$current' to '$incomingStatus'.",
+    //         ], 400);
+    //     }
 
-        $order->status = $incomingStatus;
-        $order->save();
+    //     $order->status = $incomingStatus;
+    //     $order->save();
+    // }
+if ($statusType === 'order') {
+    $validTransitions = [
+        'pending' => 'in_progress',
+        'in_progress' => 'ready',
+        'picked_up' => 'handover_confirmed',
+        'handover_confirmed' => 'in_transit',
+        'in_transit' => 'delivered',
+        'delivered' => 'completed',
+    ];
+
+    $current = strtolower($order->status);
+    $allowedNext = $validTransitions[$current] ?? null;
+
+    if ($allowedNext !== $incomingStatus) {
+        return response()->json([
+            'success' => false,
+            'message' => "Invalid order status transition from '$current' to '$incomingStatus'.",
+        ], 400);
     }
+
+    // ✅ Extra logic: If status is becoming 'in_progress', update main order status to 'confirmed' if needed
+    if ($incomingStatus === 'in_progress') {
+        $mainOrder = \DB::table('orders')->where('id', $order->orders_ID)->first();
+        if ($mainOrder && $mainOrder->order_status === 'pending') {
+            \DB::table('orders')
+                ->where('id', $order->orders_ID)
+                ->update(['order_status' => 'confirmed']);
+        }
+    }
+
+    $order->status = $incomingStatus;
+    $order->save();
+}
 
     // Final response
     return response()->json([
@@ -2483,112 +2023,6 @@ public function updateSuborderStatusByVendorOrderId(Request $request)
     ]);
 }
 
-
-// public function updateSuborderStatusByVendorOrderId(Request $request)
-// {
-//     // Step 1: Validate input
-//     $validated = $request->validate([
-//         'vendor_order_id' => 'required|integer',
-//         'status_type' => 'required|in:order,payment',
-//         'status' => 'required|string',
-//     ]);
-
-//     $orderId = $validated['vendor_order_id'];
-//     $statusType = $validated['status_type'];
-//     $incomingStatus = strtolower($validated['status']);
-
-//     // Step 2: Fetch KFC order
-//     $order = Suborder::where('vendor_order_id', $orderId)->first();
-
-//     if (!$order) {
-//         return response()->json([
-//             'success' => false,
-//             'message' => 'Order not found in KFC system.',
-//         ], 404);
-//     }
-
-//     // Step 3: Handle payment status
-//     if ($statusType === 'payment') {
-//         if ($incomingStatus === 'confirmed_by_vendor') {
-//             if ($order->payment_status !== 'confirmed_by_deliveryboy') {
-//                 return response()->json([
-//                     'success' => false,
-//                     'message' => 'Payment can only be confirmed by vendor if delivery boy has confirmed it.',
-//                 ], 400);
-//             }
-//         }
-
-//         $validPaymentStatuses = [
-//             'pending',
-//             'confirmed_by_customer',
-//             'confirmed_by_deliveryboy',
-//             'confirmed_by_vendor'
-//         ];
-
-//         if (!in_array($incomingStatus, $validPaymentStatuses)) {
-//             return response()->json([
-//                 'success' => false,
-//                 'message' => 'Invalid payment status.',
-//             ], 400);
-//         }
-
-//         $order->payment_status = $incomingStatus;
-//         $order->save();
-//     }
-
-//     // Step 4: Handle order status
-//     if ($statusType === 'order') {
-    
-// $validTransitions = [
-//     'pending' => 'in_progress',
-//     'in_progress' => 'ready',
-//     'picked_up' => 'handover_confirmed',
-//     'handover_confirmed' => 'in_transit',
-//     'in_transit' => 'delivered',
-//     'delivered' => 'completed',
-// ];
-
-//         $current = strtolower($order->status);
-//         $allowedNext = $validTransitions[$current] ?? null;
-
-//         if ($allowedNext !== $incomingStatus) {
-//             return response()->json([
-//                 'success' => false,
-//                 'message' => "Invalid order status transition from '$current' to '$incomingStatus'.",
-//             ], 400);
-//         }
-
-//         $order->status = $incomingStatus;
-//         $order->save();
-//     }
-
-//     // Step 5: Map KFC → LMD status for API call
-//     $statusMap = [
-//         'processing' => 'in_progress',
-//         'ready' => 'ready',
-//         'canceled' => 'cancelled',
-//     ];
-
-//     $mappedStatus = $statusMap[$incomingStatus] ?? $incomingStatus;
-
-//     // Step 6: Send to LMD side
-//     $lmdResponse = Http::post('http://192.168.43.63:8000/api/vendor/update-suborder-status', [
-//         'vendor_order_id' => (string)$orderId,
-//         'status_type' => $statusType,
-//         'status' => $mappedStatus,
-//     ]);
-
-//     return response()->json([
-//         'success' => true,
-//         'message' => 'KFC status updated and sent to LMD.',
-//         'kfc_order' => [
-//             'order_id' => $order->id,
-//             'status' => $order->status,
-//             'payment_status' => $order->payment_status,
-//         ],
-//         'lmd_response' => $lmdResponse->json()
-//     ]);
-// }
 
 }
 

@@ -10,11 +10,11 @@ class OrderDetail extends Model
 
   
     protected $fillable = [
-        'qty',
-        'unit_price',
+        'quantities',
+        'unitprice',
         'subtotal',
         'order_id',
-        'item_detail_id',
+        'itemdetails_ID',
     ];
     public $timestamps = false;
 }

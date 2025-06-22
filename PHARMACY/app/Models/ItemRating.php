@@ -14,7 +14,7 @@ class ItemRating extends Model
         'comments',
         'ratingdate',
         'order_ID',
-        'item_detail_ID',
+        'itemdetails_ID',
     ];
     public $timestamps = false;
 

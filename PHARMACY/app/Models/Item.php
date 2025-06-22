@@ -12,7 +12,7 @@ class Item extends Model
         'name',
         'description',
         'category_ID',
-        'restaurant_ID',
+        'pharmacy_ID',
     ];
     public $timestamps = false;
 
