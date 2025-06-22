@@ -1902,9 +1902,133 @@ public function getVendorSummary($vendorId)
 
 //For Website api vendor
 
+// public function updateSuborderStatusByVendorOrderId(Request $request)
+// {
+//     // Step 1: Validate input
+//     $validated = $request->validate([
+//         'vendor_order_id' => 'required|integer',
+//         'status_type' => 'required|in:order,payment',
+//         'status' => 'required|string',
+//     ]);
+
+//     $orderId = $validated['vendor_order_id'];
+//     $statusType = $validated['status_type'];
+//     $incomingStatus = strtolower($validated['status']);
+
+//     // Step 2: Fetch LMD suborder
+//     $order = Suborder::where('vendor_order_id', $orderId)->first();
+
+//     if (!$order) {
+//         return response()->json([
+//             'success' => false,
+//             'message' => 'Order not found on LMD side.',
+//         ], 404);
+//     }
+
+//     // Step 3: Handle payment status
+//     if ($statusType === 'payment') {
+//         if ($incomingStatus === 'confirmed_by_vendor') {
+//             if ($order->payment_status !== 'confirmed_by_deliveryboy') {
+//                 return response()->json([
+//                     'success' => false,
+//                     'message' => 'Delivery boy must confirm payment first.',
+//                 ], 400);
+//             }
+//         }
+
+//         $validPaymentStatuses = [
+//             'pending',
+//             'confirmed_by_customer',
+//             'confirmed_by_deliveryboy',
+//             'confirmed_by_vendor'
+//         ];
+
+//         if (!in_array($incomingStatus, $validPaymentStatuses)) {
+//             return response()->json([
+//                 'success' => false,
+//                 'message' => 'Invalid payment status.',
+//             ], 400);
+//         }
+
+//         $order->payment_status = $incomingStatus;
+//         $order->save();
+//     }
+
+// if ($statusType === 'order') {
+//     $validTransitions = [
+//         'pending' => 'in_progress',
+//         'in_progress' => 'ready',
+//         'picked_up' => 'handover_confirmed',
+//         'handover_confirmed' => 'in_transit',
+//         'in_transit' => 'delivered',
+//         'delivered' => 'completed',
+//     ];
+
+//     $current = strtolower($order->status);
+//     $allowedNext = $validTransitions[$current] ?? null;
+
+//     if ($allowedNext !== $incomingStatus) {
+//         return response()->json([
+//             'success' => false,
+//             'message' => "Invalid order status transition from '$current' to '$incomingStatus'.",
+//         ], 400);
+//     }
+
+//     // ✅ Extra logic: If status is becoming 'in_progress', update main order status to 'confirmed' if needed
+//     if ($incomingStatus === 'in_progress') {
+//         $mainOrder = \DB::table('orders')->where('id', $order->orders_ID)->first();
+//         if ($mainOrder && $mainOrder->order_status === 'pending') {
+//             \DB::table('orders')
+//                 ->where('id', $order->orders_ID)
+//                 ->update(['order_status' => 'confirmed']);
+//         }
+//     }
+
+//     $order->status = $incomingStatus;
+//     $order->save();
+// }
+
+//     // Final response
+//     return response()->json([
+//         'success' => true,
+//         'message' => 'Suborder status updated successfully on LMD side.',
+//         'data' => [
+//             'status' => $order->status,
+//             'payment_status' => $order->payment_status,
+//         ]
+//     ]);
+// }
+
 public function updateSuborderStatusByVendorOrderId(Request $request)
 {
-    // Step 1: Validate input
+    // ✅ Step 0: Extract API key from Authorization header
+    $authHeader = $request->header('Authorization');
+
+    \Log::info('Authorization Header:', ['Authorization' => $authHeader]);
+
+    if (!$authHeader || !str_starts_with($authHeader, 'Bearer ')) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Missing or invalid Authorization header.',
+        ], 401);
+    }
+
+    $apiKey = trim(str_replace('Bearer', '', $authHeader));
+    \Log::info('Extracted API Key: ' . $apiKey);
+
+    // ✅ Step 1: Lookup vendor using API key
+    $vendor = DB::table('apivendor')->where('api_key', $apiKey)->first();
+
+    if (!$vendor) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid API key.',
+        ], 401);
+    }
+
+    $branchId = $vendor->branches_ID;
+
+    // ✅ Step 2: Validate request
     $validated = $request->validate([
         'vendor_order_id' => 'required|integer',
         'status_type' => 'required|in:order,payment',
@@ -1915,25 +2039,26 @@ public function updateSuborderStatusByVendorOrderId(Request $request)
     $statusType = $validated['status_type'];
     $incomingStatus = strtolower($validated['status']);
 
-    // Step 2: Fetch LMD suborder
-    $order = Suborder::where('vendor_order_id', $orderId)->first();
+    // ✅ Step 3: Find the suborder using vendor_order_id + branch_ID
+    $order = DB::table('suborders')
+        ->where('vendor_order_id', $orderId)
+        ->where('branch_ID', $branchId)
+        ->first();
 
     if (!$order) {
         return response()->json([
             'success' => false,
-            'message' => 'Order not found on LMD side.',
+            'message' => 'Suborder not found for given vendor_order_id and branch.',
         ], 404);
     }
 
-    // Step 3: Handle payment status
+    // ✅ Step 4: Update payment status
     if ($statusType === 'payment') {
-        if ($incomingStatus === 'confirmed_by_vendor') {
-            if ($order->payment_status !== 'confirmed_by_deliveryboy') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Delivery boy must confirm payment first.',
-                ], 400);
-            }
+        if ($incomingStatus === 'confirmed_by_vendor' && $order->payment_status !== 'confirmed_by_deliveryboy') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Delivery boy must confirm payment first.',
+            ], 400);
         }
 
         $validPaymentStatuses = [
@@ -1950,79 +2075,57 @@ public function updateSuborderStatusByVendorOrderId(Request $request)
             ], 400);
         }
 
-        $order->payment_status = $incomingStatus;
-        $order->save();
+        DB::table('suborders')->where('id', $order->id)->update([
+            'payment_status' => $incomingStatus,
+        ]);
     }
 
-    // Step 4: Handle order status
-    // if ($statusType === 'order') {
-    //     $validTransitions = [
-    //         'pending' => 'in_progress',
-    //         'in_progress' => 'ready',
-    //         'picked_up' => 'handover_confirmed',
-    //         'handover_confirmed' => 'in_transit',
-    //         'in_transit' => 'delivered',
-    //         'delivered' => 'completed',
-    //     ];
+    // ✅ Step 5: Update order status
+    if ($statusType === 'order') {
+        $validTransitions = [
+            'pending' => 'in_progress',
+            'in_progress' => 'ready',
+            'picked_up' => 'handover_confirmed',
+            'handover_confirmed' => 'in_transit',
+            'in_transit' => 'delivered',
+            'delivered' => 'completed',
+        ];
 
-    //     $current = strtolower($order->status);
-    //     $allowedNext = $validTransitions[$current] ?? null;
+        $current = strtolower($order->status);
+        $allowedNext = $validTransitions[$current] ?? null;
 
-    //     if ($allowedNext !== $incomingStatus) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => "Invalid order status transition from '$current' to '$incomingStatus'.",
-    //         ], 400);
-    //     }
-
-    //     $order->status = $incomingStatus;
-    //     $order->save();
-    // }
-if ($statusType === 'order') {
-    $validTransitions = [
-        'pending' => 'in_progress',
-        'in_progress' => 'ready',
-        'picked_up' => 'handover_confirmed',
-        'handover_confirmed' => 'in_transit',
-        'in_transit' => 'delivered',
-        'delivered' => 'completed',
-    ];
-
-    $current = strtolower($order->status);
-    $allowedNext = $validTransitions[$current] ?? null;
-
-    if ($allowedNext !== $incomingStatus) {
-        return response()->json([
-            'success' => false,
-            'message' => "Invalid order status transition from '$current' to '$incomingStatus'.",
-        ], 400);
-    }
-
-    // ✅ Extra logic: If status is becoming 'in_progress', update main order status to 'confirmed' if needed
-    if ($incomingStatus === 'in_progress') {
-        $mainOrder = \DB::table('orders')->where('id', $order->orders_ID)->first();
-        if ($mainOrder && $mainOrder->order_status === 'pending') {
-            \DB::table('orders')
-                ->where('id', $order->orders_ID)
-                ->update(['order_status' => 'confirmed']);
+        if ($allowedNext !== $incomingStatus) {
+            return response()->json([
+                'success' => false,
+                'message' => "Invalid order status transition from '$current' to '$incomingStatus'.",
+            ], 400);
         }
+
+        // Optional: update main order if becoming in_progress
+        if ($incomingStatus === 'in_progress') {
+            $mainOrder = DB::table('orders')->where('id', $order->orders_ID)->first();
+            if ($mainOrder && $mainOrder->order_status === 'pending') {
+                DB::table('orders')->where('id', $order->orders_ID)->update([
+                    'order_status' => 'confirmed',
+                ]);
+            }
+        }
+
+        DB::table('suborders')->where('id', $order->id)->update([
+            'status' => $incomingStatus,
+        ]);
     }
 
-    $order->status = $incomingStatus;
-    $order->save();
-}
-
-    // Final response
+    // ✅ Step 6: Return response
     return response()->json([
         'success' => true,
         'message' => 'Suborder status updated successfully on LMD side.',
         'data' => [
-            'status' => $order->status,
-            'payment_status' => $order->payment_status,
+            'status' => $incomingStatus,
+            'payment_status' => $statusType === 'payment' ? $incomingStatus : $order->payment_status,
         ]
     ]);
 }
-
 
 }
 

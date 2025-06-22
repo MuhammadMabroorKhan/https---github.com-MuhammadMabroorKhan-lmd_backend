@@ -130,12 +130,18 @@ public function updateOrderStatus(Request $request)
     $mappedStatus = $statusMap[$incomingStatus] ?? $incomingStatus;
 
     try {
-        $lmdResponse = Http::timeout(60)->post('http://192.168.43.63:8000/api/vendor/update-suborder-status', [
+        // $lmdResponse = Http::timeout(60)->post('http://192.168.43.63:8000/api/vendor/update-suborder-status', [
+        //     'vendor_order_id' => (string)$orderId,
+        //     'status_type' => $statusType,
+        //     'status' => $mappedStatus,
+        // ]);
+ $lmdResponse = Http::withHeaders([
+            'Authorization' => 'Bearer electronic-api-key' // ✅ Send API key in header
+        ])->timeout(60)->post('http://192.168.43.63:8000/api/vendor/update-suborder-status', [
             'vendor_order_id' => (string)$orderId,
             'status_type' => $statusType,
             'status' => $mappedStatus,
         ]);
-
         $lmdData = $lmdResponse->json();
 
         return redirect()->back()->with('success', 'Order status updated successfully.')->with('lmd_response', $lmdData);
