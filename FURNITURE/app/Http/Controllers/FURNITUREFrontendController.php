@@ -144,6 +144,7 @@ public function updateOrderStatus(Request $request)
         ]);
         $lmdData = $lmdResponse->json();
 
+        
         return redirect()->back()->with('success', 'Order status updated successfully.')->with('lmd_response', $lmdData);
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'LMD update failed: ' . $e->getMessage());

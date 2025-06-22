@@ -18123,3 +18123,41 @@
   5 => 'XPBM8q4AmqK10EEjpO6nSSaPtM6jZ6gPKFbEIF5U',
 )  
 [2025-06-22 14:10:29] local.INFO: 5.91  
+[2025-06-22 14:11:29] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-06-22 14:11:29] local.INFO: array (
+  0 => 'XPBM8q4AmqK10EEjpO6nSSaPtM6jZ6gPKFbEIF5U',
+)  
+[2025-06-22 14:11:29] local.INFO: 4.91  
+[2025-06-22 14:11:29] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-06-22 14:11:29] local.INFO: array (
+)  
+[2025-06-22 14:11:29] local.INFO: 0.84  
+[2025-06-22 14:11:29] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-06-22 14:11:29] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiU1FoTE85THJGdlVoRkFoZVVjcTM2SHF5U2VFNW1lekR5bmU1VmpqWCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1750601489,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'XPBM8q4AmqK10EEjpO6nSSaPtM6jZ6gPKFbEIF5U',
+)  
+[2025-06-22 14:11:29] local.INFO: 4.07  
+[2025-06-22 14:12:29] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-06-22 14:12:29] local.INFO: array (
+  0 => 'XPBM8q4AmqK10EEjpO6nSSaPtM6jZ6gPKFbEIF5U',
+)  
+[2025-06-22 14:12:29] local.INFO: 3.7  
+[2025-06-22 14:12:29] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-06-22 14:12:29] local.INFO: array (
+)  
+[2025-06-22 14:12:29] local.INFO: 0.92  
+[2025-06-22 14:12:29] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-06-22 14:12:29] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiU1FoTE85THJGdlVoRkFoZVVjcTM2SHF5U2VFNW1lekR5bmU1VmpqWCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1750601549,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'XPBM8q4AmqK10EEjpO6nSSaPtM6jZ6gPKFbEIF5U',
+)  
+[2025-06-22 14:12:29] local.INFO: 4.25  

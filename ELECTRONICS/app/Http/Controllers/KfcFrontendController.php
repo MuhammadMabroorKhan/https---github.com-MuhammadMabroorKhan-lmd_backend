@@ -135,6 +135,7 @@ public function updateOrderStatus(Request $request)
         //     'status_type' => $statusType,
         //     'status' => $mappedStatus,
         // ]);
+        
  $lmdResponse = Http::withHeaders([
             'Authorization' => 'Bearer electronic-api-key' // ✅ Send API key in header
         ])->timeout(60)->post('http://192.168.43.63:8000/api/vendor/update-suborder-status', [
