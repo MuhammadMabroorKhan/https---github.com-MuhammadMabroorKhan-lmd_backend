@@ -46,7 +46,7 @@ return new class extends Migration
             $table->string('name'); // Name of the item (e.g., "Burger", "Pizza")
             $table->text('description')->nullable(); // General description of the item
             $table->unsignedBigInteger('category_ID')->nullable();
-            $table->unsignedBigInteger('electronic_ID')->nullable();
+            $table->unsignedBigInteger('furniture_ID')->nullable();
         });
 
 
@@ -122,7 +122,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('FURNITURE');
-        Schema::dropIfExists('FURNITURE_images');
+        Schema::dropIfExists('furniture_images');
         Schema::dropIfExists('itemcategories');
         Schema::dropIfExists('items');
         Schema::dropIfExists('itemdetails');
