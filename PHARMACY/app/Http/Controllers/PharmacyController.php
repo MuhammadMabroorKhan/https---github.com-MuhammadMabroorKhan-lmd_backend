@@ -183,14 +183,14 @@ public function updateItemPicture(Request $request)
 
 public function addItemRating(Request $request): JsonResponse
 {
-    \Log::info('Incoming Request Data:', $request->all());
+    // \Log::info('Incoming Request Data:', $request->all());
 
     $request->validate([
         'id' => 'required|exists:orders,id',
         'itemdetails_ID' => 'required|exists:itemdetails,id',
         'stars' => 'required|numeric|min:1|max:5',
         'comments' => 'nullable|string|max:255',
-        'rated_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'rated_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif',
     ]);
 
     $existingRating = DB::table('itemrating')
