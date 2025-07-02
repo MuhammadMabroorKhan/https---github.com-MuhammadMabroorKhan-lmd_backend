@@ -116,7 +116,7 @@
         @endforeach
     </div>
 
-
+@if ($order->status !== 'canceled')
 @if ($order->status === 'pending')
 <h3>Update Order Status</h3>
     <form method="POST" action="{{ url('/pharmacy/update-suborder-status') }}">
@@ -158,7 +158,7 @@
         <button type="submit" class="back-link">Confirm Payment (Vendor)</button>
     </form>
 @endif
-
+@endif
     <a class="back-link" href="{{ route('pharmacy.orders') }}">← Back to Orders</a>
 
 </body>

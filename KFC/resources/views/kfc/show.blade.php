@@ -116,7 +116,7 @@
         @endforeach
     </div>
 
-
+@if ($order->status !== 'canceled')
 @if ($order->status === 'pending')
 <h3>Update Order Status</h3>
     <form method="POST" action="{{ url('/kfc/update-suborder-status') }}">
@@ -159,6 +159,7 @@
     </form>
 @endif
 
+@endif
     <a class="back-link" href="{{ route('kfc.orders') }}">← Back to Orders</a>
 
 </body>
