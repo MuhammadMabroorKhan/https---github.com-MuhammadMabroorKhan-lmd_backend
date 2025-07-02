@@ -226,10 +226,199 @@ public function updateCustomer(Request $request, $id)
     }
 
 
+    //this $customerID was the lmd user id
 public function getCustomerMainScreenInformation($customerID)
 {
-    $baseUrl = url('/'); // Base URL for image paths
+ $baseUrl = url('/'); // Base URL for image paths
 
+if($customerID!=0){
+
+// Step 2: Fetch customer's name from lmd_users via customers table
+$customerName = DB::table('customers')
+    ->join('lmd_users', 'customers.lmd_users_ID', '=', 'lmd_users.id')
+    ->where('customers.id', $customerID)
+    ->value('lmd_users.name');
+
+// Step 3: Determine if user is a test user
+$isTestUser = false;
+if ($customerName) {
+    $normalized = str_replace(['_', ' '], '', strtolower($customerName));
+    $isTestUser = str_contains($normalized, 'testcustomer');
+}
+$shopInformation="";
+if($isTestUser){
+ // Fetch shop and branch details with vendor information
+    $shopInformation = DB::table('branches')
+        ->join('shops', 'branches.shops_ID', '=', 'shops.id') 
+        ->join('shopcategory', 'shops.shopcategory_ID', '=', 'shopcategory.id') 
+        ->join('vendors', 'shops.vendors_ID', '=', 'vendors.id') 
+        ->leftJoin('apivendor', 'branches.id', '=', 'apivendor.branches_ID') // Join API vendor if available
+        ->select(
+            'vendors.id as vendor_id',
+            'shops.id as shop_id',
+            'branches.id as branch_id',
+            'shops.shopcategory_ID as shopcategory_ID',
+            'shopcategory.name as shop_category_name',
+            'shops.name as shop_name',
+            'shops.description as shop_description',
+            'shops.status as shop_status',
+            'branches.latitude',
+            'branches.longitude',
+            'branches.description as branch_description',
+                'branches.opening_hours',
+                'branches.closing_hours',
+                'branches.contact_number',
+            'branches.status as branch_status',
+            'branches.approval_status',
+            DB::raw("CASE 
+                        WHEN branches.branch_picture IS NULL OR branches.branch_picture = '' 
+                        THEN NULL 
+                        ELSE CONCAT('$baseUrl/storage/', branches.branch_picture) 
+                    END as branch_picture"),
+            'vendors.vendor_type',
+            'apivendor.api_base_url',
+            'apivendor.id as apivendor_id'
+        )
+        // ->where('branches.approval_status', '!=', 'approved')
+        ->where('vendors.vendor_type','API Vendor')
+        ->get();
+}else{
+     // Fetch shop and branch details with vendor information
+    $shopInformation = DB::table('branches')
+        ->join('shops', 'branches.shops_ID', '=', 'shops.id') 
+        ->join('shopcategory', 'shops.shopcategory_ID', '=', 'shopcategory.id') 
+        ->join('vendors', 'shops.vendors_ID', '=', 'vendors.id') 
+        ->leftJoin('apivendor', 'branches.id', '=', 'apivendor.branches_ID') // Join API vendor if available
+        ->select(
+            'vendors.id as vendor_id',
+            'shops.id as shop_id',
+            'branches.id as branch_id',
+            'shops.shopcategory_ID as shopcategory_ID',
+            'shopcategory.name as shop_category_name',
+            'shops.name as shop_name',
+            'shops.description as shop_description',
+            'shops.status as shop_status',
+            'branches.latitude',
+            'branches.longitude',
+            'branches.description as branch_description',
+                'branches.opening_hours',
+                'branches.closing_hours',
+                'branches.contact_number',
+            'branches.status as branch_status',
+            'branches.approval_status',
+            DB::raw("CASE 
+                        WHEN branches.branch_picture IS NULL OR branches.branch_picture = '' 
+                        THEN NULL 
+                        ELSE CONCAT('$baseUrl/storage/', branches.branch_picture) 
+                    END as branch_picture"),
+            'vendors.vendor_type',
+            'apivendor.api_base_url',
+            'apivendor.id as apivendor_id'
+        )
+        ->where('branches.status', 'active')
+        ->where('branches.approval_status', 'approved')
+        ->get();
+}
+
+
+
+
+
+
+
+    foreach ($shopInformation as $shop) {
+        if ($shop->vendor_type === 'In-App Vendor') {
+            // Fetch total reviews and average rating for In-App Vendors
+            $ratings = DB::table('itemrating')
+                ->join('itemdetails', 'itemrating.itemdetails_ID', '=', 'itemdetails.id')
+                ->join('items', 'itemdetails.item_ID', '=', 'items.id')
+                ->where('items.branches_ID', $shop->branch_id)
+                ->select(
+                    DB::raw('COUNT(itemrating.id) as total_reviews'),
+                    DB::raw('IFNULL(AVG(itemrating.rating_stars), 0) as average_rating')
+                )
+                ->first();
+
+            $shop->total_reviews = $ratings->total_reviews;
+            $shop->average_rating = $ratings->average_rating;
+            $shop->rating_url = null;
+        } 
+        else if ($shop->vendor_type === 'API Vendor' && !empty($shop->apivendor_id)) {
+            // Fetch API method details
+            $apiMethod = DB::table('apimethods')
+                ->where('apivendor_ID', $shop->apivendor_id)
+                ->where('method_name', 'rating')
+                ->select('http_method', 'endpoint')
+                ->first();
+
+            if ($apiMethod) {
+                // Construct the full API URL
+                $ratingUrl = rtrim($shop->api_base_url, '/') . '/' . ltrim($apiMethod->endpoint, '/');
+                $shop->rating_url = $ratingUrl;
+
+                // Fetch ratings from API vendor
+                $client = new \GuzzleHttp\Client();
+                try {
+                    $response = $client->request($apiMethod->http_method, $ratingUrl);
+                    $apiRatings = json_decode($response->getBody(), true);
+
+                    // Map API Vendor fields to LMD fields using variables and mapping tables
+                    $mappedRatings = DB::table('mapping')
+                        ->join('variables', 'mapping.variable_ID', '=', 'variables.id')
+                        ->where('mapping.apivendor_ID', $shop->apivendor_id)
+                        ->select('variables.tags', 'mapping.api_values')
+                        ->get();
+
+                    $mappedData = [];
+                    foreach ($mappedRatings as $map) {
+                        $mappedData[$map->tags] = $apiRatings[$map->api_values] ?? 0;
+                    }
+
+                    // Assign mapped values
+                    $shop->total_reviews = $mappedData['reviews_count'] ?? 0;
+                    $shop->average_rating = $mappedData['avg_Rating'] ?? 0;
+                } catch (\Exception $e) {
+                    // Log the error
+                    \Log::error("API Rating Fetch Error: " . $e->getMessage());
+                    $shop->total_reviews = 0;
+                    $shop->average_rating = 0;
+                }
+            } else {
+                $shop->total_reviews = 0;
+                $shop->average_rating = 0;
+                $shop->rating_url = null;
+            }
+        }
+    }
+    $shopInformation = $shopInformation->sortByDesc('average_rating')->values();
+    return response()->json($shopInformation->map(function ($shop) {
+        return [
+            'vendor_id' => $shop->vendor_id,
+            'shop_id' => $shop->shop_id,
+            'branch_id' => $shop->branch_id,
+            'shopcategory_ID' => $shop->shopcategory_ID,
+            'shop_category_name' => $shop->shop_category_name,
+            'shop_name' => $shop->shop_name,
+            'shop_description' => $shop->shop_description,
+            'shop_status' =>$shop->shop_status,
+            'branch_description' => $shop->branch_description,
+            'contact_number' => $shop->contact_number,
+            'opening_hours' => $shop->opening_hours,
+            'closing_hours' => $shop->closing_hours,
+            'latitude' => $shop->latitude,
+            'longitude' => $shop->longitude,
+            'branch_status' => $shop->branch_status,
+            'approval_status' => $shop->approval_status,
+            'branch_picture' => $shop->branch_picture,
+            'vendor_type' => $shop->vendor_type,
+            'reviews_count' => $shop->total_reviews ?? 0,
+            'avg_Rating' => $shop->average_rating ?? 0,
+        ];
+    }));
+    
+
+}
+else{
     // Fetch shop and branch details with vendor information
     $shopInformation = DB::table('branches')
         ->join('shops', 'branches.shops_ID', '=', 'shops.id') 
@@ -355,7 +544,7 @@ public function getCustomerMainScreenInformation($customerID)
             'avg_Rating' => $shop->average_rating ?? 0,
         ];
     }));
-    
+}
 }
 
 

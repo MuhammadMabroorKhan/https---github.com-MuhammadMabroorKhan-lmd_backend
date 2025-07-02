@@ -23349,3 +23349,31 @@
 [2025-07-02 10:04:46] local.INFO: array (
 )  
 [2025-07-02 10:04:46] local.INFO: 27.25  
+[2025-07-02 13:27:36] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-02 13:27:36] local.INFO: array (
+)  
+[2025-07-02 13:27:36] local.INFO: 11.48  
+[2025-07-02 13:28:20] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-02 13:28:20] local.INFO: array (
+)  
+[2025-07-02 13:28:20] local.INFO: 3.01  
+[2025-07-02 13:28:29] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-02 13:28:29] local.INFO: array (
+)  
+[2025-07-02 13:28:29] local.INFO: 3.39  
+[2025-07-02 13:31:22] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-02 13:31:22] local.INFO: array (
+)  
+[2025-07-02 13:31:22] local.INFO: 18.57  
+[2025-07-02 13:33:21] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-02 13:33:21] local.INFO: array (
+)  
+[2025-07-02 13:33:21] local.INFO: 3.3  
+[2025-07-02 13:34:09] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-02 13:34:09] local.INFO: array (
+)  
+[2025-07-02 13:34:09] local.INFO: 3.31  
+[2025-07-02 13:34:54] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-02 13:34:54] local.INFO: array (
+)  
+[2025-07-02 13:34:54] local.INFO: 3.03  
