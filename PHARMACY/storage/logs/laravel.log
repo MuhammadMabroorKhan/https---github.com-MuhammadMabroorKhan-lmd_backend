@@ -25312,3 +25312,1454 @@
   5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
 )  
 [2025-07-02 14:29:06] local.INFO: 0.58  
+[2025-07-02 14:30:06] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-07-02 14:30:06] local.INFO: array (
+  0 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:30:06] local.INFO: 3.49  
+[2025-07-02 14:30:06] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-07-02 14:30:06] local.INFO: array (
+)  
+[2025-07-02 14:30:06] local.INFO: 0.7  
+[2025-07-02 14:30:06] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-07-02 14:30:06] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS2s1RExYUFd2SENuclN2RVd1SEZ1QzBBbW5UdExscUJxMU9WQ1FpQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1751466606,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:30:06] local.INFO: 3.61  
+[2025-07-02 14:30:07] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-07-02 14:30:07] local.INFO: array (
+  0 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:30:07] local.INFO: 3.33  
+[2025-07-02 14:30:07] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-07-02 14:30:07] local.INFO: array (
+)  
+[2025-07-02 14:30:07] local.INFO: 0.91  
+[2025-07-02 14:30:07] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-07-02 14:30:07] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS2s1RExYUFd2SENuclN2RVd1SEZ1QzBBbW5UdExscUJxMU9WQ1FpQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1751466607,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:30:07] local.INFO: 7.08  
+[2025-07-02 14:56:09] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-07-02 14:56:09] local.INFO: array (
+  0 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:56:09] local.INFO: 5.11  
+[2025-07-02 14:56:09] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-07-02 14:56:09] local.INFO: array (
+)  
+[2025-07-02 14:56:09] local.INFO: 0.83  
+[2025-07-02 14:56:09] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-07-02 14:56:09] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS2s1RExYUFd2SENuclN2RVd1SEZ1QzBBbW5UdExscUJxMU9WQ1FpQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1751468169,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:56:09] local.INFO: 6.41  
+[2025-07-02 14:56:09] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-07-02 14:56:09] local.INFO: array (
+  0 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:56:09] local.INFO: 3.95  
+[2025-07-02 14:56:09] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-07-02 14:56:09] local.INFO: array (
+)  
+[2025-07-02 14:56:09] local.INFO: 0.77  
+[2025-07-02 14:56:09] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-07-02 14:56:09] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS2s1RExYUFd2SENuclN2RVd1SEZ1QzBBbW5UdExscUJxMU9WQ1FpQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1751468169,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:56:09] local.INFO: 0.93  
+[2025-07-02 14:57:02] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-07-02 14:57:02] local.INFO: array (
+  0 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:57:02] local.INFO: 3.16  
+[2025-07-02 14:57:02] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-07-02 14:57:02] local.INFO: array (
+)  
+[2025-07-02 14:57:02] local.INFO: 0.76  
+[2025-07-02 14:57:02] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-07-02 14:57:02] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS2s1RExYUFd2SENuclN2RVd1SEZ1QzBBbW5UdExscUJxMU9WQ1FpQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1751468222,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:57:02] local.INFO: 3.5  
+[2025-07-02 14:57:02] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-07-02 14:57:02] local.INFO: array (
+  0 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:57:02] local.INFO: 25.77  
+[2025-07-02 14:57:02] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-07-02 14:57:02] local.INFO: array (
+)  
+[2025-07-02 14:57:02] local.INFO: 0.67  
+[2025-07-02 14:57:02] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-07-02 14:57:02] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS2s1RExYUFd2SENuclN2RVd1SEZ1QzBBbW5UdExscUJxMU9WQ1FpQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1751468222,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:57:02] local.INFO: 0.63  
+[2025-07-02 14:58:03] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-07-02 14:58:03] local.INFO: array (
+  0 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:58:03] local.INFO: 3.13  
+[2025-07-02 14:58:03] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-07-02 14:58:03] local.INFO: array (
+)  
+[2025-07-02 14:58:03] local.INFO: 0.61  
+[2025-07-02 14:58:03] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-07-02 14:58:03] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS2s1RExYUFd2SENuclN2RVd1SEZ1QzBBbW5UdExscUJxMU9WQ1FpQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1751468283,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:58:03] local.INFO: 3.64  
+[2025-07-02 14:58:03] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-07-02 14:58:03] local.INFO: array (
+  0 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:58:03] local.INFO: 2.42  
+[2025-07-02 14:58:03] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-07-02 14:58:03] local.INFO: array (
+)  
+[2025-07-02 14:58:03] local.INFO: 0.6  
+[2025-07-02 14:58:03] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-07-02 14:58:03] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS2s1RExYUFd2SENuclN2RVd1SEZ1QzBBbW5UdExscUJxMU9WQ1FpQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1751468283,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:58:03] local.INFO: 0.57  
+[2025-07-02 14:59:04] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-07-02 14:59:04] local.INFO: array (
+  0 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:59:04] local.INFO: 3.65  
+[2025-07-02 14:59:04] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-07-02 14:59:04] local.INFO: array (
+)  
+[2025-07-02 14:59:04] local.INFO: 0.69  
+[2025-07-02 14:59:04] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-07-02 14:59:04] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS2s1RExYUFd2SENuclN2RVd1SEZ1QzBBbW5UdExscUJxMU9WQ1FpQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1751468344,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:59:04] local.INFO: 3.61  
+[2025-07-02 14:59:04] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-07-02 14:59:04] local.INFO: array (
+  0 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:59:04] local.INFO: 2.45  
+[2025-07-02 14:59:04] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-07-02 14:59:04] local.INFO: array (
+)  
+[2025-07-02 14:59:04] local.INFO: 0.54  
+[2025-07-02 14:59:04] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-07-02 14:59:04] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS2s1RExYUFd2SENuclN2RVd1SEZ1QzBBbW5UdExscUJxMU9WQ1FpQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1751468344,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:59:04] local.INFO: 0.52  
+[2025-07-02 14:59:18] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2025-07-02 14:59:18] local.INFO: array (
+  0 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:59:18] local.INFO: 3.68  
+[2025-07-02 14:59:18] local.INFO: select * from `orders` order by `order_date` desc  
+[2025-07-02 14:59:18] local.INFO: array (
+)  
+[2025-07-02 14:59:18] local.INFO: 0.76  
+[2025-07-02 14:59:18] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2025-07-02 14:59:18] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS2s1RExYUFd2SENuclN2RVd1SEZ1QzBBbW5UdExscUJxMU9WQ1FpQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xOTIuMTY4LjQzLjYzOjgwMDMvcGhhcm1hY3kvb3JkZXJzLWpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1751468358,
+  2 => NULL,
+  3 => '192.168.43.63',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+  5 => 'ObXXIQVFLGB3cuP5vX24ab7yGfK4OHd4SAhJtK5Q',
+)  
+[2025-07-02 14:59:18] local.INFO: 3.14  
+[2025-07-03 09:22:03] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 09:22:03] local.INFO: array (
+)  
+[2025-07-03 09:22:03] local.INFO: 185.64  
+[2025-07-03 09:23:04] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 09:23:05] local.INFO: array (
+)  
+[2025-07-03 09:23:05] local.INFO: 43.59  
+[2025-07-03 10:47:26] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 10:47:26] local.INFO: array (
+)  
+[2025-07-03 10:47:26] local.INFO: 71.07  
+[2025-07-03 10:57:08] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 10:57:08] local.INFO: array (
+)  
+[2025-07-03 10:57:08] local.INFO: 27.32  
+[2025-07-03 11:00:02] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:00:02] local.INFO: array (
+)  
+[2025-07-03 11:00:02] local.INFO: 173.29  
+[2025-07-03 11:00:55] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:00:55] local.INFO: array (
+)  
+[2025-07-03 11:00:55] local.INFO: 3.95  
+[2025-07-03 11:01:26] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:01:26] local.INFO: array (
+)  
+[2025-07-03 11:01:26] local.INFO: 3.79  
+[2025-07-03 11:03:51] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:03:51] local.INFO: array (
+)  
+[2025-07-03 11:03:51] local.INFO: 11.33  
+[2025-07-03 11:09:29] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:09:29] local.INFO: array (
+)  
+[2025-07-03 11:09:29] local.INFO: 3.11  
+[2025-07-03 11:10:05] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:10:05] local.INFO: array (
+)  
+[2025-07-03 11:10:05] local.INFO: 14.76  
+[2025-07-03 11:11:45] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:11:45] local.INFO: array (
+)  
+[2025-07-03 11:11:45] local.INFO: 3.23  
+[2025-07-03 11:12:11] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:12:11] local.INFO: array (
+)  
+[2025-07-03 11:12:11] local.INFO: 20.1  
+[2025-07-03 11:13:46] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:13:46] local.INFO: array (
+)  
+[2025-07-03 11:13:46] local.INFO: 59.58  
+[2025-07-03 11:17:30] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:17:30] local.INFO: array (
+)  
+[2025-07-03 11:17:30] local.INFO: 16.28  
+[2025-07-03 11:19:18] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:19:18] local.INFO: array (
+)  
+[2025-07-03 11:19:18] local.INFO: 48.85  
+[2025-07-03 11:19:22] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:19:22] local.INFO: array (
+)  
+[2025-07-03 11:19:22] local.INFO: 4  
+[2025-07-03 11:24:59] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:24:59] local.INFO: array (
+)  
+[2025-07-03 11:24:59] local.INFO: 4.66  
+[2025-07-03 11:25:23] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:25:23] local.INFO: array (
+)  
+[2025-07-03 11:25:23] local.INFO: 18.5  
+[2025-07-03 11:26:01] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 11:26:01] local.INFO: array (
+)  
+[2025-07-03 11:26:01] local.INFO: 4.4  
+[2025-07-03 13:21:13] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 13:21:13] local.INFO: array (
+)  
+[2025-07-03 13:21:13] local.INFO: 6.52  
+[2025-07-03 13:23:37] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 13:23:37] local.INFO: array (
+)  
+[2025-07-03 13:23:37] local.INFO: 14.54  
+[2025-07-03 13:23:41] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:23:41] local.INFO: array (
+)  
+[2025-07-03 13:23:41] local.INFO: 119.22  
+[2025-07-03 13:23:41] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:23:41] local.INFO: array (
+)  
+[2025-07-03 13:23:41] local.INFO: 53.5  
+[2025-07-03 13:33:25] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 13:33:25] local.INFO: array (
+)  
+[2025-07-03 13:33:25] local.INFO: 38.13  
+[2025-07-03 13:33:27] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:33:27] local.INFO: array (
+)  
+[2025-07-03 13:33:27] local.INFO: 3.49  
+[2025-07-03 13:33:28] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:33:28] local.INFO: array (
+)  
+[2025-07-03 13:33:28] local.INFO: 3.37  
+[2025-07-03 13:33:46] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 13:33:46] local.INFO: array (
+)  
+[2025-07-03 13:33:46] local.INFO: 15.43  
+[2025-07-03 13:33:50] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:33:50] local.INFO: array (
+)  
+[2025-07-03 13:33:50] local.INFO: 50.07  
+[2025-07-03 13:33:50] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:33:50] local.INFO: array (
+)  
+[2025-07-03 13:33:50] local.INFO: 15.56  
+[2025-07-03 13:36:25] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 13:36:25] local.INFO: array (
+)  
+[2025-07-03 13:36:25] local.INFO: 57.94  
+[2025-07-03 13:36:30] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:36:30] local.INFO: array (
+)  
+[2025-07-03 13:36:30] local.INFO: 26.41  
+[2025-07-03 13:36:30] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:36:30] local.INFO: array (
+)  
+[2025-07-03 13:36:30] local.INFO: 47.5  
+[2025-07-03 13:37:53] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 13:37:53] local.INFO: array (
+)  
+[2025-07-03 13:37:53] local.INFO: 2.95  
+[2025-07-03 13:37:56] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:37:56] local.INFO: array (
+)  
+[2025-07-03 13:37:56] local.INFO: 31.39  
+[2025-07-03 13:37:56] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:37:56] local.INFO: array (
+)  
+[2025-07-03 13:37:56] local.INFO: 41.92  
+[2025-07-03 13:40:43] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 13:40:43] local.INFO: array (
+)  
+[2025-07-03 13:40:43] local.INFO: 17.43  
+[2025-07-03 13:40:48] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:40:48] local.INFO: array (
+)  
+[2025-07-03 13:40:48] local.INFO: 52  
+[2025-07-03 13:40:48] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:40:48] local.INFO: array (
+)  
+[2025-07-03 13:40:48] local.INFO: 14.26  
+[2025-07-03 13:42:31] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 13:42:31] local.INFO: array (
+)  
+[2025-07-03 13:42:31] local.INFO: 5.86  
+[2025-07-03 13:42:37] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:42:37] local.INFO: array (
+)  
+[2025-07-03 13:42:37] local.INFO: 4.71  
+[2025-07-03 13:42:37] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:42:37] local.INFO: array (
+)  
+[2025-07-03 13:42:37] local.INFO: 17.23  
+[2025-07-03 13:43:15] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 13:43:15] local.INFO: array (
+)  
+[2025-07-03 13:43:15] local.INFO: 4.43  
+[2025-07-03 13:43:22] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:43:22] local.INFO: array (
+)  
+[2025-07-03 13:43:22] local.INFO: 5.34  
+[2025-07-03 13:43:22] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:43:22] local.INFO: array (
+)  
+[2025-07-03 13:43:22] local.INFO: 8.56  
+[2025-07-03 13:45:51] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 13:45:51] local.INFO: array (
+)  
+[2025-07-03 13:45:51] local.INFO: 2.91  
+[2025-07-03 13:45:55] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:45:55] local.INFO: array (
+)  
+[2025-07-03 13:45:55] local.INFO: 3.85  
+[2025-07-03 13:45:55] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 13:45:55] local.INFO: array (
+)  
+[2025-07-03 13:45:55] local.INFO: 19.88  
+[2025-07-03 14:03:19] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:03:19] local.INFO: array (
+)  
+[2025-07-03 14:03:19] local.INFO: 3.61  
+[2025-07-03 14:03:24] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:03:24] local.INFO: array (
+)  
+[2025-07-03 14:03:24] local.INFO: 5.8  
+[2025-07-03 14:03:24] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:03:24] local.INFO: array (
+)  
+[2025-07-03 14:03:24] local.INFO: 4.43  
+[2025-07-03 14:04:19] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:04:19] local.INFO: array (
+)  
+[2025-07-03 14:04:19] local.INFO: 4.29  
+[2025-07-03 14:04:22] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:04:22] local.INFO: array (
+)  
+[2025-07-03 14:04:22] local.INFO: 3.76  
+[2025-07-03 14:04:23] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:04:23] local.INFO: array (
+)  
+[2025-07-03 14:04:23] local.INFO: 5.01  
+[2025-07-03 14:04:54] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:04:54] local.INFO: array (
+)  
+[2025-07-03 14:04:54] local.INFO: 4.06  
+[2025-07-03 14:05:10] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:10] local.INFO: array (
+)  
+[2025-07-03 14:05:10] local.INFO: 6.98  
+[2025-07-03 14:05:10] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:10] local.INFO: array (
+)  
+[2025-07-03 14:05:10] local.INFO: 5.2  
+[2025-07-03 14:05:18] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:18] local.INFO: array (
+)  
+[2025-07-03 14:05:18] local.INFO: 5.31  
+[2025-07-03 14:05:19] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:19] local.INFO: array (
+)  
+[2025-07-03 14:05:19] local.INFO: 5.14  
+[2025-07-03 14:05:20] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:05:20] local.INFO: array (
+)  
+[2025-07-03 14:05:20] local.INFO: 3.14  
+[2025-07-03 14:05:23] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:23] local.INFO: array (
+)  
+[2025-07-03 14:05:23] local.INFO: 3.39  
+[2025-07-03 14:05:23] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:23] local.INFO: array (
+)  
+[2025-07-03 14:05:23] local.INFO: 3.5  
+[2025-07-03 14:05:25] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-03 14:05:25] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 14:05:25] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-03 14:05:25] local.INFO: 71.67  
+[2025-07-03 14:05:25] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 14:05:25] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-03 14:05:25] local.INFO: 15.56  
+[2025-07-03 14:05:26] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:05:26] local.INFO: array (
+)  
+[2025-07-03 14:05:26] local.INFO: 2.9  
+[2025-07-03 14:05:30] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:30] local.INFO: array (
+)  
+[2025-07-03 14:05:30] local.INFO: 3.33  
+[2025-07-03 14:05:30] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:30] local.INFO: array (
+)  
+[2025-07-03 14:05:30] local.INFO: 5.06  
+[2025-07-03 14:05:42] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:42] local.INFO: array (
+)  
+[2025-07-03 14:05:42] local.INFO: 4.93  
+[2025-07-03 14:05:42] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:42] local.INFO: array (
+)  
+[2025-07-03 14:05:42] local.INFO: 3.71  
+[2025-07-03 14:05:44] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:44] local.INFO: array (
+)  
+[2025-07-03 14:05:44] local.INFO: 4.22  
+[2025-07-03 14:05:45] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:45] local.INFO: array (
+)  
+[2025-07-03 14:05:45] local.INFO: 4.38  
+[2025-07-03 14:05:45] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:05:45] local.INFO: array (
+)  
+[2025-07-03 14:05:45] local.INFO: 3.51  
+[2025-07-03 14:05:48] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-03 14:05:48] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 14:05:48] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-03 14:05:48] local.INFO: 4.33  
+[2025-07-03 14:05:48] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 14:05:48] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-03 14:05:48] local.INFO: 1.07  
+[2025-07-03 14:05:52] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:05:52] local.INFO: array (
+)  
+[2025-07-03 14:05:52] local.INFO: 13.27  
+[2025-07-03 14:05:56] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:56] local.INFO: array (
+)  
+[2025-07-03 14:05:56] local.INFO: 19.29  
+[2025-07-03 14:05:57] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:05:57] local.INFO: array (
+)  
+[2025-07-03 14:05:57] local.INFO: 4.97  
+[2025-07-03 14:08:21] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:08:21] local.INFO: array (
+)  
+[2025-07-03 14:08:21] local.INFO: 75.55  
+[2025-07-03 14:08:27] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:08:27] local.INFO: array (
+)  
+[2025-07-03 14:08:27] local.INFO: 3.3  
+[2025-07-03 14:08:28] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:08:28] local.INFO: array (
+)  
+[2025-07-03 14:08:28] local.INFO: 5.01  
+[2025-07-03 14:13:49] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:13:49] local.INFO: array (
+)  
+[2025-07-03 14:13:49] local.INFO: 3.48  
+[2025-07-03 14:13:54] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:13:54] local.INFO: array (
+)  
+[2025-07-03 14:13:54] local.INFO: 23.89  
+[2025-07-03 14:13:54] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:13:54] local.INFO: array (
+)  
+[2025-07-03 14:13:54] local.INFO: 3.43  
+[2025-07-03 14:16:45] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:16:45] local.INFO: array (
+)  
+[2025-07-03 14:16:45] local.INFO: 3.3  
+[2025-07-03 14:16:49] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:16:49] local.INFO: array (
+)  
+[2025-07-03 14:16:49] local.INFO: 6.33  
+[2025-07-03 14:16:49] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:16:49] local.INFO: array (
+)  
+[2025-07-03 14:16:49] local.INFO: 4.61  
+[2025-07-03 14:18:05] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:18:05] local.INFO: array (
+)  
+[2025-07-03 14:18:05] local.INFO: 3.61  
+[2025-07-03 14:18:10] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:18:10] local.INFO: array (
+)  
+[2025-07-03 14:18:10] local.INFO: 4.87  
+[2025-07-03 14:18:10] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:18:10] local.INFO: array (
+)  
+[2025-07-03 14:18:10] local.INFO: 3.47  
+[2025-07-03 14:19:32] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:19:32] local.INFO: array (
+)  
+[2025-07-03 14:19:32] local.INFO: 4.2  
+[2025-07-03 14:19:36] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:19:36] local.INFO: array (
+)  
+[2025-07-03 14:19:36] local.INFO: 5.15  
+[2025-07-03 14:19:36] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:19:36] local.INFO: array (
+)  
+[2025-07-03 14:19:36] local.INFO: 4.47  
+[2025-07-03 14:21:00] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:21:00] local.INFO: array (
+)  
+[2025-07-03 14:21:00] local.INFO: 2.88  
+[2025-07-03 14:21:04] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:21:04] local.INFO: array (
+)  
+[2025-07-03 14:21:04] local.INFO: 122.99  
+[2025-07-03 14:21:04] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:21:04] local.INFO: array (
+)  
+[2025-07-03 14:21:04] local.INFO: 3.54  
+[2025-07-03 14:22:21] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:22:21] local.INFO: array (
+)  
+[2025-07-03 14:22:21] local.INFO: 4.73  
+[2025-07-03 14:22:26] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:22:26] local.INFO: array (
+)  
+[2025-07-03 14:22:26] local.INFO: 3.57  
+[2025-07-03 14:22:26] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:22:26] local.INFO: array (
+)  
+[2025-07-03 14:22:26] local.INFO: 3.31  
+[2025-07-03 14:24:10] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:24:10] local.INFO: array (
+)  
+[2025-07-03 14:24:10] local.INFO: 4.2  
+[2025-07-03 14:24:15] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:24:15] local.INFO: array (
+)  
+[2025-07-03 14:24:15] local.INFO: 3.32  
+[2025-07-03 14:24:15] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:24:15] local.INFO: array (
+)  
+[2025-07-03 14:24:15] local.INFO: 3.34  
+[2025-07-03 14:25:51] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:25:51] local.INFO: array (
+)  
+[2025-07-03 14:25:51] local.INFO: 3.09  
+[2025-07-03 14:25:55] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:25:55] local.INFO: array (
+)  
+[2025-07-03 14:25:55] local.INFO: 3.59  
+[2025-07-03 14:25:55] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:25:55] local.INFO: array (
+)  
+[2025-07-03 14:25:55] local.INFO: 4.85  
+[2025-07-03 14:27:03] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 14:27:03] local.INFO: array (
+)  
+[2025-07-03 14:27:03] local.INFO: 4.36  
+[2025-07-03 14:27:07] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:27:07] local.INFO: array (
+)  
+[2025-07-03 14:27:07] local.INFO: 4.06  
+[2025-07-03 14:27:07] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 14:27:07] local.INFO: array (
+)  
+[2025-07-03 14:27:07] local.INFO: 25.51  
+[2025-07-03 15:12:47] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 15:12:47] local.INFO: array (
+)  
+[2025-07-03 15:12:47] local.INFO: 4.12  
+[2025-07-03 15:12:50] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 15:12:50] local.INFO: array (
+)  
+[2025-07-03 15:12:50] local.INFO: 3.2  
+[2025-07-03 15:12:50] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 15:12:50] local.INFO: array (
+)  
+[2025-07-03 15:12:50] local.INFO: 4.47  
+[2025-07-03 15:34:26] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 15:34:26] local.INFO: array (
+)  
+[2025-07-03 15:34:26] local.INFO: 39.2  
+[2025-07-03 15:34:35] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 15:34:35] local.INFO: array (
+)  
+[2025-07-03 15:34:35] local.INFO: 4.27  
+[2025-07-03 15:34:35] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 15:34:35] local.INFO: array (
+)  
+[2025-07-03 15:34:35] local.INFO: 2.97  
+[2025-07-03 15:51:05] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 15:51:05] local.INFO: array (
+)  
+[2025-07-03 15:51:05] local.INFO: 128.43  
+[2025-07-03 15:51:18] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 15:51:18] local.INFO: array (
+)  
+[2025-07-03 15:51:18] local.INFO: 5.94  
+[2025-07-03 15:51:19] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 15:51:19] local.INFO: array (
+)  
+[2025-07-03 15:51:19] local.INFO: 225.24  
+[2025-07-03 16:05:48] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 16:05:49] local.INFO: array (
+)  
+[2025-07-03 16:05:49] local.INFO: 101.06  
+[2025-07-03 16:06:43] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 16:06:43] local.INFO: array (
+)  
+[2025-07-03 16:06:43] local.INFO: 2.98  
+[2025-07-03 16:06:47] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:06:47] local.INFO: array (
+)  
+[2025-07-03 16:06:47] local.INFO: 2.95  
+[2025-07-03 16:06:47] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:06:47] local.INFO: array (
+)  
+[2025-07-03 16:06:47] local.INFO: 20.74  
+[2025-07-03 16:15:35] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 16:15:35] local.INFO: array (
+)  
+[2025-07-03 16:15:35] local.INFO: 111.39  
+[2025-07-03 16:15:39] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:15:39] local.INFO: array (
+)  
+[2025-07-03 16:15:39] local.INFO: 44.15  
+[2025-07-03 16:15:39] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:15:39] local.INFO: array (
+)  
+[2025-07-03 16:15:39] local.INFO: 5.41  
+[2025-07-03 16:16:42] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:16:42] local.INFO: array (
+)  
+[2025-07-03 16:16:42] local.INFO: 3.45  
+[2025-07-03 16:16:42] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:16:42] local.INFO: array (
+)  
+[2025-07-03 16:16:42] local.INFO: 3.13  
+[2025-07-03 16:16:44] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:16:44] local.INFO: array (
+)  
+[2025-07-03 16:16:44] local.INFO: 3.64  
+[2025-07-03 16:16:44] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:16:44] local.INFO: array (
+)  
+[2025-07-03 16:16:44] local.INFO: 59.06  
+[2025-07-03 16:16:45] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 16:16:45] local.INFO: array (
+)  
+[2025-07-03 16:16:45] local.INFO: 16.97  
+[2025-07-03 16:16:46] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-03 16:16:46] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 16:16:46] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-03 16:16:46] local.INFO: 3.51  
+[2025-07-03 16:16:46] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 16:16:46] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-03 16:16:46] local.INFO: 0.95  
+[2025-07-03 16:16:47] local.INFO: Incoming Stock Request: {"itemdetails_ID":[5]} 
+[2025-07-03 16:16:47] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 16:16:47] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-03 16:16:47] local.INFO: 26.85  
+[2025-07-03 16:16:47] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 16:16:47] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-03 16:16:47] local.INFO: 12.79  
+[2025-07-03 16:16:54] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 16:16:54] local.INFO: array (
+)  
+[2025-07-03 16:16:54] local.INFO: 24.32  
+[2025-07-03 16:16:57] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:16:57] local.INFO: array (
+)  
+[2025-07-03 16:16:57] local.INFO: 3.12  
+[2025-07-03 16:16:57] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:16:57] local.INFO: array (
+)  
+[2025-07-03 16:16:57] local.INFO: 3.23  
+[2025-07-03 16:17:13] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:17:13] local.INFO: array (
+)  
+[2025-07-03 16:17:13] local.INFO: 3.43  
+[2025-07-03 16:17:13] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:17:13] local.INFO: array (
+)  
+[2025-07-03 16:17:13] local.INFO: 21.65  
+[2025-07-03 16:17:15] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:17:15] local.INFO: array (
+)  
+[2025-07-03 16:17:15] local.INFO: 3.33  
+[2025-07-03 16:17:15] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:17:15] local.INFO: array (
+)  
+[2025-07-03 16:17:15] local.INFO: 3.33  
+[2025-07-03 16:17:15] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 16:17:15] local.INFO: array (
+)  
+[2025-07-03 16:17:15] local.INFO: 13.48  
+[2025-07-03 16:17:17] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-03 16:17:17] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 16:17:17] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-03 16:17:17] local.INFO: 12.51  
+[2025-07-03 16:17:17] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 16:17:17] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-03 16:17:17] local.INFO: 0.67  
+[2025-07-03 16:17:17] local.INFO: Incoming Stock Request: {"itemdetails_ID":[5]} 
+[2025-07-03 16:17:17] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 16:17:17] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-03 16:17:17] local.INFO: 2.85  
+[2025-07-03 16:17:17] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 16:17:17] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-03 16:17:17] local.INFO: 9.06  
+[2025-07-03 16:17:17] local.INFO: Incoming Stock Request: {"itemdetails_ID":[8]} 
+[2025-07-03 16:17:17] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 16:17:17] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-03 16:17:17] local.INFO: 2.66  
+[2025-07-03 16:17:17] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-03 16:17:17] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-03 16:17:17] local.INFO: 0.67  
+[2025-07-03 16:17:24] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 16:17:24] local.INFO: array (
+)  
+[2025-07-03 16:17:24] local.INFO: 2.78  
+[2025-07-03 16:17:27] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:17:27] local.INFO: array (
+)  
+[2025-07-03 16:17:27] local.INFO: 26.55  
+[2025-07-03 16:17:27] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:17:27] local.INFO: array (
+)  
+[2025-07-03 16:17:27] local.INFO: 3.03  
+[2025-07-03 16:19:18] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 16:19:18] local.INFO: array (
+)  
+[2025-07-03 16:19:18] local.INFO: 3.24  
+[2025-07-03 16:19:20] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:19:20] local.INFO: array (
+)  
+[2025-07-03 16:19:20] local.INFO: 4  
+[2025-07-03 16:19:20] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:19:20] local.INFO: array (
+)  
+[2025-07-03 16:19:20] local.INFO: 21.85  
+[2025-07-03 16:21:49] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 16:21:49] local.INFO: array (
+)  
+[2025-07-03 16:21:49] local.INFO: 3.2  
+[2025-07-03 16:21:51] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:21:51] local.INFO: array (
+)  
+[2025-07-03 16:21:51] local.INFO: 24.52  
+[2025-07-03 16:21:51] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:21:51] local.INFO: array (
+)  
+[2025-07-03 16:21:51] local.INFO: 26.42  
+[2025-07-03 16:24:05] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 16:24:05] local.INFO: array (
+)  
+[2025-07-03 16:24:05] local.INFO: 3.43  
+[2025-07-03 16:24:09] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:24:09] local.INFO: array (
+)  
+[2025-07-03 16:24:09] local.INFO: 3.6  
+[2025-07-03 16:24:09] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:24:09] local.INFO: array (
+)  
+[2025-07-03 16:24:09] local.INFO: 3.66  
+[2025-07-03 16:25:23] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-03 16:25:23] local.INFO: array (
+)  
+[2025-07-03 16:25:23] local.INFO: 26.55  
+[2025-07-03 16:25:27] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:25:27] local.INFO: array (
+)  
+[2025-07-03 16:25:27] local.INFO: 2.98  
+[2025-07-03 16:25:27] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-03 16:25:27] local.INFO: array (
+)  
+[2025-07-03 16:25:27] local.INFO: 3.97  
+[2025-07-04 01:03:05] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:03:05] local.INFO: array (
+)  
+[2025-07-04 01:03:05] local.INFO: 5.1  
+[2025-07-04 01:03:11] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:03:11] local.INFO: array (
+)  
+[2025-07-04 01:03:11] local.INFO: 3.77  
+[2025-07-04 01:03:11] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:03:11] local.INFO: array (
+)  
+[2025-07-04 01:03:11] local.INFO: 4.08  
+[2025-07-04 01:03:17] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:03:17] local.INFO: array (
+)  
+[2025-07-04 01:03:17] local.INFO: 3.24  
+[2025-07-04 01:03:17] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:03:17] local.INFO: array (
+)  
+[2025-07-04 01:03:17] local.INFO: 18.97  
+[2025-07-04 01:03:41] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:03:41] local.INFO: array (
+)  
+[2025-07-04 01:03:41] local.INFO: 4.67  
+[2025-07-04 01:03:42] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:03:42] local.INFO: array (
+)  
+[2025-07-04 01:03:42] local.INFO: 3.32  
+[2025-07-04 01:03:49] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:03:49] local.INFO: array (
+)  
+[2025-07-04 01:03:49] local.INFO: 3.49  
+[2025-07-04 01:03:49] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:03:49] local.INFO: array (
+)  
+[2025-07-04 01:03:49] local.INFO: 3.4  
+[2025-07-04 01:04:38] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:04:38] local.INFO: array (
+)  
+[2025-07-04 01:04:38] local.INFO: 14.41  
+[2025-07-04 01:04:41] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:04:41] local.INFO: array (
+)  
+[2025-07-04 01:04:41] local.INFO: 3.37  
+[2025-07-04 01:04:41] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:04:41] local.INFO: array (
+)  
+[2025-07-04 01:04:41] local.INFO: 3.54  
+[2025-07-04 01:05:00] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:05:00] local.INFO: array (
+)  
+[2025-07-04 01:05:00] local.INFO: 5.83  
+[2025-07-04 01:05:00] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:05:00] local.INFO: array (
+)  
+[2025-07-04 01:05:00] local.INFO: 5.16  
+[2025-07-04 01:06:50] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:06:50] local.INFO: array (
+)  
+[2025-07-04 01:06:50] local.INFO: 4.83  
+[2025-07-04 01:06:50] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:06:50] local.INFO: array (
+)  
+[2025-07-04 01:06:50] local.INFO: 3.62  
+[2025-07-04 01:08:04] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:08:04] local.INFO: array (
+)  
+[2025-07-04 01:08:04] local.INFO: 4.7  
+[2025-07-04 01:08:04] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:08:04] local.INFO: array (
+)  
+[2025-07-04 01:08:04] local.INFO: 4.91  
+[2025-07-04 01:08:22] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:08:22] local.INFO: array (
+)  
+[2025-07-04 01:08:22] local.INFO: 4.22  
+[2025-07-04 01:08:22] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:08:22] local.INFO: array (
+)  
+[2025-07-04 01:08:22] local.INFO: 4.13  
+[2025-07-04 01:09:32] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:09:32] local.INFO: array (
+)  
+[2025-07-04 01:09:32] local.INFO: 3.74  
+[2025-07-04 01:09:36] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:09:36] local.INFO: array (
+)  
+[2025-07-04 01:09:36] local.INFO: 6.44  
+[2025-07-04 01:09:36] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:09:36] local.INFO: array (
+)  
+[2025-07-04 01:09:36] local.INFO: 3.54  
+[2025-07-04 01:09:44] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:09:44] local.INFO: array (
+)  
+[2025-07-04 01:09:44] local.INFO: 24.09  
+[2025-07-04 01:09:44] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:09:44] local.INFO: array (
+)  
+[2025-07-04 01:09:44] local.INFO: 4.31  
+[2025-07-04 01:09:46] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:09:46] local.INFO: array (
+)  
+[2025-07-04 01:09:46] local.INFO: 3.78  
+[2025-07-04 01:09:46] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:09:46] local.INFO: array (
+)  
+[2025-07-04 01:09:46] local.INFO: 3.72  
+[2025-07-04 01:09:47] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:09:47] local.INFO: array (
+)  
+[2025-07-04 01:09:47] local.INFO: 3.35  
+[2025-07-04 01:09:49] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-04 01:09:49] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:49] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:09:49] local.INFO: 3.09  
+[2025-07-04 01:09:49] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:49] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:09:49] local.INFO: 0.77  
+[2025-07-04 01:09:49] local.INFO: Incoming Stock Request: {"itemdetails_ID":[5]} 
+[2025-07-04 01:09:49] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:49] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:09:49] local.INFO: 13.71  
+[2025-07-04 01:09:49] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:49] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:09:49] local.INFO: 0.74  
+[2025-07-04 01:09:50] local.INFO: Incoming Stock Request: {"itemdetails_ID":[8]} 
+[2025-07-04 01:09:50] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:50] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:09:50] local.INFO: 23.13  
+[2025-07-04 01:09:50] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:50] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:09:50] local.INFO: 0.99  
+[2025-07-04 01:09:52] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:09:52] local.INFO: array (
+)  
+[2025-07-04 01:09:52] local.INFO: 26.34  
+[2025-07-04 01:09:52] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:09:52] local.INFO: array (
+)  
+[2025-07-04 01:09:52] local.INFO: 16.91  
+[2025-07-04 01:09:53] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-04 01:09:53] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:53] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:09:53] local.INFO: 21.58  
+[2025-07-04 01:09:53] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:53] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:09:53] local.INFO: 0.68  
+[2025-07-04 01:09:54] local.INFO: Incoming Stock Request: {"itemdetails_ID":[5]} 
+[2025-07-04 01:09:54] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:54] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:09:54] local.INFO: 13.82  
+[2025-07-04 01:09:54] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:54] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:09:54] local.INFO: 0.75  
+[2025-07-04 01:09:54] local.INFO: Incoming Stock Request: {"itemdetails_ID":[8]} 
+[2025-07-04 01:09:54] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:54] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:09:54] local.INFO: 4.9  
+[2025-07-04 01:09:54] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:54] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:09:54] local.INFO: 0.8  
+[2025-07-04 01:09:56] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:09:56] local.INFO: array (
+)  
+[2025-07-04 01:09:56] local.INFO: 3.73  
+[2025-07-04 01:09:56] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:09:56] local.INFO: array (
+)  
+[2025-07-04 01:09:56] local.INFO: 16.16  
+[2025-07-04 01:09:57] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-04 01:09:57] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:57] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:09:57] local.INFO: 21.19  
+[2025-07-04 01:09:57] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:57] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:09:57] local.INFO: 1.68  
+[2025-07-04 01:09:58] local.INFO: Incoming Stock Request: {"itemdetails_ID":[5]} 
+[2025-07-04 01:09:58] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:58] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:09:58] local.INFO: 16.42  
+[2025-07-04 01:09:58] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:58] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:09:58] local.INFO: 1.05  
+[2025-07-04 01:09:58] local.INFO: Incoming Stock Request: {"itemdetails_ID":[8]} 
+[2025-07-04 01:09:58] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:58] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:09:58] local.INFO: 3.82  
+[2025-07-04 01:09:58] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:09:58] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:09:58] local.INFO: 0.94  
+[2025-07-04 01:10:05] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:10:05] local.INFO: array (
+)  
+[2025-07-04 01:10:05] local.INFO: 4.2  
+[2025-07-04 01:10:05] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:10:05] local.INFO: array (
+)  
+[2025-07-04 01:10:05] local.INFO: 27.44  
+[2025-07-04 01:10:06] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-04 01:10:06] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:06] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:10:06] local.INFO: 3.02  
+[2025-07-04 01:10:06] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:06] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:10:06] local.INFO: 0.58  
+[2025-07-04 01:10:07] local.INFO: Incoming Stock Request: {"itemdetails_ID":[5]} 
+[2025-07-04 01:10:07] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:07] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:10:07] local.INFO: 2.59  
+[2025-07-04 01:10:07] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:07] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:10:07] local.INFO: 0.75  
+[2025-07-04 01:10:07] local.INFO: Incoming Stock Request: {"itemdetails_ID":[8]} 
+[2025-07-04 01:10:07] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:07] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:10:07] local.INFO: 19.8  
+[2025-07-04 01:10:07] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:07] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:10:07] local.INFO: 0.65  
+[2025-07-04 01:10:23] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-04 01:10:23] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:23] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:10:23] local.INFO: 3.71  
+[2025-07-04 01:10:23] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:23] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:10:23] local.INFO: 0.74  
+[2025-07-04 01:10:23] local.INFO: Incoming Stock Request: {"itemdetails_ID":[5]} 
+[2025-07-04 01:10:23] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:23] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:10:23] local.INFO: 3.33  
+[2025-07-04 01:10:23] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:23] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:10:23] local.INFO: 0.67  
+[2025-07-04 01:10:24] local.INFO: Incoming Stock Request: {"itemdetails_ID":[8]} 
+[2025-07-04 01:10:24] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:24] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:10:24] local.INFO: 22.46  
+[2025-07-04 01:10:24] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:24] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:10:24] local.INFO: 0.83  
+[2025-07-04 01:10:26] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:10:26] local.INFO: array (
+)  
+[2025-07-04 01:10:26] local.INFO: 3.22  
+[2025-07-04 01:10:26] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:10:26] local.INFO: array (
+)  
+[2025-07-04 01:10:26] local.INFO: 3.54  
+[2025-07-04 01:10:27] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-04 01:10:27] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:27] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:10:27] local.INFO: 3.61  
+[2025-07-04 01:10:27] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:27] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:10:27] local.INFO: 0.76  
+[2025-07-04 01:10:27] local.INFO: Incoming Stock Request: {"itemdetails_ID":[5]} 
+[2025-07-04 01:10:27] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:27] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:10:27] local.INFO: 3.68  
+[2025-07-04 01:10:27] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:27] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:10:27] local.INFO: 0.68  
+[2025-07-04 01:10:28] local.INFO: Incoming Stock Request: {"itemdetails_ID":[8]} 
+[2025-07-04 01:10:28] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:28] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:10:28] local.INFO: 2.93  
+[2025-07-04 01:10:28] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:10:28] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:10:28] local.INFO: 0.64  
+[2025-07-04 01:10:29] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:10:29] local.INFO: array (
+)  
+[2025-07-04 01:10:29] local.INFO: 3.67  
+[2025-07-04 01:11:07] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:07] local.INFO: array (
+)  
+[2025-07-04 01:11:07] local.INFO: 10.24  
+[2025-07-04 01:11:08] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:08] local.INFO: array (
+)  
+[2025-07-04 01:11:08] local.INFO: 14.79  
+[2025-07-04 01:11:14] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:11:14] local.INFO: array (
+)  
+[2025-07-04 01:11:14] local.INFO: 22.53  
+[2025-07-04 01:11:18] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-04 01:11:18] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:18] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:11:18] local.INFO: 3.02  
+[2025-07-04 01:11:18] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:18] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:11:18] local.INFO: 0.58  
+[2025-07-04 01:11:18] local.INFO: Incoming Stock Request: {"itemdetails_ID":[5]} 
+[2025-07-04 01:11:18] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:18] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:11:18] local.INFO: 2.93  
+[2025-07-04 01:11:18] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:18] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:11:18] local.INFO: 0.82  
+[2025-07-04 01:11:19] local.INFO: Incoming Stock Request: {"itemdetails_ID":[8]} 
+[2025-07-04 01:11:19] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:19] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:11:19] local.INFO: 20.39  
+[2025-07-04 01:11:19] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:19] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:11:19] local.INFO: 11.04  
+[2025-07-04 01:11:20] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:11:20] local.INFO: array (
+)  
+[2025-07-04 01:11:20] local.INFO: 4.19  
+[2025-07-04 01:11:25] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:25] local.INFO: array (
+)  
+[2025-07-04 01:11:25] local.INFO: 4.23  
+[2025-07-04 01:11:25] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:25] local.INFO: array (
+)  
+[2025-07-04 01:11:25] local.INFO: 3.88  
+[2025-07-04 01:11:31] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:31] local.INFO: array (
+)  
+[2025-07-04 01:11:31] local.INFO: 26.45  
+[2025-07-04 01:11:31] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:31] local.INFO: array (
+)  
+[2025-07-04 01:11:31] local.INFO: 4.31  
+[2025-07-04 01:11:32] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:32] local.INFO: array (
+)  
+[2025-07-04 01:11:32] local.INFO: 22.12  
+[2025-07-04 01:11:32] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:32] local.INFO: array (
+)  
+[2025-07-04 01:11:32] local.INFO: 3.3  
+[2025-07-04 01:11:33] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:11:33] local.INFO: array (
+)  
+[2025-07-04 01:11:33] local.INFO: 3.36  
+[2025-07-04 01:11:34] local.INFO: Incoming Stock Request: {"itemdetails_ID":[1]} 
+[2025-07-04 01:11:34] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:34] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:11:34] local.INFO: 28.17  
+[2025-07-04 01:11:34] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:34] local.INFO: array (
+  0 => 1,
+)  
+[2025-07-04 01:11:34] local.INFO: 0.64  
+[2025-07-04 01:11:35] local.INFO: Incoming Stock Request: {"itemdetails_ID":[5]} 
+[2025-07-04 01:11:35] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:35] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:11:35] local.INFO: 2.88  
+[2025-07-04 01:11:35] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:35] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:11:35] local.INFO: 0.64  
+[2025-07-04 01:11:35] local.INFO: Incoming Stock Request: {"itemdetails_ID":[8]} 
+[2025-07-04 01:11:35] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:35] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:11:35] local.INFO: 12.98  
+[2025-07-04 01:11:35] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:35] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:11:35] local.INFO: 0.74  
+[2025-07-04 01:11:40] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:40] local.INFO: array (
+)  
+[2025-07-04 01:11:40] local.INFO: 3.75  
+[2025-07-04 01:11:40] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:40] local.INFO: array (
+)  
+[2025-07-04 01:11:40] local.INFO: 13.5  
+[2025-07-04 01:11:41] local.INFO: Incoming Stock Request: {"itemdetails_ID":[5]} 
+[2025-07-04 01:11:41] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:41] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:11:41] local.INFO: 22.11  
+[2025-07-04 01:11:41] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:41] local.INFO: array (
+  0 => 5,
+)  
+[2025-07-04 01:11:41] local.INFO: 0.58  
+[2025-07-04 01:11:42] local.INFO: Incoming Stock Request: {"itemdetails_ID":[8]} 
+[2025-07-04 01:11:42] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:42] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:11:42] local.INFO: 2.98  
+[2025-07-04 01:11:42] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:42] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:11:42] local.INFO: 0.58  
+[2025-07-04 01:11:43] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:43] local.INFO: array (
+)  
+[2025-07-04 01:11:43] local.INFO: 3.75  
+[2025-07-04 01:11:43] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:11:43] local.INFO: array (
+)  
+[2025-07-04 01:11:43] local.INFO: 3.46  
+[2025-07-04 01:11:44] local.INFO: Incoming Stock Request: {"itemdetails_ID":[8]} 
+[2025-07-04 01:11:44] local.INFO: select * from `stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:44] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:11:44] local.INFO: 2.8  
+[2025-07-04 01:11:44] local.INFO: select * from `test_stocks` where `itemdetails_ID` = ? limit 1  
+[2025-07-04 01:11:44] local.INFO: array (
+  0 => 8,
+)  
+[2025-07-04 01:11:44] local.INFO: 0.56  
+[2025-07-04 01:11:49] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:11:49] local.INFO: array (
+)  
+[2025-07-04 01:11:49] local.INFO: 3.23  
+[2025-07-04 01:12:06] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:12:06] local.INFO: array (
+)  
+[2025-07-04 01:12:06] local.INFO: 14.16  
+[2025-07-04 01:12:11] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:12:11] local.INFO: array (
+)  
+[2025-07-04 01:12:11] local.INFO: 3.38  
+[2025-07-04 01:12:19] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:12:19] local.INFO: array (
+)  
+[2025-07-04 01:12:19] local.INFO: 3.09  
+[2025-07-04 01:12:21] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:12:21] local.INFO: array (
+)  
+[2025-07-04 01:12:21] local.INFO: 12.23  
+[2025-07-04 01:12:25] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:12:25] local.INFO: array (
+)  
+[2025-07-04 01:12:25] local.INFO: 4.45  
+[2025-07-04 01:12:25] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:12:25] local.INFO: array (
+)  
+[2025-07-04 01:12:25] local.INFO: 4.42  
+[2025-07-04 01:17:17] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:17:17] local.INFO: array (
+)  
+[2025-07-04 01:17:17] local.INFO: 3.05  
+[2025-07-04 01:17:20] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:17:20] local.INFO: array (
+)  
+[2025-07-04 01:17:20] local.INFO: 3.68  
+[2025-07-04 01:17:21] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:17:21] local.INFO: array (
+)  
+[2025-07-04 01:17:21] local.INFO: 12.37  
+[2025-07-04 01:17:25] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:17:25] local.INFO: array (
+)  
+[2025-07-04 01:17:25] local.INFO: 13.95  
+[2025-07-04 01:17:31] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:17:31] local.INFO: array (
+)  
+[2025-07-04 01:17:31] local.INFO: 3.01  
+[2025-07-04 01:17:34] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:17:34] local.INFO: array (
+)  
+[2025-07-04 01:17:34] local.INFO: 3.41  
+[2025-07-04 01:17:34] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:17:34] local.INFO: array (
+)  
+[2025-07-04 01:17:34] local.INFO: 13.64  
+[2025-07-04 01:17:45] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:17:45] local.INFO: array (
+)  
+[2025-07-04 01:17:45] local.INFO: 3.44  
+[2025-07-04 01:17:48] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:17:48] local.INFO: array (
+)  
+[2025-07-04 01:17:48] local.INFO: 4.18  
+[2025-07-04 01:17:48] local.INFO: select `items`.`id` as `item_id`, `items`.`name` as `item_name`, `items`.`description` as `item_description`, `itemcategories`.`id` as `item_category_id`, `itemcategories`.`name` as `item_category`, `itemdetails`.`id` as `itemdetails_ID`, `itemdetails`.`variation_name`, `itemdetails`.`cost` as `item_detail_price`, `itemdetails`.`additional_info`, `itemdetails`.`photo`, `itemdetails`.`status`, `itemdetails`.`preparation_time`, `itemdetails`.`timesensitive`, `itemattributes`.`id` as `attribute_id`, `itemattributes`.`key` as `attribute_key`, `itemattributes`.`value` as `attribute_value` from `items` left join `itemcategories` on `items`.`category_ID` = `itemcategories`.`id` left join `itemdetails` on `items`.`id` = `itemdetails`.`item_ID` left join `itemattributes` on `itemdetails`.`id` = `itemattributes`.`itemdetails_ID`  
+[2025-07-04 01:17:48] local.INFO: array (
+)  
+[2025-07-04 01:17:48] local.INFO: 27.84  
+[2025-07-04 01:17:55] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:17:55] local.INFO: array (
+)  
+[2025-07-04 01:17:55] local.INFO: 27.56  
+[2025-07-04 01:17:59] local.INFO: select COUNT(itemrating.id) as total_reviews, COALESCE(AVG(itemrating.stars), 0) as average_rating from `itemrating` inner join `itemdetails` on `itemrating`.`itemdetails_ID` = `itemdetails`.`id` inner join `items` on `itemdetails`.`item_ID` = `items`.`id` limit 1  
+[2025-07-04 01:17:59] local.INFO: array (
+)  
+[2025-07-04 01:17:59] local.INFO: 2.67  
