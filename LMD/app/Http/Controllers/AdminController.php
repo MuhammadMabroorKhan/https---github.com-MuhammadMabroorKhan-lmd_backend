@@ -21,6 +21,9 @@ use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\LmdSetting;
+
+use App\Models\LmdEarning;
 
 class AdminController extends Controller {
 
@@ -1725,4 +1728,96 @@ public function addCourierItem(Request $request)
     }
     
     
+
+
+
+
+
+
+//Lmd settings nd earning
+
+
+// ✅ Get settings
+public function getLmdSettings()
+{
+    $settings = LmdSetting::first();
+    return response()->json([
+        'success' => true,
+        'data' => $settings
+    ]);
+}
+
+// ✅ Update Order Charge
+public function updateOrderCharge(Request $request)
+{
+    $request->validate([
+        'value' => 'required|numeric|min:0|max:100',
+    ]);
+
+    $settings = LmdSetting::first();
+    $settings->order_charge = $request->value;
+    $settings->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Order charge updated successfully.',
+        'data' => $settings
+    ]);
+}
+
+// ✅ Update Tax Percentage
+public function updateTaxPercentage(Request $request)
+{
+    $request->validate([
+        'value' => 'required|numeric|min:0|max:100',
+    ]);
+
+    $settings = LmdSetting::first();
+    $settings->tax_percentage = $request->value;
+    $settings->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Tax percentage updated successfully.',
+        'data' => $settings
+    ]);
+}
+
+// ✅ Update Pickup Radius
+public function updatePickupRadius(Request $request)
+{
+    $request->validate([
+        'value' => 'required|numeric|min:0',
+    ]);
+
+    $settings = LmdSetting::first();
+    $settings->pickup_radius_km = $request->value;
+    $settings->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Pickup radius updated successfully.',
+        'data' => $settings
+    ]);
+}
+
+
+
+
+public function getLmdEarnings()
+{
+    $earnings = LmdEarning::orderBy('created_at', 'desc')->get();
+
+    $totalEarning = $earnings->sum(function ($e) {
+        return $e->lmd_earning_amount - $e->tax_amount;
+    });
+
+    return response()->json([
+        'success' => true,
+        'total_earning_after_tax' => round($totalEarning, 2),
+        'data' => $earnings
+    ]);
+}
+
+
 }

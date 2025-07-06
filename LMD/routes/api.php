@@ -321,3 +321,20 @@ Route::prefix('vehicle-categories')->group(function () {
 ///From Website for api vendor
 Route::post('/vendor/update-suborder-status', [VendorController::class, 'updateSuborderStatusByVendorOrderId']);
 
+
+
+
+
+
+
+
+
+
+// Settings and Earning
+
+Route::get('/admin/lmd-settings', [AdminController::class, 'getLmdSettings']);
+Route::post('/admin/lmd-settings/order-charge', [AdminController::class, 'updateOrderCharge']);
+Route::post('/admin/lmd-settings/tax-percentage', [AdminController::class, 'updateTaxPercentage']);
+Route::post('/admin/lmd-settings/pickup-radius', [AdminController::class, 'updatePickupRadius']);
+
+Route::get('/admin/lmd-earnings', [AdminController::class, 'getLmdEarnings']);
