@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\Suborder;
+use App\Observers\SuborderObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Suborder::observe(SuborderObserver::class);
         DB::listen(function ($query) {
             \Log::info($query->sql);       
             \Log::info($query->bindings); 
@@ -28,3 +31,4 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 }
+
