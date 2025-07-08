@@ -948,7 +948,8 @@ public function addItemToCart(Request $request)
             'vendor_id' => 'required|integer|exists:vendors,ID',
             'shop_id' => 'required|integer|exists:shops,ID',
             'branch_id' => 'required|integer|exists:branches,ID',
-            'itemdetails_id' => 'required|integer|exists:itemdetails,ID',
+            // 'itemdetails_id' => 'required|integer|exists:itemdetails,ID',
+            'itemdetails_id' => 'required|integer',
             'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
         ]);

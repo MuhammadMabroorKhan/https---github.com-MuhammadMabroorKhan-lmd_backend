@@ -929,7 +929,7 @@ public function getReadySubordersForDeliveryBoy($id)
 
             'orders.order_date',
             'orders.addresses_ID',
-
+'orders.customers_ID as customer_ID',
             'shops.name as shop_name',
             'branches.description as branch_name',
             DB::raw("CASE 
@@ -989,6 +989,7 @@ public function getReadySubordersForDeliveryBoy($id)
                 ],
 
                 'customer' => [
+                    'customer_ID' => $item->customer_ID,
                     'name' => $item->customer_name,
                     'phone' => $item->customer_phone,
                     'customer_picture' => $item->customer_picture,
@@ -1028,6 +1029,9 @@ public function getReadySubordersForDeliveryBoy($id)
 
 //     return response()->json(['message' => 'Order accepted successfully.']);
 // }
+
+
+
 public function acceptOrder($deliveryBoyId, $suborderId)
 {
     try {
@@ -1170,75 +1174,110 @@ try {
 
 
 
-try {
-    // Get pickup (branch) location
-    $pickup = DB::table('branches')
-        ->where('id', $suborder->branch_ID)
-        ->select('latitude', 'longitude')
-        ->first();
+// try {
+//     // Get pickup (branch) location
+//     $pickup = DB::table('branches')
+//         ->where('id', $suborder->branch_ID)
+//         ->select('latitude', 'longitude')
+//         ->first();
 
 
-    // Get drop (customer address) location
-    $order = DB::table('orders')->where('id', $suborder->orders_ID)->first();
+//     // Get drop (customer address) location
+//     $order = DB::table('orders')->where('id', $suborder->orders_ID)->first();
 
-    $address = DB::table('addresses')
-        ->where('id', $order->addresses_ID)
-        ->select('latitude', 'longitude')
-        ->first();
+//     $address = DB::table('addresses')
+//         ->where('id', $order->addresses_ID)
+//         ->select('latitude', 'longitude')
+//         ->first();
 
-    if (!$pickup || !$address) {
-        return response()->json(['error' => 'Pickup or drop location not found.'], 500);
-    }
+//     if (!$pickup || !$address) {
+//         return response()->json(['error' => 'Pickup or drop location not found.'], 500);
+//     }
 
-    // Calculate distance using Haversine formula
-    $theta = $pickup->longitude - $address->longitude;
-    $dist = sin(deg2rad($pickup->latitude)) * sin(deg2rad($address->latitude)) +
-            cos(deg2rad($pickup->latitude)) * cos(deg2rad($address->latitude)) * cos(deg2rad($theta));
-    $dist = acos($dist);
-    $dist = rad2deg($dist);
-    $km = $dist * 60 * 1.1515 * 1.609344; // Miles to KM
+//     // Calculate distance using Haversine formula
+//     $theta = $pickup->longitude - $address->longitude;
+//     $dist = sin(deg2rad($pickup->latitude)) * sin(deg2rad($address->latitude)) +
+//             cos(deg2rad($pickup->latitude)) * cos(deg2rad($address->latitude)) * cos(deg2rad($theta));
+//     $dist = acos($dist);
+//     $dist = rad2deg($dist);
+//     $km = $dist * 60 * 1.1515 * 1.609344; // Miles to KM
 
-    // Get delivery boy vehicle and rate per km
-    $vehicle = DB::table('vehicles')
-        ->where('deliveryboys_ID', $deliveryBoyId)
-        ->first();
+//     // Get delivery boy vehicle and rate per km
+//     $vehicle = DB::table('vehicles')
+//         ->where('deliveryboys_ID', $deliveryBoyId)
+//         ->first();
 
-    if (!$vehicle) {
-        return response()->json(['error' => 'Vehicle for delivery boy not found.'], 404);
-    }
+//     if (!$vehicle) {
+//         return response()->json(['error' => 'Vehicle for delivery boy not found.'], 404);
+//     }
 
-    $ratePerKm = DB::table('vehicle_categories')
-        ->where('id', $vehicle->vehicle_type) // vehicle_type is category ID
-        ->value('per_km_charge');
+//     $ratePerKm = DB::table('vehicle_categories')
+//         ->where('id', $vehicle->vehicle_type) // vehicle_type is category ID
+//         ->value('per_km_charge');
 
-    if (!$ratePerKm) {
-        return response()->json(['error' => 'Per KM rate not found.'], 404);
-    }
+//     if (!$ratePerKm) {
+//         return response()->json(['error' => 'Per KM rate not found.'], 404);
+//     }
 
-    $totalEarning = round($km * $ratePerKm, 2);
+//     $totalEarning = round($km * $ratePerKm, 2);
 
-    // Insert into delivery_earnings table
-    DB::table('delivery_earnings')->insert([
-        'deliveryboy_id' => $deliveryBoyId,
-        'suborder_id' => $suborder->id,
-        'distance_km' => round($km, 2),
-        'rate_per_km' => $ratePerKm,
-        'total_earning' => $totalEarning,
-        'created_at' => now(),
-        'updated_at' => now()
-    ]);
-} catch (\Exception $e) {
-    return response()->json(['error' => 'Failed to calculate and insert delivery earnings.'], 500);
-}
-
-
-
-
-
+//     // Insert into delivery_earnings table
+//     DB::table('delivery_earnings')->insert([
+//         'deliveryboy_id' => $deliveryBoyId,
+//         'suborder_id' => $suborder->id,
+//         'distance_km' => round($km, 2),
+//         'rate_per_km' => $ratePerKm,
+//         'total_earning' => $totalEarning,
+//         'created_at' => now(),
+//         'updated_at' => now()
+//     ]);
+// } catch (\Exception $e) {
+//     return response()->json(['error' => 'Failed to calculate and insert delivery earnings.'], 500);
+// }
 
 
     return response()->json(['message' => 'Order accepted and marked assigned successfully.']);
 }
+
+
+
+
+
+public function addDeliveryEarning(Request $request)
+{
+     \Log::info('ADD DELIVERY Earning Request data:', $request->all());
+    $data = $request->validate([
+        'deliveryboy_id' => 'required|integer',
+        'suborder_id' => 'required|integer',
+        'distance_km' => 'required|numeric',
+        'rate_per_km' => 'required|numeric',
+        'total_earning' => 'required|numeric',
+    ]);
+
+    try {
+        DB::table('delivery_earnings')->insert([
+            'deliveryboy_id' => $data['deliveryboy_id'],
+            'suborder_id' => $data['suborder_id'],
+            'distance_km' => $data['distance_km'],
+            'rate_per_km' => $data['rate_per_km'],
+            'total_earning' => $data['total_earning'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'message' => 'Delivery earning inserted successfully',
+            'success' => true
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Failed to insert delivery earning',
+            'success' => false
+        ], 500);
+    }
+}
+
+
 
 // public function acceptOrder($deliveryBoyId, $suborderId)
 // {
@@ -1803,6 +1842,7 @@ public function confirmPaymentByDeliveryBoy($suborderId)
     // DO NOT CHANGE THIS RESPONSE
     return response()->json(['message' => 'Payment confirmed by delivery boy.']);
 }
+
 
 
 

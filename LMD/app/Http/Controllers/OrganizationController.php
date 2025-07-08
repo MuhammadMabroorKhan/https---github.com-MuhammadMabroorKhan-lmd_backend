@@ -471,4 +471,228 @@ class OrganizationController extends Controller {
 }
 
 
+
+// public function getOrganizationDeliveryEarnings(Request $request)
+// {
+//     $request->validate([
+//         'organization_id' => 'required|integer',
+//         'from_date' => 'nullable|date',
+//         'to_date' => 'nullable|date',
+//     ]);
+
+//     $organizationId = $request->organization_id;
+//     $fromDate = $request->from_date;
+//     $toDate = $request->to_date;
+
+//     $deliveryBoyIds = DB::table('deliveryboys')
+//         ->where('organization_id', $organizationId)
+//         ->pluck('id');
+
+//     $query = DB::table('delivery_earnings')
+//         ->join('suborders', 'delivery_earnings.suborder_id', '=', 'suborders.id')
+//         ->whereIn('delivery_earnings.deliveryboy_id', $deliveryBoyIds)
+//         ->where('suborders.payment_status', 'confirmed_by_deliveryboy');
+
+//     if ($fromDate) {
+//         $query->whereDate('delivery_earnings.created_at', '>=', $fromDate);
+//     }
+//     if ($toDate) {
+//         $query->whereDate('delivery_earnings.created_at', '<=', $toDate);
+//     }
+
+//     $totalEarnings = $query->sum('delivery_earnings.total_earning');
+
+//     return response()->json([
+//         'organization_id' => $organizationId,
+//         'total_earnings' => $totalEarnings,
+//         'from_date' => $fromDate,
+//         'to_date' => $toDate,
+//     ]);
+// }
+
+
+// public function getDeliveryBoyEarnings(Request $request)
+// {
+//     $request->validate([
+//         'organization_id' => 'required|integer',
+//         'deliveryboy_id' => 'required|integer',
+//         'from_date' => 'nullable|date',
+//         'to_date' => 'nullable|date',
+//     ]);
+
+//     $organizationId = $request->organization_id;
+//     $deliveryBoyId = $request->deliveryboy_id;
+//     $fromDate = $request->from_date;
+//     $toDate = $request->to_date;
+
+//     $isValid = DB::table('deliveryboys')
+//         ->where('organization_id', $organizationId)
+//         ->where('id', $deliveryBoyId)
+//         ->exists();
+
+//     if (!$isValid) {
+//         return response()->json([
+//             'error' => 'Delivery boy does not belong to the organization',
+//         ], 403);
+//     }
+
+//     $query = DB::table('delivery_earnings')
+//         ->join('suborders', 'delivery_earnings.suborder_id', '=', 'suborders.id')
+//         ->where('delivery_earnings.deliveryboy_id', $deliveryBoyId)
+//         ->where('suborders.payment_status', 'confirmed_by_deliveryboy');
+
+//     if ($fromDate) {
+//         $query->whereDate('delivery_earnings.created_at', '>=', $fromDate);
+//     }
+//     if ($toDate) {
+//         $query->whereDate('delivery_earnings.created_at', '<=', $toDate);
+//     }
+
+//     $earnings = $query
+//         ->select(
+//             'delivery_earnings.suborder_id',
+//             'delivery_earnings.distance_km',
+//             'delivery_earnings.rate_per_km',
+//             'delivery_earnings.total_earning',
+//             'delivery_earnings.created_at'
+//         )
+//         ->orderByDesc('delivery_earnings.created_at')
+//         ->get();
+
+//     $totalEarnings = $earnings->sum('total_earning');
+
+//     return response()->json([
+//         'deliveryboy_id' => $deliveryBoyId,
+//         'organization_id' => $organizationId,
+//         'from_date' => $fromDate,
+//         'to_date' => $toDate,
+//         'total_earnings' => $totalEarnings,
+//         'earnings' => $earnings,
+//     ]);
+// }
+
+
+public function getOrganizationDeliveryEarnings(Request $request)
+{
+    \Log::info('🔥 Raw Input', ['raw' => $request->getContent()]);
+\Log::info('🔥 Parsed Input', $request->all());
+
+
+    $request->validate([
+        'organization_id' => 'required|integer',
+    ]);
+
+    $organizationId = $request->organization_id;
+
+    // Step 1: Get delivery boys under the organization
+    $deliveryBoyIds = DB::table('deliveryboys')
+        ->where('organization_id', $organizationId)
+        ->pluck('id');
+
+    \Log::info('🟨 DeliveryBoy IDs for Org ' . $organizationId, $deliveryBoyIds->toArray());
+
+    // Step 2: Get earnings from confirmed suborders
+  $earnings = DB::table('delivery_earnings')
+    ->join('suborders', 'delivery_earnings.suborder_id', '=', 'suborders.id')
+    ->whereIn('delivery_earnings.deliveryboy_id', $deliveryBoyIds)
+    ->whereIn('suborders.payment_status', ['confirmed_by_deliveryboy', 'confirmed_by_vendor'])
+    ->select(
+        'delivery_earnings.deliveryboy_id',
+        'delivery_earnings.suborder_id',
+        'delivery_earnings.distance_km',
+        'delivery_earnings.rate_per_km',
+        'delivery_earnings.total_earning',
+        'delivery_earnings.created_at'
+    )
+    ->orderByDesc('delivery_earnings.created_at')
+    ->get();
+
+    \Log::info("🟩 Earnings Fetched for Org {$organizationId}:", $earnings->toArray());
+
+    if ($earnings->isEmpty()) {
+        \Log::warning("🟥 No earnings found for Organization ID: $organizationId");
+        return response()->json([
+            'organization_id' => $organizationId,
+            'total_earnings' => 0,
+            'message' => 'No earnings found for this organization.'
+        ]);
+    }
+
+    $totalEarnings = $earnings->sum('total_earning');
+
+    return response()->json([
+        'organization_id' => $organizationId,
+        'total_earnings' => $totalEarnings,
+        'earnings' => $earnings,
+    ]);
+}
+
+
+
+
+public function getDeliveryBoyEarnings(Request $request)
+{
+    \Log::info('🔥 Raw Input', ['raw' => $request->getContent()]);
+\Log::info('🔥 Parsed Input', $request->all());
+
+
+    $request->validate([
+        'organization_id' => 'required|integer',
+        'deliveryboy_id' => 'required|integer',
+    ]);
+
+    $organizationId = $request->organization_id;
+    $deliveryBoyId = $request->deliveryboy_id;
+
+    $isValid = DB::table('deliveryboys')
+        ->where('organization_id', $organizationId)
+        ->where('id', $deliveryBoyId)
+        ->exists();
+
+    \Log::info("🟨 Validation of DeliveryBoy $deliveryBoyId in Org $organizationId: " . ($isValid ? 'YES' : 'NO'));
+
+    if (!$isValid) {
+        \Log::error("🟥 Delivery boy $deliveryBoyId does not belong to organization $organizationId");
+        return response()->json([
+            'error' => 'Delivery boy does not belong to the organization',
+        ], 403);
+    }
+
+   $earnings = DB::table('delivery_earnings')
+    ->join('suborders', 'delivery_earnings.suborder_id', '=', 'suborders.id')
+    ->where('delivery_earnings.deliveryboy_id', $deliveryBoyId)
+    ->whereIn('suborders.payment_status', ['confirmed_by_deliveryboy', 'confirmed_by_vendor'])
+    ->select(
+        'delivery_earnings.suborder_id',
+        'delivery_earnings.distance_km',
+        'delivery_earnings.rate_per_km',
+        'delivery_earnings.total_earning',
+        'delivery_earnings.created_at'
+    )
+    ->orderByDesc('delivery_earnings.created_at')
+    ->get();
+
+
+    \Log::info("🟩 Earnings fetched for DeliveryBoy $deliveryBoyId:", $earnings->toArray());
+
+    if ($earnings->isEmpty()) {
+        \Log::warning("🟥 No earnings found for DeliveryBoy ID: $deliveryBoyId");
+        return response()->json([
+            'organization_id' => $organizationId,
+            'deliveryboy_id' => $deliveryBoyId,
+            'total_earnings' => 0,
+            'message' => 'No earnings found for this delivery boy.'
+        ]);
+    }
+
+    $totalEarnings = $earnings->sum('total_earning');
+
+    return response()->json([
+        'deliveryboy_id' => $deliveryBoyId,
+        'organization_id' => $organizationId,
+        'total_earnings' => $totalEarnings,
+        'earnings' => $earnings,
+    ]);
+}
+
 }

@@ -338,3 +338,7 @@ Route::post('/admin/lmd-settings/tax-percentage', [AdminController::class, 'upda
 Route::post('/admin/lmd-settings/pickup-radius', [AdminController::class, 'updatePickupRadius']);
 
 Route::get('/admin/lmd-earnings', [AdminController::class, 'getLmdEarnings']);
+Route::post('/delivery-earnings', [DeliveryBoyController::class, 'addDeliveryEarning']);
+
+Route::post('/organization/org-delivery-earnings', [OrganizationController::class, 'getOrganizationDeliveryEarnings']);
+Route::post('/organization/org-deliveryboy-earnings', [OrganizationController::class, 'getDeliveryBoyEarnings']);
